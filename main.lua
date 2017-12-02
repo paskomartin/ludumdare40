@@ -48,6 +48,8 @@ function love.load()
   
   player = require("objects/player"):new(100, 200)
   player:init()
+  local w, h = love.window.getMode()
+  canvas = love.graphics.newCanvas(w,h)
 end
 
 function love.update(dt)
@@ -56,7 +58,10 @@ end
 
 function love.draw()
 	--love.graphics.print("Hello world", 0, 0)
+  love.graphics.setCanvas()
 	gameManager.renderer:draw()
+  love.graphics.draw(canvas)
+  --love.graphics.setCanvas()
 end
 
 function love.keypressed(key)

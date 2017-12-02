@@ -18,6 +18,9 @@ function Entity:new(x, y, w, h, id)
   -- time to remove? --
   ent.remove = false
   
+  -- collision rectangle 
+  --ent.rect = 
+  
   -- abstract virtual methods --
   function ent:load() end
   function ent:tick(dt) end

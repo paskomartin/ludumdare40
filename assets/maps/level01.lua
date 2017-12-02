@@ -8,7 +8,7 @@ return {
   height = 18,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 1,
+  nextobjectid = 10,
   properties = {},
   tilesets = {
     {
@@ -113,6 +113,83 @@ return {
         5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6,
         5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6,
         8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 9
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "wallObjects",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 3,
+          name = "upperBounds",
+          type = "",
+          shape = "rectangle",
+          x = -128,
+          y = -96,
+          width = 1056,
+          height = 128,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 4,
+          name = "leftBounds",
+          type = "",
+          shape = "rectangle",
+          x = -128,
+          y = -96,
+          width = 137,
+          height = 800,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 5,
+          name = "rightBounds",
+          type = "",
+          shape = "rectangle",
+          x = 791,
+          y = -96,
+          width = 137,
+          height = 800,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 6,
+          name = "lowerBounds",
+          type = "",
+          shape = "rectangle",
+          x = -128,
+          y = 567,
+          width = 1056,
+          height = 137,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 9,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 256,
+          y = 224,
+          width = 128,
+          height = 96,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
       }
     }
   }

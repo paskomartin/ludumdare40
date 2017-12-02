@@ -2,6 +2,7 @@ local Player = {}
 
 require "tools/collision"
 require "tools/keys"
+vec2 = require("tools/vec2")
 local keyDown = love.keyboard.isDown
 
 function Player:new(x, y)
@@ -21,31 +22,46 @@ function Player:new(x, y)
   end
   
   function player:tick(dt)
+    local lastPos = {}
+    lastPos.x = self.pos.x
+    lastPos.y = self.pos.y
     self:move()
-    
     self.pos.x = self.pos.x + self.vel.x * dt
+    local result = wallCollision(self, dt)
+    if result then
+      self.pos.x = self.pos.x - self.vel.x * dt
+    end
+    
     self.pos.y = self.pos.y + self.vel.y * dt
+    result = wallCollision(self, dt)
+    if result then
+      self.pos.y = self.pos.y - self.vel.y * dt
+    end       
   end
 
   function player:draw()
     --love.graphics.setColor(color)
-    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.w, self.size.h)
+    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
     --love.graphics.setColor(0,0,0)
   end
 
   function player:move()
     if keys.up.pressed then
       self.vel.y = -velSpeed
+      self.dir.y = -1
     elseif keys.down.pressed then
       self.vel.y = velSpeed
+      self.dir.y = 1
     else 
       self.vel.y = 0
     end
     
     if keys.left.pressed then
       self.vel.x = -velSpeed
+      self.dir.x = -1
     elseif keys.right.pressed then
       self.vel.x = velSpeed
+      self.dir.x = 1
     else 
       self.vel.x = 0
     end

@@ -36,6 +36,15 @@ function Tlm:create() --tilename)
   gameManager.renderer:add(self)
 end
 
+function Tlm:drawWalls()
+  for i=1, #self.walls, 1 do
+    local tile = self.walls[i]
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.rectangle("line", tile.pos.x, tile.pos.y, tile.size.x, tile.size.y)
+    love.graphics.setColor(255, 255, 255)
+  end
+end
+
 function Tlm:draw()
   --for i = 1, #self.tiles do
   --  for j = 1, #self.tiles do
@@ -52,6 +61,8 @@ function Tlm:draw()
       end
     end
   end
+  
+  self:drawWalls()
 end
 
 function Tlm:isSolidAtPos(x, y)
@@ -95,29 +106,45 @@ function Tlm:loadmap(mapname)
 
   
   Tlm:genQuads()
-  
+  self.walls = {}
   
   for layer = 1, #map.layers do
-    local data = map.layers[layer].data
-    local prop = map.layers[layer].properties
+    
+    -- build walls
+    if map.layers[layer].type == "objectgroup" then 
+      
+      local walls = map.layers[layer].objects
+      
+      for _, val in ipairs(walls) do
+        local wall = {}
+        wall.pos = require("tools/vec2"):new(val.x, val.y)
+        wall.size = require("tools/vec2"):new(val.width, val.height)
+        --local wall = require("objects/rect"):new(val.x, val.y, val.height, val.width)
+        table.insert(self.walls, wall)
+      end
+      
+      
+    elseif map.layers[layer].type == "tilelayer" then
+      
+      local data = map.layers[layer].data
+      local prop = map.layers[layer].properties
   
-    for y = 1, map.height do
-      for x = 1, map.width do
-        
-        --local index = (y * map.width + (x + 1) - map.width) - 1
-        local index = (y * map.width + (x - 1) - map.width) + 1
-        if data[index] ~= 0 and data[index] ~= nil then
+  
+      for y = 1, map.height do
+        for x = 1, map.width do
           
-          --local what = data[index]
-          
-          local q = quads[data[index]]
-          --self.tiles[y][x] = tile (16 * x - 16, 16 * y - 16, 64, 64, q)
-          --self.tiles[y][x] = tile (16 * x - 16, 16 * y - 16, 16, 16, q)
-          self.tiles[layer][y][x] = tile (self.tilewidth * x - self.tilewidth, self.tileheight * y - self.tileheight, tilewidth, tileheight, q)
+          local index = (y * map.width + (x - 1) - map.width) + 1
+          if data[index] ~= 0 and data[index] ~= nil then
+            
+            local q = quads[data[index]]
+            self.tiles[layer][y][x] = tile (self.tilewidth * x - self.tilewidth, self.tileheight * y - self.tileheight, tilewidth, tileheight, q)
+          end
         end
       end
+      
     end
   end
+  
 end
 
 function Tlm:clear()
@@ -129,7 +156,10 @@ function Tlm:clear()
   self.imageheight = 0
   self.tiles = {}
   self.img = nil
+  
+  self.walls = {}
 end
+
 
 
 function Tlm:destroy()
