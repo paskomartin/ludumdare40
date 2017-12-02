@@ -28,9 +28,9 @@ function Player:new(x, y)
   end
 
   function player:draw()
-    love.graphics.setColor(color)
+    --love.graphics.setColor(color)
     love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.w, self.size.h)
-    love.graphics.setColor(0,0,0)
+    --love.graphics.setColor(0,0,0)
   end
 
   function player:move()

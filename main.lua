@@ -1,7 +1,11 @@
 
 gameManager = require("tools/gameManager"):create()
-
+asm = require("tools/assetsmanager")
+tlm = require("tiles/tlm")
 width = love.graphics.getWidth()
+require("tools/mapbuilder")
+
+
 -- test
 
 testobj =  {
@@ -23,7 +27,6 @@ end
 
 
 
-
 --[[
  Lib = {
       foo = function (x,y) return x + y end,
@@ -36,8 +39,12 @@ function love.load()
     require("mobdebug").start() 
   end  
  
-	gameManager.gameLoop:add(testobj)
-	gameManager.renderer:add(testobj)
+	--gameManager.gameLoop:add(testobj)
+	--gameManager.renderer:add(testobj)
+  asm:create()
+  tlm:create()
+  
+  buildMap("level01")
   
   player = require("objects/player"):new(100, 200)
   player:init()
@@ -48,7 +55,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.print("Hello world", 0, 0)
+	--love.graphics.print("Hello world", 0, 0)
 	gameManager.renderer:draw()
 end
 

@@ -1,7 +1,10 @@
 local AssetsManager = {}
 
+
+
 function AssetsManager:create()
-  self.assets {}
+  local asm = {}
+  self.assets = {}
 end
 
 function AssetsManager:add(asset, name, assetType)
