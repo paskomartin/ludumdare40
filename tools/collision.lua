@@ -80,7 +80,7 @@ function collectibleCollision(obj)
     if objects[i] ~= nil then
       local result = rect_collision(obj, objects[i])
       if result then
-        objects[i]:pickup()
+        objects[i]:pickup(obj)
       end
     end
   end

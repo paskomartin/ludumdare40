@@ -90,6 +90,7 @@ function Tlm:loadmap(mapname)
   end
   ]]
   
+  
   self.mapwidth = map.width
   self.mapheight = map.height
   self.tilewidth = map.tilewidth
@@ -110,19 +111,26 @@ function Tlm:loadmap(mapname)
   
   for layer = 1, #map.layers do
     
-    -- build walls
+    -- objects
     if map.layers[layer].type == "objectgroup" then 
-      
-      local walls = map.layers[layer].objects
-      
-      for _, val in ipairs(walls) do
-        local wall = {}
-        wall.pos = require("tools/vec2"):new(val.x, val.y)
-        wall.size = require("tools/vec2"):new(val.width, val.height)
-        --local wall = require("objects/rect"):new(val.x, val.y, val.height, val.width)
-        table.insert(self.walls, wall)
+      -- player
+      if map.layers[layer].name == "player" then
+        local x = map.layers[layer].objects[1].x-- + map.layers[layer].objects.width / 2
+        local y = map.layers[layer].objects[1].y-- + map.layers[layer].objects.height / 2
+        player.pos.x = x
+        player.pos.y = y
+      else
+        -- build walls
+        local walls = map.layers[layer].objects
+        
+        for _, val in ipairs(walls) do
+          local wall = {}
+          wall.pos = require("tools/vec2"):new(val.x, val.y)
+          wall.size = require("tools/vec2"):new(val.width, val.height)
+          --local wall = require("objects/rect"):new(val.x, val.y, val.height, val.width)
+          table.insert(self.walls, wall)
+        end
       end
-      
       
     elseif map.layers[layer].type == "tilelayer" then
       

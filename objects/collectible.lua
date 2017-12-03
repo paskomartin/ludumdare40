@@ -7,7 +7,7 @@ function Collectible:new(x, y, w, h, id, canPickup, canUse)
 	collectible.isAlive = true
 
 	function collectible:use() end
-	function collectible:pickup() end
+	function collectible:pickup(obj) end
 
 	return collectible
 end

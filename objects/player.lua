@@ -16,6 +16,8 @@ function Player:new(x, y)
   local cooldownSpeed = 5
   local cooldown = 0
   local isShoot = false
+  player.points = 0
+  player.coins = 0
   
   function player:init()
     -- add to loop?
@@ -160,6 +162,11 @@ function Player:new(x, y)
       return posx, posy
   end
 
+  
+  function player:addCoin(val)
+    self.coins = self.coins + val
+    print("Points: ", self.points, " coins: ", self.coins)
+  end
   return player
 end
 

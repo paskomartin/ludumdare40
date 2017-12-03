@@ -5,10 +5,10 @@ return {
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 25,
-  height = 18,
+  height = 17,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 10,
+  nextobjectid = 15,
   properties = {},
   tilesets = {
     {
@@ -51,7 +51,7 @@ return {
       x = 0,
       y = 0,
       width = 25,
-      height = 18,
+      height = 17,
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -77,7 +77,6 @@ return {
         0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
         0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
         0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-        0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
@@ -87,7 +86,7 @@ return {
       x = 0,
       y = 0,
       width = 25,
-      height = 18,
+      height = 17,
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -97,7 +96,6 @@ return {
       data = {
         12, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 13,
         10, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 11,
-        5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6,
         5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6,
         5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6,
         5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6,
@@ -165,19 +163,6 @@ return {
           properties = {}
         },
         {
-          id = 6,
-          name = "lowerBounds",
-          type = "",
-          shape = "rectangle",
-          x = -128,
-          y = 567,
-          width = 1056,
-          height = 137,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 9,
           name = "",
           type = "",
@@ -186,6 +171,44 @@ return {
           y = 224,
           width = 128,
           height = 96,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 13,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -128,
+          y = 535,
+          width = 1056,
+          height = 169,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "player",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 12,
+          name = "playerPosition",
+          type = "",
+          shape = "rectangle",
+          x = 608,
+          y = 480,
+          width = 32,
+          height = 32,
           rotation = 0,
           visible = true,
           properties = {}

@@ -10,6 +10,7 @@ function Coin:new(x,y)
 	coin.isAlive = true
   coin.canPickUp = true -- can player pick up this object?
   coin.canUse = false   -- can we use this object? 
+  coin.value = 1
   
 	local color = {196,146,21,255}
 
@@ -28,10 +29,13 @@ function Coin:new(x,y)
 		end
 	end
 
-	function coin:pickup()
-		coin.isAlive = false
-		self.remove = true
-    print("coin is picked up")
+	function coin:pickup(obj)
+    if self.isAlive and not self.remove then
+      self.isAlive = false
+      self.remove = true
+      obj:addCoin(self.value)
+      print("coin is picked up") 
+    end
 	end
 
 

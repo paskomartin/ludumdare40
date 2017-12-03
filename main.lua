@@ -44,9 +44,8 @@ function love.load()
   asm:create()
   tlm:create()
   gameManager:init()
+  gameManager:startNewGame()
   ---obm:create()
-  
-  buildMap("level01")
   
   --[[
   player = require("objects/player"):new(100, 200)
