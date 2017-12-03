@@ -53,28 +53,35 @@ function wallCollision(obj, dt)
     if side ~= 'none' then
       if side == 'right' then
         obj.pos.x = wall.pos.x - obj.size.x - 2
+        result = true
       elseif side == 'left' then
         obj.pos.x = wall.pos.x + wall.size.x + 2
+        result = true
       elseif side == 'top' then
         obj.pos.y = wall.pos.y + wall.size.y + 2
+        result = true
       elseif side == 'bottom' then
         obj.pos.y = wall.pos.y - obj.size.y - 2
+        result = true
       end
       
-      print(side)
+      --print(side)
     end
   end
-  
+  return result
   --isObjectOnMapBounds(obj)
 end
 
 
 function collectibleCollision(obj)
   local objects = gameManager.collectibles.objects
+  
   for i = 1, #objects do
-    local result = rect_collision(obj, objects[i])
-    if result then
-      objects[i]:pickup()
+    if objects[i] ~= nil then
+      local result = rect_collision(obj, objects[i])
+      if result then
+        objects[i]:pickup()
+      end
     end
   end
 end

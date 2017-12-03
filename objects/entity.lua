@@ -19,6 +19,8 @@ function Entity:new(x, y, w, h, id)
   ent.remove = false
   -- drawing layer
   ent.layer = 0
+  -- life
+  ent.life = 0
   
   -- collision rectangle 
   --ent.rect = 
@@ -27,6 +29,7 @@ function Entity:new(x, y, w, h, id)
   function ent:load() end
   function ent:tick(dt) end
   function ent:draw() end
+  function ent:takeHit(damage) end
   
   return ent
 end

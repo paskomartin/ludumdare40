@@ -13,7 +13,7 @@ keys =
   down = { val = "down", pressed = false },
   left = { val = "left", pressed = false },
   right = { val = "right", pressed = false },
-  action = { val = "action", pressed = false }
+  action = { val = "space", pressed = false }
   
 }
 

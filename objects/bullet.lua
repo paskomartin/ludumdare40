@@ -1,0 +1,56 @@
+local Bullet = {}
+require("tools/collision")
+
+function Bullet:new(x,y,damage,id)
+  local w = 5
+  local h = 8
+  
+  local bullet = require("objects/entity"):new(x,y,w,h,id)
+  bullet.damage = damage
+  bullet.isAlive = true
+  bullet.life = 1
+  local velSpeed = 650
+  
+  function bullet:hit(obj)
+    obj.takeHit(self.damage)
+    self.isAlive = false
+  end
+  
+  function bullet:shoot(velx, vely)
+    self.vel.x = velx * velSpeed
+    self.vel.y = vely * velSpeed
+  end
+  
+  function bullet:tick(dt)
+    if self.vel.x == 0 and self.vel.y == 0 then goto cont end
+    
+    self.pos.x = self.pos.x + self.vel.x * dt
+    local result = wallCollision(self, dt)    
+    if result then
+      self.isAlive = false
+      self.remove = true
+    end
+    self.pos.y = self.pos.y + self.vel.y * dt
+    result = wallCollision(self, dt)    
+    if result then
+      self.isAlive = false
+      self.remove = true
+    end
+    ::cont::
+  end
+  
+  function bullet:draw()
+    love.graphics.setColor(0, 20, 255)
+    love.graphics.circle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+    love.graphics.setColor(255, 255, 255)
+  end
+  
+  function bullet:load()
+    gameManager.gameLoop:add(self)
+    gameManager.renderer:add(self)
+  end
+  
+  return bullet
+end
+
+return Bullet
