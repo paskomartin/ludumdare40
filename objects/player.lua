@@ -49,6 +49,7 @@ function Player:new(x, y)
     if cooldown > 0 then
       cooldown = cooldown - 1
     end
+    self:checkKeys()
     self:move(dt)
     self.pos.x = self.pos.x + self.vel.x * dt
     collectibleCollision(self)
@@ -60,6 +61,15 @@ function Player:new(x, y)
     wallCollision(self,dt)
     
     self:shoot()
+
+  end
+
+  function player:checkKeys()
+    keys.action.pressed =  love.keyboard.isDown(keys.action.val)
+    keys.up.pressed =  love.keyboard.isDown(keys.up.val)
+    keys.down.pressed =  love.keyboard.isDown(keys.down.val)
+    keys.left.pressed =  love.keyboard.isDown(keys.left.val)
+    keys.right.pressed =  love.keyboard.isDown(keys.right.val)
 
   end
 

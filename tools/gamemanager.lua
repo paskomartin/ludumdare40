@@ -18,11 +18,11 @@ function GameManager:create()
   
   function gameManager:init()
     
-    self.collectibles = obm:create(gameLoop)
+    self.collectibles = obm:create("collectibles")
     self.collectibles:init()
-    self.enemies = obm:create(gameLoop)
+    self.enemies = obm:create("enemies")
     self.enemies:init()
-    self.playerBullets = obm:create(gameLoop)
+    self.playerBullets = obm:create("playerBullets")
     self.playerBullets:init()
     
   end

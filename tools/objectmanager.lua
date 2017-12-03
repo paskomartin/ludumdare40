@@ -2,11 +2,12 @@
 -- depricated?
 local ObjectManager = {}
 
-function ObjectManager:create()
+function ObjectManager:create(id)
   --assert(type(gameLoop) == 'table', "type is " .. type(gameLoop))
   local objectManager = {}
   
   objectManager.objects = {}
+  objectManager.id = id
   -- global from main
   --
   --gameLoop:add(self)

@@ -52,16 +52,16 @@ function wallCollision(obj, dt)
     local side = collisionSide(r2, r1)
     if side ~= 'none' then
       if side == 'right' then
-        obj.pos.x = wall.pos.x - obj.size.x - 2
+        obj.pos.x = wall.pos.x - obj.size.x - 1
         result = true
       elseif side == 'left' then
-        obj.pos.x = wall.pos.x + wall.size.x + 2
+        obj.pos.x = wall.pos.x + wall.size.x + 1
         result = true
       elseif side == 'top' then
-        obj.pos.y = wall.pos.y + wall.size.y + 2
+        obj.pos.y = wall.pos.y + wall.size.y + 1
         result = true
       elseif side == 'bottom' then
-        obj.pos.y = wall.pos.y - obj.size.y - 2
+        obj.pos.y = wall.pos.y - obj.size.y - 1
         result = true
       end
       
@@ -81,6 +81,22 @@ function collectibleCollision(obj)
       local result = rect_collision(obj, objects[i])
       if result then
         objects[i]:pickup(obj)
+      end
+    end
+  end
+end
+
+
+
+function collisionWithPlayerBullet(obj)
+  local objects = gameManager.playerBullets.objects
+  
+  for i = 1, #objects do
+    if objects[i] ~= nil then
+      local result = rect_collision(obj, objects[i])
+      if result then
+        obj:takeHit(objects[i].damage)
+        objects[i]:setDead()
       end
     end
   end

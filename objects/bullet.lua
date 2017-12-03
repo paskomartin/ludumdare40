@@ -23,20 +23,28 @@ function Bullet:new(x,y,damage,id)
   
   function bullet:tick(dt)
     if self.vel.x == 0 and self.vel.y == 0 then goto cont end
+    if self.remove then goto cont end
     
     self.pos.x = self.pos.x + self.vel.x * dt
     local result = wallCollision(self, dt)    
     if result then
-      self.isAlive = false
-      self.remove = true
+      self:setDead()
     end
+    
+    
     self.pos.y = self.pos.y + self.vel.y * dt
     result = wallCollision(self, dt)    
     if result then
-      self.isAlive = false
-      self.remove = true
+      self:setDead()
     end
+    
+    
     ::cont::
+  end
+  
+  function bullet:setDead()
+    self.isAlive = false
+    self.remove = true
   end
   
   function bullet:draw()
