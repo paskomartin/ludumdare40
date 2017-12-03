@@ -17,6 +17,8 @@ function Entity:new(x, y, w, h, id)
   ent.id = id or "entity"
   -- time to remove? --
   ent.remove = false
+  -- drawing layer
+  ent.layer = 0
   
   -- collision rectangle 
   --ent.rect = 

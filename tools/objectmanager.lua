@@ -1,11 +1,14 @@
 -- moveable object manager --
 -- depricated?
-local ObjectManager {}
+local ObjectManager = {}
 
 function ObjectManager:create()
+  --assert(type(gameLoop) == 'table', "type is " .. type(gameLoop))
   self.objects = {}
   -- global from main
   gameManager.gameLoop:add(self)
+  --gameLoop:add(self)
+  --gameManager.renderer:add(self)
 end
 
 function ObjectManager:add(obj)
@@ -14,10 +17,12 @@ function ObjectManager:add(obj)
 end
 
 function ObjectManager:tick(dt)
-  for i = self.objects,1,-1 do
+  for i = #self.objects,1,-1 do
     local obj = self.objects[i]
     if obj.remove then
       table.remove(self.objects, i)
+      gameManager.renderer:remove(obj)
+      gameManager.gameLoop:remove(obj)
     end
   end
 end

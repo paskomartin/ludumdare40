@@ -21,7 +21,14 @@ function GameLoop:create()
     end
   end
  
-  
+  function gameLoop:remove(obj)
+    assert(obj ~= nil)
+    
+    index = table.find(self.tickers, obj)
+    if index ~= nil then
+      remove(self.tickers, index)
+    end
+  end
   
   return gameLoop
 end

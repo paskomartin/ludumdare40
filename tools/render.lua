@@ -2,6 +2,8 @@ local Renderer = {}
 local num_of_layers = 5
 local insert = table.insert
 local remove = table.remove
+require("tools/helpers")
+
 
 function Renderer:create()
   local renderer = {}
@@ -27,6 +29,15 @@ function Renderer:create()
     end
   end
   
+  function renderer:remove(obj)
+    assert(obj ~= nil)
+    local layer = obj.layer
+    
+    index = table.find(self.drawers[layer], obj)
+    if index ~= nil then
+      remove(self.drawers[layer], index)
+    end
+  end
   
   return renderer
 end

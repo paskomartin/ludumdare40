@@ -18,7 +18,8 @@ function Player:new(x, y)
     -- add to renderer?
     -- init physics?
       gameManager.gameLoop:add(self)
-      gameManager.renderer:add(self)
+      self.layer = 2
+      gameManager.renderer:add(self,self.layer)
   end
   
   function player:tick(dt)
@@ -27,16 +28,26 @@ function Player:new(x, y)
     lastPos.y = self.pos.y
     self:move()
     self.pos.x = self.pos.x + self.vel.x * dt
+    collectibleCollision(self)
+    wallCollision(self,dt)
+    
+    --[[
     local result = wallCollision(self, dt)
     if result then
       self.pos.x = self.pos.x - self.vel.x * dt
     end
+    ]]
     
     self.pos.y = self.pos.y + self.vel.y * dt
+    collectibleCollision(self)
+    wallCollision(self,dt)
+    
+    --[[
     result = wallCollision(self, dt)
     if result then
       self.pos.y = self.pos.y - self.vel.y * dt
-    end       
+    end 
+    ]]
   end
 
   function player:draw()

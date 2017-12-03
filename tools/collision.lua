@@ -41,14 +41,6 @@ function collisionSide(r1, r2)
     return collision
 end
 
-function isObjectOnMapBounds(obj)
-  local width = tlm.mapwidth * tlm.tilewidth
-  local height = tlm.mapheight * tlm.tileheight
-  
-  
-  
-end
-
 function wallCollision(obj, dt)
   local walls = tlm.walls
   local result = false
@@ -73,7 +65,18 @@ function wallCollision(obj, dt)
     end
   end
   
-  isObjectOnMapBounds(obj)
+  --isObjectOnMapBounds(obj)
+end
+
+
+function collectibleCollision(obj)
+  local objects = gameManager.collectibles.objects
+  for i = 1, #objects do
+    local result = rect_collision(obj, objects[i])
+    if result then
+      objects[i]:pickup()
+    end
+  end
 end
 
 

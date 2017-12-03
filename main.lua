@@ -4,7 +4,7 @@ asm = require("tools/assetsmanager")
 tlm = require("tiles/tlm")
 width = love.graphics.getWidth()
 require("tools/mapbuilder")
-
+--obm = require("tools/objectmanager")
 
 -- test
 
@@ -43,14 +43,25 @@ function love.load()
 	--gameManager.renderer:add(testobj)
   asm:create()
   tlm:create()
+  gameManager:init()
+  ---obm:create()
   
   buildMap("level01")
   
+  --[[
   player = require("objects/player"):new(100, 200)
   player:init()
+  
+  local coin = require("objects/coin"):new(100,300)
+  coin:init()
+  ]]--
+  --obm:add(player)
+  
+  
   local w, h = love.window.getMode()
   canvas = love.graphics.newCanvas(w,h)
 end
+
 
 function love.update(dt)
 	gameManager.gameLoop:update(dt)
