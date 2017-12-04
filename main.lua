@@ -176,6 +176,15 @@ function loadTextures()
   filename = directory .. "title.png"
   image = love.graphics.newImage(filename)
   asm:add(image, "menutitle", "image")
+  
+  filename = directory .. "gameover.png"
+  image = love.graphics.newImage(filename)
+  asm:add(image, "gameover", "image")
+
+  filename = directory .. "theend.png"
+  image = love.graphics.newImage(filename)
+  asm:add(image, "theend", "image")
+
 end
   
   

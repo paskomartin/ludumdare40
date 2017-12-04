@@ -30,6 +30,15 @@ function GameManager:create()
   gameManager.lastCoinsCounter = 0
   gameManager.isGameOver = false
   gameManager.state = "menu"  -- menu, game, gameover, highscore, theend
+  
+  gameManager.endTime = 250
+  gameManager.currentEndTime = 0
+  
+  local menuItems = 2 -- start exit
+  local menuIterator = 1
+  local menuSelected = 0;
+  
+  
   function gameManager:init()
     
     self.collectibles = obm:create("collectibles")
@@ -74,6 +83,20 @@ function GameManager:create()
       goto skip_update
     end
     
+    if gameManager.state == "gameover" then
+      goto skip_update
+    end
+    
+    if gameManager.state == "theend" then
+      gameManager.currentEndTime = gameManager.currentEndTime + 1
+      if gameManager.currentEndTime >= gameManager.endTime then
+        quit()
+      end
+      goto skip_update
+    end
+    
+    
+    
     --love.keyboard.setKeyRepeat( true )
     if (player.coins % gameManager.spawnerChange) == 0 and player.coins ~= 0 and player.coins < gameManager.maxCoins  and gameManager.lastCoinsCounter ~= player.coins then
       gameManager.lastCoinsCounter = player.coins
@@ -84,26 +107,97 @@ function GameManager:create()
     end
     
     if player.life <= 0 then
-      --print("YOU ARE DEAD")
       gameManager.isGameOver = true
-      --gameManager:gameOver()
+      gameManager.state ="gameover"
     end
     
+    gameManager:checkNextLevel()
     ::skip_update::
+  end
+
+  
+  function gameManager:checkNextLevel()
+    if player.coins >= gameManager.maxCoins then
+      local bonus = 20
+      local lifeBonus = 100
+      player.points = player.points + bonus * player.coins + lifeBonus * player.coins
+      
+      
+      
+      player.coins = 0
+      gameManager:resetValues()
+      gameManager:resetContainers()
+      gameManager:loadNextLevel()
+    end
+  end
+  
+
+  
+  function gameManager:loadNextLevel()
+    gameManager.level = gameManager.level + 1
+    local name = maplist[gameManager.level]
+    if name == nil then
+      gameManager.state = "theend"
+      
+    else
+      gameManager:initContainers()
+      player:reinit()
+      buildMap(name)
+      gameManager.renderer:add(tlm)
+      self.gameGui:init()
+      
+    end
   end
 
   function gameManager:draw()
     love.graphics.clear( 0, 0, 0, 255 )
     if gameManager.state == "menu" then
       gameManager:showMenu()
+    elseif gameManager.state == "gameover" then
+      gameManager:showGameOver()
+    elseif gameManager.state == "theend" then
+      gameManager:showTheEnd()
     elseif gameManager.state == "game" then
        gameManager.renderer:draw()
     end
   end
+
   
-  local menuItems = 2 -- start exit
-  local menuIterator = 1
-  local menuSelected = 0;
+   
+  function gameManager:showMenu()
+    local titlequad = gameManager.quads[5]
+    love.graphics.draw(gameManager.menuTitleImage , titlequad,100,100)
+    
+    local quadSelected = nil
+    local quadUnselected = nil
+    if menuIterator == 1 then
+      quadSelected = gameManager.quads[2]
+      quadUnselected = gameManager.quads[4]
+    elseif menuIterator == 2 then
+      quadSelected = gameManager.quads[1]
+      quadUnselected = gameManager.quads[3]
+    end
+    
+    love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
+    love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
+
+  end
+  
+  
+  function gameManager:showGameOver()
+    
+    --gameManager:resetValues()
+    local quad = gameManager.quads[6]
+    love.graphics.draw(gameManager.gameOverTileImage , gameManager.quads[6], 0, 100)
+    
+  end
+  
+  function gameManager:showTheEnd()
+    local quad = gameManager.quads[7]
+    love.graphics.draw(gameManager.theEndTileImage , gameManager.quads[6], 0, 100)
+  end
+  
+  
   -- bug in love.keyboars.setKeyRepeat(false) ????
   function gameManager:selectMenu2()
     menuSelected = 0
@@ -139,25 +233,6 @@ function GameManager:create()
     end
   end
   
-  
-  function gameManager:showMenu()
-    local titlequad = gameManager.quads[5]
-    love.graphics.draw(gameManager.menuTitleImage , titlequad,100,100)
-    
-    local quadSelected = nil
-    local quadUnselected = nil
-    if menuIterator == 1 then
-      quadSelected = gameManager.quads[2]
-      quadUnselected = gameManager.quads[4]
-    elseif menuIterator == 2 then
-      quadSelected = gameManager.quads[1]
-      quadUnselected = gameManager.quads[3]
-    end
-    
-    love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
-    love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
-
-  end
   
   
   
@@ -218,6 +293,7 @@ function GameManager:create()
     gameManager.spawnerChange = 0
     gameManager.enemyStep = 0
     gameManager.lastCoinsCounter = 0
+    gameManager.isGameOver = false
     menuSelected = 0
     menuIterator = 1
   end
@@ -237,13 +313,7 @@ function GameManager:create()
     gameManager.playerBullets:init()
     gameManager.spawners:init()
   end
-  
-  
-  function gameManager:gameOver()
-    gameManager:resetValues()
-    
-  end
-  
+ 
   function gameManager:generateQuads()
     local quads = {
         -- items, menu.png
@@ -252,13 +322,22 @@ function GameManager:create()
         quad(0, 108, 88, 60, 256, 256),
         quad(88, 108, 88, 60, 256, 256),
         -- title, title.png
-        quad(0, 0, 446, 343, 446, 343)
+        quad(0, 0, 446, 343, 446, 343),
+        -- gameover, gameover.png
+        quad(0, 0, 800, 285, 800, 285),
+        -- the end, theend.png
+        quad(0, 0, 800, 600, 800, 600),
           
       }
     gameManager.quads = quads
     gameManager.menuItemsImage = asm:get("menu")
     gameManager.menuTitleImage = asm:get("menutitle")
+    gameManager.gameOverTileImage = asm:get("gameover")
+    gameManager.theEndTileImage = asm:get("theend")
   end
+  
+  
+  
   
   return gameManager
 end

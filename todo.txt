@@ -5,7 +5,16 @@ https://github.com/razorgamedev/Lets-Make-a-Platformer/blob/master/tools/animati
 * coins                             V
 * assetsmanager - reset / clear     V
 * add collectible object?           V
-* game menu
+* game menu                         V
 * player take hits                  V
 * player blinks                     V
-* game update   
+* game update                       -- almost!
+
+* graphics
+* music
+* sounds
+
+==== IF I WILL HAVE TIME: =======
+* make special fire
+* make another enemy
+* load keyboard from config

@@ -5,7 +5,7 @@ function GameGui:new()
   gameGui.points = 0
   gameGui.coins = 0
   gameGui.playerLife = 0
-  gameGui.level = 1
+  --gameGui.level = 1
   gameGui.x = 0
   gameGui.y = 17 * 32
   gameGui.h = 56
@@ -36,7 +36,7 @@ function GameGui:new()
     text = "Life: " .. self.playerLife
     local x = self.w / 2
     love.graphics.print(text, x, self.y + 2, 0, 2, 2)
-    text = "Level: " .. self.level
+    text = "Level: " .. gameManager.level
     love.graphics.print(text, x, self.y + 16 + margin * 2, 0, 2, 2)
     
     love.graphics.setColor(255,255,255)

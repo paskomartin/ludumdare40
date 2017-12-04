@@ -14,7 +14,7 @@ function Player:new(x, y)
   local tile_h = 32
   local player = require("objects/entity"):new(x, y, tile_w, tile_h, "player")
   local color = { 255,0,255,255}
-  player.life = 5
+  player.life = 15
   local velSpeed = 250
   local cooldownSpeed = 5
   local cooldown = 0
@@ -64,6 +64,16 @@ function Player:new(x, y)
       
       self.animation:play()
       
+  end
+  
+  function player:reinit()
+      gameManager.gameLoop:add(self)
+      self.layer = 2
+      self.dir.x = 0
+      self.dir.y = 1
+      gameManager.renderer:add(self,self.layer)
+      
+      self.isAlive = true
   end
   
   
