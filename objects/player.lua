@@ -70,7 +70,7 @@ function Player:new(x, y)
     keys.down.pressed =  love.keyboard.isDown(keys.down.val)
     keys.left.pressed =  love.keyboard.isDown(keys.left.val)
     keys.right.pressed =  love.keyboard.isDown(keys.right.val)
-
+    keys.special.pressed = love.keyboard.isDown(keys.special.val)
   end
 
   function player:move(dt)
@@ -114,6 +114,10 @@ function Player:new(x, y)
       --self:shoot()
       isShoot = true
     end
+    
+    if keys.special.pressed then
+      
+    end
 
   end
 
@@ -135,6 +139,18 @@ function Player:new(x, y)
       isShoot = false
       cooldown = cooldownSpeed
     end
+    
+  end
+  
+  function player:shootSpecial()
+    local count = 15;
+    local step = 360 / count
+    
+    local destx = math.random(0, mapWidth)
+    local desty = math.random(0, mapHeight)
+    angle = atan2(player.pos.y - self.pos.y, player.pos.x - self.pos.x)
+    self.vel.x = cos(angle) * velSpeed
+    self.vel.y = sin(angle) * velSpeed
     
   end
 

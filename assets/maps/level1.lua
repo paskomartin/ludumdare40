@@ -8,8 +8,10 @@ return {
   height = 17,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 15,
-  properties = {},
+  nextobjectid = 18,
+  properties = {
+    ["startMaxEnemy"] = "7"
+  },
   tilesets = {
     {
       name = "tiles",
@@ -207,6 +209,44 @@ return {
           shape = "rectangle",
           x = 608,
           y = 480,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "spawner",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 16,
+          name = "spawner1",
+          type = "",
+          shape = "rectangle",
+          x = 96,
+          y = 96,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 17,
+          name = "spawner2",
+          type = "",
+          shape = "rectangle",
+          x = 640,
+          y = 96,
           width = 32,
           height = 32,
           rotation = 0,

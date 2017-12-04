@@ -10,11 +10,11 @@ function buildMap(levelname)
   
   
   local coin = require("objects/coin"):new(100,300)
-  coin:init()
-  local enemy = require("objects/enemy"):new(200,200,"enemy")
-  enemy:init()
+  --coin:load()
+  --local enemy = require("objects/enemy"):new(200,200,"enemy")
+  --enemy:load()
   
   gameManager.collectibles:add(coin)
-  gameManager.enemies:add(enemy)
+  --gameManager.enemies:add(enemy)
   
 end

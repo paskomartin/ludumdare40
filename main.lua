@@ -7,8 +7,8 @@ require("tools/mapbuilder")
 --obm = require("tools/objectmanager")
 
 
-local scalex = 0--1920 / 800
-local scaley = 0--1080 / 600
+local scalex = 1--1920 / 800
+local scaley = 1--1080 / 600
 
 
 function love.load()

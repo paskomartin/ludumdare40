@@ -13,8 +13,11 @@ function GameManager:create()
   gameManager.collectibles = nil --obm:create() --require("tools/objectmanager")
   gameManager.enemies = nil --obm:create() --require("tools/objectmanager")
   gameManager.playerBullets = nil --obm:create() -- require("tools/objectmanager")
+  gameManager.spawners = nil
   
   gameManager.level = 1
+  gameManager.maxEnemy = 1
+  gameManager.enemyCounter = 0
   
   function gameManager:init()
     
@@ -24,7 +27,8 @@ function GameManager:create()
     self.enemies:init()
     self.playerBullets = obm:create("playerBullets")
     self.playerBullets:init()
-    
+    self.spawners = obm:create("spawners")
+    self.spawners:init()
   end
   
   function gameManager:startNewGame()
@@ -36,8 +40,16 @@ function GameManager:create()
     buildMap(maplist[self.level])
     self.gameGui = gui:new()
     self.gameGui:init()
-end
+  end
+
+  function gameManager:increaseEnemy()
+    self.enemyCounter = self.enemyCounter + 1
+  end
   
+  function gameManager:decreaseEnemy()
+    self.enemyCounter = self.enemyCounter - 1
+    if self.enemyCounter < 0 then self.enemyCounter = 0 end
+  end
   
   return gameManager
 end

@@ -97,6 +97,7 @@ function collisionWithPlayerBullet(obj)
       if result then
         obj:takeHit(objects[i].damage)
         objects[i]:setDead()
+        gameManager:decreaseEnemy()
       end
     end
   end

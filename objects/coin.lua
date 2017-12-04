@@ -14,7 +14,7 @@ function Coin:new(x,y)
   
 	local color = {196,146,21,255}
 
-	function coin:init()
+	function coin:load()
 		-- add coin quad here --
     self.layer = 1
 		gameManager.gameLoop:add(self)

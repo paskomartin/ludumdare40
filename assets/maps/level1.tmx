@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="17" tilewidth="32" tileheight="32" nextobjectid="15">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="17" tilewidth="32" tileheight="32" nextobjectid="18">
+ <properties>
+  <property name="maxCoins" value="50"/>
+  <property name="maxEnemy" value="7"/>
+  <property name="spawnerChange" value="5"/>
+  <property name="startMaxEnemy" value="1"/>
+ </properties>
  <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="16" columns="8">
   <image source="../sprites/tiles.png" width="256" height="64"/>
   <terraintypes>
@@ -65,5 +71,9 @@
  </objectgroup>
  <objectgroup name="player">
   <object id="12" name="playerPosition" x="608" y="480" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="spawner">
+  <object id="16" name="spawner1" x="96" y="96" width="32" height="32"/>
+  <object id="17" name="spawner2" x="640" y="96" width="32" height="32"/>
  </objectgroup>
 </map>

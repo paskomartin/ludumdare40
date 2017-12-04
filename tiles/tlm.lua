@@ -97,6 +97,8 @@ function Tlm:loadmap(mapname)
   self.tileheight = map.tileheight
   self.imagewidth = map.tilesets[1].imagewidth
   self.imageheight = map.tilesets[1].imageheight
+  self.startMaxEnemy = tonumber(map.properties["startMaxEnemy"])
+  gameManager.maxEnemy = self.startMaxEnemy
   
   -- tiles graphics
   local tilesName = map.tilesets[1].name
@@ -119,6 +121,15 @@ function Tlm:loadmap(mapname)
         local y = map.layers[layer].objects[1].y-- + map.layers[layer].objects.height / 2
         player.pos.x = x
         player.pos.y = y
+      elseif map.layers[layer].name == "spawner" then
+        local length = #map.layers[layer].objects
+        local objects = map.layers[layer].objects
+        for i = 1, length do
+          local x = objects[i].x --map.layers[layer].objects[1].x
+          local y = objects[i].y --map.layers[layer].objects[1].y
+          local spawner = require("objects/spawner"):new(x,y)
+          gameManager.spawners:add(spawner)
+        end
       else
         -- build walls
         local walls = map.layers[layer].objects
