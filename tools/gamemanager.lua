@@ -29,6 +29,7 @@ function GameManager:create()
     self.playerBullets:init()
     self.spawners = obm:create("spawners")
     self.spawners:init()
+    self:createAnimations()
   end
   
   function gameManager:startNewGame()
@@ -50,6 +51,21 @@ function GameManager:create()
     self.enemyCounter = self.enemyCounter - 1
     if self.enemyCounter < 0 then self.enemyCounter = 0 end
   end
+  
+  function gameManager:createAnimations()
+    local animData = {}
+    local quad = love.graphics.newQuad
+    animData["player_walkRight"] = { quad(0,0, 16, 32, 64, 32),
+      quad(16,0, 16, 32, 64, 32), quad(32,0, 16, 32, 64, 32), quad(48,0, 16, 32, 64, 32)  }
+    -- AssetsManager:add(asset, name, assetType)
+    filename = "assets/sprites/hero.png"
+    local image = love.graphics.newImage(filename)
+    image:setFilter("nearest","nearest")
+    asm:add(image, "player", "image")
+    
+    self.animData = animData
+  end
+  
   
   return gameManager
 end

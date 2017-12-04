@@ -12,7 +12,7 @@ function Player:new(x, y)
   local player = require("objects/entity"):new(x, y, tile_w, tile_h, "player")
   local color = { 255,0,255,255}
   player.life = 5
-  local velSpeed = 350
+  local velSpeed = 150--350
   local cooldownSpeed = 5
   local cooldown = 0
   local isShoot = false
@@ -28,13 +28,37 @@ function Player:new(x, y)
       self.dir.x = 0
       self.dir.y = 1
       gameManager.renderer:add(self,self.layer)
+      
+      local image = asm:get("player")
+            
+      self.animation = require("tools/animation"):new(
+        image,
+        {
+          {
+            -- idle
+            gameManager.animData["player_walkRight"][1]
+          },
+          {
+            -- right
+            gameManager.animData["player_walkRight"][1],
+            gameManager.animData["player_walkRight"][2],
+            gameManager.animData["player_walkRight"][3],
+            gameManager.animData["player_walkRight"][4]
+          }
+        },
+        0.1
+      )
+      
+      self.animation:play()
+      
   end
   
   
   function player:draw()
     --love.graphics.setColor(color)
-    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+    --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
     --love.graphics.setColor(0,0,0)
+    self.animation:draw( {self.pos.x, self.pos.y} )
   end
 
 
@@ -60,6 +84,7 @@ function Player:new(x, y)
     collectibleCollision(self)
     wallCollision(self,dt)
     
+    self.animation:update(dt)
     self:shoot()
 
   end
@@ -100,6 +125,7 @@ function Player:new(x, y)
       self.vel.x = velSpeed
       self.dir.x = 1
       leftRightPressed = true
+      self.animation:set_animation(2)
     else 
       self.vel.x = 0
     end

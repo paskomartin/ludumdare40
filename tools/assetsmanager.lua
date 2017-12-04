@@ -16,7 +16,7 @@ function AssetsManager:add(asset, name, assetType)
 end
 
 function AssetsManager:get(name)
-  return self.assets[name]
+  return self.assets[name].asset
 end
 
 return AssetsManager
