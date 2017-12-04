@@ -43,8 +43,16 @@
 			"file": "objects/collectible.lua",
 			"settings":
 			{
-				"buffer_size": 369,
+				"buffer_size": 372,
 				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "objects/player.lua",
+			"settings":
+			{
+				"buffer_size": 4332,
 				"line_ending": "Windows"
 			}
 		},
@@ -52,7 +60,7 @@
 			"file": "objects/entity.lua",
 			"settings":
 			{
-				"buffer_size": 643,
+				"buffer_size": 703,
 				"line_ending": "Windows"
 			}
 		}
@@ -152,7 +160,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -161,15 +169,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 369,
+						"buffer_size": 372,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								82,
-								82
+								372,
+								372
 							]
 						],
 						"settings":
@@ -178,6 +186,36 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "objects/player.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4332,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1104,
+								1104
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/SublimeLove/Love.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 720.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -190,20 +228,20 @@
 			"sheets":
 			[
 				{
-					"buffer": 1,
+					"buffer": 2,
 					"file": "objects/entity.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 643,
+						"buffer_size": 703,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								262,
-								262
+								174,
+								174
 							]
 						],
 						"settings":
@@ -213,7 +251,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 225.0,
+						"translation.y": 270.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
