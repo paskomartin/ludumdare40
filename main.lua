@@ -31,6 +31,7 @@ function love.load()
   
   asm:create()
   tlm:create()
+  loadTextures()
   gameManager:init()
   gameManager:startNewGame()
 
@@ -164,3 +165,30 @@ function smoothDeltaTime(dt)
 end
 
 
+
+
+function loadTextures()
+  local directory = "assets/sprites/"
+  local filename = directory .. "menu.png"
+  local image = love.graphics.newImage(filename)
+  asm:add(image, "menu", "image")
+  
+  filename = directory .. "title.png"
+  image = love.graphics.newImage(filename)
+  asm:add(image, "menutitle", "image")
+end
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
