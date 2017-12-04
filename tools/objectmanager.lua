@@ -1,6 +1,7 @@
 -- moveable object manager --
 -- depricated?
 local ObjectManager = {}
+require("tools/helpers")
 
 function ObjectManager:create(id)
   --assert(type(gameLoop) == 'table', "type is " .. type(gameLoop))
@@ -44,6 +45,11 @@ function ObjectManager:create(id)
     end
     return nil
   end
+
+  function objectManager:clear()
+    clearTable(objectManager.objects)
+  end
+
 
 return objectManager
 end

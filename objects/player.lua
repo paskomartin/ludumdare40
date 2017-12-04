@@ -1,10 +1,13 @@
 local Player = {}
 
+
+
 require "tools/collision"
 require "tools/keys"
 vec2 = require("tools/vec2")
 local keyDown = love.keyboard.isDown
 local insert = table.insert
+local floor = math.floor
 
 function Player:new(x, y)
   local tile_w = 32
@@ -12,12 +15,19 @@ function Player:new(x, y)
   local player = require("objects/entity"):new(x, y, tile_w, tile_h, "player")
   local color = { 255,0,255,255}
   player.life = 5
-  local velSpeed = 150--350
+  local velSpeed = 250
   local cooldownSpeed = 5
   local cooldown = 0
   local isShoot = false
   player.points = 0
   player.coins = 0
+  player.isAlive = true
+  player.blink = false
+  player.blinkAnim = false
+  player.blinkStep = 0.5
+  player.blinkTime = 3
+  player.currentBlinkTime = 0
+  player.lastBlinkTime = 0
   
   function player:init()
     -- add to loop?
@@ -28,6 +38,9 @@ function Player:new(x, y)
       self.dir.x = 0
       self.dir.y = 1
       gameManager.renderer:add(self,self.layer)
+      
+      self.isAlive = true
+      
       
       local image = asm:get("player")
             
@@ -55,10 +68,17 @@ function Player:new(x, y)
   
   
   function player:draw()
+    if self.blink then
+      if self.blinkAnim then
+        goto skip_anim
+      end
+    end
+    
     --love.graphics.setColor(color)
     --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
     --love.graphics.setColor(0,0,0)
     self.animation:draw( {self.pos.x, self.pos.y} )
+    ::skip_anim::
   end
 
 
@@ -66,10 +86,8 @@ function Player:new(x, y)
   
   
   function player:tick(dt)
-    local lastPos = {}
-    lastPos.x = self.pos.x
-    lastPos.y = self.pos.y
-    
+    player:checkBlink(dt)
+
     if cooldown > 0 then
       cooldown = cooldown - 1
     end
@@ -217,8 +235,40 @@ function Player:new(x, y)
   
   function player:addCoin(val)
     self.coins = self.coins + val
-    print("Points: ", self.points, " coins: ", self.coins)
+    --print("Points: ", self.points, " coins: ", self.coins)
   end
+  function player:takeHit(damage)
+    -- simple take, have no time for rest :/ --
+    if not self.blink and self.isAlive then
+      player.life = player.life - 1
+      if player.life > 0 then
+        self.blink = true
+        self.currentBlinkTime = 0
+      else
+        isActive = false
+      end
+    end
+  end
+  
+  function player:checkBlink(dt)
+    if self.blink then
+      self.currentBlinkTime = self.currentBlinkTime + dt
+      if self.currentBlinkTime < self.blinkTime then
+      
+        if floor(self.currentBlinkTime * 100) >=  self.lastBlinkTime + player.blinkStep * 100 then
+          self.blinkAnim = not self.blinkAnim
+          self.currentBlinkTime = floor(self.currentBlinkTime*100) / 100
+          self.lastBlinkTIme = self.currentBlinkTime
+        end
+      else
+        self.blink = false
+        self.blinkAnim = false
+      end
+    end
+    
+    
+  end
+  
   return player
 end
 

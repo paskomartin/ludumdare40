@@ -33,6 +33,10 @@ function Tlm:create() --tilename)
   --self.img = asm:get(tilename) --love.graphics.newImage("assets/images/tiles16x16.png")
   --self.img:setFilter("nearest","nearest")
   
+  --gameManager.renderer:add(self)
+end
+
+function Tlm:load()
   gameManager.renderer:add(self)
 end
 
@@ -97,8 +101,13 @@ function Tlm:loadmap(mapname)
   self.tileheight = map.tileheight
   self.imagewidth = map.tilesets[1].imagewidth
   self.imageheight = map.tilesets[1].imageheight
-  self.startMaxEnemy = tonumber(map.properties["startMaxEnemy"])
-  gameManager.maxEnemy = self.startMaxEnemy
+  --self.startMaxEnemy = tonumber(map.properties["startMaxEnemy"])
+  gameManager.maxEnemy = tonumber(map.properties["startEnemy"])
+  gameManager.maxCoins = tonumber(map.properties["maxCoins"])
+  gameManager.spawnerChange = tonumber(map.properties["spawnerChange"])
+  gameManager.maxLevelEnemy = tonumber(map.properties["maxEnemy"])
+  gameManager.enemyStep = tonumber(map.properties["enemyStep"])
+  --gameManager.enemyCounter = 0 --tonumber(map.properties["startEnemy"])
   
   -- tiles graphics
   local tilesName = map.tilesets[1].name

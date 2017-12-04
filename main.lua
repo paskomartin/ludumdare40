@@ -9,7 +9,8 @@ require("tools/mapbuilder")
 
 local scalex = 1--1920 / 800
 local scaley = 1--1080 / 600
-
+local windowWidth = 0
+local windowHeight = 0
 
 function love.load()
     if arg[#arg] == "-debug" then
@@ -26,7 +27,7 @@ function love.load()
   scalex = mw / 800
   scaley = mh / 600
   ]]--
-  --loadConf()
+  loadConf()
   
   asm:create()
   tlm:create()
@@ -42,16 +43,36 @@ end
 function love.update(dt)
   local delta = smoothDeltaTime(dt)
 	gameManager.gameLoop:update(delta)
+  gameManager.update(delta)
 end
 
 
 
 function love.draw()
   love.graphics.setCanvas(canvas)
-	gameManager.renderer:draw()
+  gameManager:draw()
+  love.graphics.setCanvas()
+  love.graphics.draw(canvas, 0, 0, 0, scalex, scaley)  
+  
+  
+
+  --[[
+  if not gameManager.isGameOver then
+    
+  --  love.graphics.setCanvas(canvas)
+    gameManager.renderer:draw()
+  
+  else
+    canvas:setFilter('nearest', 'nearest')
+    love.graphics.setColor(0,0,0)
+    love.graphics.rect("fill", windowWidth, windowHeight)
+    love.graphics.print("GAME OVER", 100, 100,0,6, 6)
+    love.graphics.setColor(255,255,255  )
+  end
+  
   love.graphics.setCanvas()
   love.graphics.draw(canvas, 0, 0, 0, scalex, scaley)
-  
+  ]]
 end
 
 
@@ -62,6 +83,7 @@ function love.keypressed(key)
   if key == 'escape' then
     quit()
   end
+
 end
 
 
@@ -69,12 +91,15 @@ function love.resize(w, h)
   local _,_,mode = love.window.getMode()
   scalex = w / mode.minwidth
   scaley = h / mode.minheight
+  
+  windowWidth = w
+  windowHeight = h
 end
 
 ---
 
 function quit()
-  --saveConf()
+  saveConf()
   love.event.quit()
 end
 
@@ -110,6 +135,9 @@ function loadConf()
     scalex = config.width / mode.minwidth
     scaley = config.height / mode.minheight
     
+    windowWidth = config.width 
+    windowHeight = config.height
+--end
     
   end
 end

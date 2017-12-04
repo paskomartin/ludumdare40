@@ -17,12 +17,15 @@ function Enemy:new(x,y, id)
   local enemy = require("objects/entity"):new(x, y, tile_w, tile_h, id)
   local color = { 201,20,72,255}
   enemy.life = 1
+  enemy.points = 50
   local velSpeed = 100
   local cooldownSpeed = 5
   local cooldown = 0
   local isShoot = false
   enemy.isAlive = true
   enemy.distanceTrigger = 200
+  enemy.damage = 5
+  
   --enemy.function = nil
     
   local mapWidth = tlm.mapwidth * tlm.tilewidth
@@ -55,6 +58,8 @@ function Enemy:new(x,y, id)
       self.isAlive = false
       self.remove = true
       
+      player.points = player.points + self.points
+      
       local result = rand()
       if result >= 0.3 then
         self:spawnCoin()
@@ -75,6 +80,7 @@ function Enemy:new(x,y, id)
       self.pos.x = self.pos.x + self.vel.x * dt
       self.pos.y = self.pos.y + self.vel.y * dt
       collisionWithPlayerBullet(self)
+      self:collisionWithPlayer()
       wallCollision(self,dt)
     end
   end
@@ -123,6 +129,15 @@ function Enemy:new(x,y, id)
     --print("x: " .. destx .. ", y: " .. desty)
   end
 
+  
+  function enemy:collisionWithPlayer()
+    local result = rect_collision(self, player)
+    if result then
+      player:takeHit(self.damage)
+    end
+  end
+  
+  
   return enemy
 end
 

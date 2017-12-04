@@ -1,5 +1,5 @@
 local GameLoop = {}
-
+require("tools/helpers")
 local insert = table.insert
 local remove = table.remove
 
@@ -29,6 +29,11 @@ function GameLoop:create()
       remove(self.tickers, index)
     end
   end
+  
+  function gameLoop:clear()
+    clearTable(self.tickers)
+  end
+  
   
   return gameLoop
 end

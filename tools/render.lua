@@ -39,6 +39,13 @@ function Renderer:create()
     end
   end
   
+  function renderer:clear()
+    for i = 0, num_of_layers do
+      clearTable(renderer.drawers[i])
+    end
+    
+  end
+  
   return renderer
 end
 

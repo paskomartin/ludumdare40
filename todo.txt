@@ -1,8 +1,11 @@
 https://github.com/razorgamedev/Lets-Make-a-Platformer/blob/master/tools/animation.lua
 
-* animation
-* enemies
-* coins
-* assetsmanager - reset / clear
-
-* add collectible object?
+* animation                         V
+* enemies                           V
+* coins                             V
+* assetsmanager - reset / clear     V
+* add collectible object?           V
+* game menu
+* player take hits                  V
+* player blinks                     V
+* game update   
