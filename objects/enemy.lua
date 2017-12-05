@@ -35,7 +35,7 @@ function Enemy:new(x,y, id)
   
   function enemy:load()
       gameManager.gameLoop:add(self)
-      self.layer = 1
+      self.layer = 2
       self.dir.x = 0
       self.dir.y = 1
       gameManager.renderer:add(self,self.layer)

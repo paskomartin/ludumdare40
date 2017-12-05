@@ -45,6 +45,10 @@ return{
 			if anim > #self.a then error("there is no animation: "..anim); return end
 			self.current_anim = anim
 		end,
+  
+    set_image = function(self, image)
+      self.image = image
+    end,
 
 		draw = function(self,data)
 			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2])

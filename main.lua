@@ -88,6 +88,7 @@ function love.keypressed(key)
 end
 
 
+
 function love.resize(w, h)
   local _,_,mode = love.window.getMode()
   scalex = w / mode.minwidth
@@ -171,19 +172,71 @@ function loadTextures()
   local directory = "assets/sprites/"
   local filename = directory .. "menu.png"
   local image = love.graphics.newImage(filename)
+   image:setFilter("nearest","nearest")
   asm:add(image, "menu", "image")
   
   filename = directory .. "title.png"
   image = love.graphics.newImage(filename)
+   image:setFilter("nearest","nearest")
   asm:add(image, "menutitle", "image")
   
   filename = directory .. "gameover.png"
   image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
   asm:add(image, "gameover", "image")
+  
 
   filename = directory .. "theend.png"
   image = love.graphics.newImage(filename)
+   image:setFilter("nearest","nearest")
   asm:add(image, "theend", "image")
+  
+  
+  
+  filename = "assets/sprites/hero-up.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-up", "image")
+  
+  filename = "assets/sprites/hero-left.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-left", "image")
+  
+  filename = "assets/sprites/hero-left-up.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-left-up", "image")
+  
+  filename = "assets/sprites/hero-left-down.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-left-down", "image")
+  
+  filename = "assets/sprites/hero-right.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-right", "image")
+  
+  filename = "assets/sprites/hero-right-up.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-right-up", "image")
+  
+  filename = "assets/sprites/hero-right-down.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-right-down", "image")
+  
+  filename = "assets/sprites/hero-down.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "hero-down", "image")
+  
+  filename = "assets/sprites/coin.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "coin", "image")
 
 end
   

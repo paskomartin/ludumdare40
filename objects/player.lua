@@ -14,9 +14,9 @@ function Player:new(x, y)
   local tile_h = 32
   local player = require("objects/entity"):new(x, y, tile_w, tile_h, "player")
   local color = { 255,0,255,255}
-  player.life = 15
+  player.life = 5
   local velSpeed = 250
-  local cooldownSpeed = 5
+  local cooldownSpeed = 15
   local cooldown = 0
   local isShoot = false
   player.points = 0
@@ -34,7 +34,7 @@ function Player:new(x, y)
     -- add to renderer?
     -- init physics?
       gameManager.gameLoop:add(self)
-      self.layer = 2
+      self.layer = 3
       self.dir.x = 0
       self.dir.y = 1
       gameManager.renderer:add(self,self.layer)
@@ -42,7 +42,7 @@ function Player:new(x, y)
       self.isAlive = true
       
       
-      local image = asm:get("player")
+      local image = asm:get("hero-right")
             
       self.animation = require("tools/animation"):new(
         image,
@@ -56,7 +56,10 @@ function Player:new(x, y)
             gameManager.animData["player_walkRight"][1],
             gameManager.animData["player_walkRight"][2],
             gameManager.animData["player_walkRight"][3],
-            gameManager.animData["player_walkRight"][4]
+            gameManager.animData["player_walkRight"][4],
+            gameManager.animData["player_walkRight"][5],
+            gameManager.animData["player_walkRight"][6]
+            
           }
         },
         0.1
@@ -137,10 +140,28 @@ function Player:new(x, y)
       self.vel.y = -velSpeed
       self.dir.y = -1
       upDownPressed = true
+      self.animation:set_animation(2)
+      if keys.left.pressed then
+        self.animation:set_image( asm:get("hero-left-up") )
+        
+      elseif keys.right.pressed then
+        self.animation:set_image( asm:get("hero-right-up") )
+      else
+        self.animation:set_image( asm:get("hero-up") )
+      end
     elseif keys.down.pressed then
       self.vel.y = velSpeed
       self.dir.y = 1
       upDownPressed = true
+      self.animation:set_animation(2)
+      if keys.left.pressed then
+        self.animation:set_image( asm:get("hero-left-down") )
+        
+      elseif keys.right.pressed then
+        self.animation:set_image( asm:get("hero-right-down") )
+      else
+        self.animation:set_image( asm:get("hero-down") )
+      end
     else 
       self.vel.y = 0
     end
@@ -149,11 +170,18 @@ function Player:new(x, y)
       self.vel.x = -velSpeed
       self.dir.x = -1
       leftRightPressed = true
+      self.animation:set_animation(2)
+      if not upDownPressed then
+        self.animation:set_image( asm:get("hero-left") )
+      end
     elseif keys.right.pressed then
       self.vel.x = velSpeed
       self.dir.x = 1
       leftRightPressed = true
       self.animation:set_animation(2)
+      if not upDownPressed then
+        self.animation:set_image( asm:get("hero-right") )
+      end
     else 
       self.vel.x = 0
     end
@@ -162,6 +190,10 @@ function Player:new(x, y)
       self.dir.x = 0
     elseif leftRightPressed and upDownPressed == false then
       self.dir.y = 0
+    end
+    
+    if not upDownPressed and not leftRightPressed then
+      self.animation:set_animation(1)
     end
     
     if keys.action.pressed then

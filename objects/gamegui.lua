@@ -26,7 +26,7 @@ function GameGui:new()
   function gameGui:draw()
     love.graphics.setColor(0,0,0)
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-    local text = "Coins: " .. self.coins
+    local text = "Coins: " .. self.coins .. " / " .. gameManager.maxCoins
     local margin = 6
     love.graphics.setColor(255,255,255)
     love.graphics.print(text, self.x + 16, self.y + 2, 0, 2, 2)

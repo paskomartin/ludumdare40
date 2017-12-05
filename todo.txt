@@ -14,6 +14,8 @@ https://github.com/razorgamedev/Lets-Make-a-Platformer/blob/master/tools/animati
 * music
 * sounds
 
+* after game over jump to main many
+
 ==== IF I WILL HAVE TIME: =======
 * make special fire
 * make another enemy

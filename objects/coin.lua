@@ -11,6 +11,7 @@ function Coin:new(x,y)
   coin.canPickUp = true -- can player pick up this object?
   coin.canUse = false   -- can we use this object? 
   coin.value = 1
+  coin.image = asm:get("coin")
   
 	local color = {196,146,21,255}
 
@@ -23,9 +24,10 @@ function Coin:new(x,y)
 
 	function coin:draw()
 		if coin.isAlive then
-			love.graphics.setColor(color)
-			love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
-      love.graphics.setColor(255,255,255)
+			--love.graphics.setColor(color)
+			--love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
+      love.graphics.draw(self.image, self.pos.x, self.pos.y,0,1.5, 1.5)
+      --love.graphics.setColor(255,255,255)
 		end
 	end
 
@@ -34,7 +36,7 @@ function Coin:new(x,y)
       self.isAlive = false
       self.remove = true
       obj:addCoin(self.value)
-      print("coin is picked up") 
+      --print("coin is picked up") 
     end
 	end
 

@@ -29,7 +29,7 @@ function GameManager:create()
   gameManager.animData = nil -- it'll table
   gameManager.lastCoinsCounter = 0
   gameManager.isGameOver = false
-  gameManager.state = "menu"  -- menu, game, gameover, highscore, theend
+  gameManager.state = "menu"  -- menu, game, newgame, gameover, highscore, theend
   
   gameManager.endTime = 250
   gameManager.currentEndTime = 0
@@ -37,6 +37,10 @@ function GameManager:create()
   local menuItems = 2 -- start exit
   local menuIterator = 1
   local menuSelected = 0;
+  
+  gameManager.getReady = 100
+  gameManager.currentGetReady = 0
+  
   
   
   function gameManager:init()
@@ -76,6 +80,13 @@ function GameManager:create()
   
   
   function gameManager:update(dt)
+    if gameManager.state == "newgame" then
+      gameManager.state = "game"
+      gameManager:init()
+      gameManager:startNewGame()
+      goto skip_update
+    end
+    
     if gameManager.state == "menu" then
       --love.keyboard.setKeyRepeat( false )
       gameManager:getKeys()
@@ -83,14 +94,26 @@ function GameManager:create()
       goto skip_update
     end
     
+    
+    if player.life <= 0 then
+      gameManager.isGameOver = true
+      gameManager.state ="gameover"
+    end
+    
+    
+    --[[
     if gameManager.state == "gameover" then
       goto skip_update
     end
-    
-    if gameManager.state == "theend" then
+    ]]
+    if gameManager.state == "theend" or gameManager.state == "gameover" then
       gameManager.currentEndTime = gameManager.currentEndTime + 1
-      if gameManager.currentEndTime >= gameManager.endTime then
-        quit()
+      if gameManager.currentEndTime >= gameManager.endTime  then
+        if gameManager.state == "theend" then
+          quit()
+        else
+          gameManager.state = "menu"
+        end
       end
       goto skip_update
     end
@@ -104,11 +127,6 @@ function GameManager:create()
       if gameManager.maxEnemy > gameManager.maxLevelEnemy then
         gameManager.maxEnemy = gameManager.maxLevelEnemy
       end
-    end
-    
-    if player.life <= 0 then
-      gameManager.isGameOver = true
-      gameManager.state ="gameover"
     end
     
     gameManager:checkNextLevel()
@@ -229,7 +247,7 @@ function GameManager:create()
     if menuSelected == 2 then
       quit()
     elseif menuSelected == 1 then
-      gameManager.state = "game"
+      gameManager.state = "newgame"
     end
   end
   
@@ -273,14 +291,22 @@ function GameManager:create()
   function gameManager:createAnimations()
     local animData = {}
     local quad = love.graphics.newQuad
-    animData["player_walkRight"] = { quad(0,0, 16, 32, 64, 32),
-      quad(16,0, 16, 32, 64, 32), quad(32,0, 16, 32, 64, 32), quad(48,0, 16, 32, 64, 32)  }
+    --animData["player_walkRight"] = { quad(0,0, 16, 32, 64, 32),
+    --  quad(16,0, 16, 32, 64, 32), quad(32,0, 16, 32, 64, 32), quad(48,0, 16, 32, 64, 32)  }
     -- AssetsManager:add(asset, name, assetType)
+    
+    animData["player_walkRight"] = { quad(0,0, 64, 64, 384, 64),
+      quad(64, 0, 64, 64, 384, 64), quad(128, 0, 64, 64, 384, 64), quad(192, 0, 64, 64, 384, 64),
+      quad(256,0, 64, 64, 384, 64), quad(320,0, 64, 64, 384, 64) }
+
+    
+    
+    --[[
     filename = "assets/sprites/hero.png"
     local image = love.graphics.newImage(filename)
     image:setFilter("nearest","nearest")
     asm:add(image, "player", "image")
-    
+    ]]
     self.animData = animData
   end
   
