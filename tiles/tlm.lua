@@ -66,7 +66,7 @@ function Tlm:draw()
     end
   end
   
-  self:drawWalls()
+  --self:drawWalls()
 end
 
 function Tlm:isSolidAtPos(x, y)

@@ -26,6 +26,7 @@ function Enemy:new(x,y, id)
   enemy.distanceTrigger = 200
   enemy.damage = 5
   
+  enemy.orientation = 0
   --enemy.function = nil
     
   local mapWidth = tlm.mapwidth * tlm.tilewidth
@@ -34,6 +35,34 @@ function Enemy:new(x,y, id)
   local strollTime = 0
   
   function enemy:load()
+      local image = asm:get("enemy-down")
+            
+      self.animation = require("tools/animation"):new(
+        image,
+        {
+          {
+            -- idle
+            gameManager.animData["player_walkRight"][1]
+          },
+          {
+            -- right
+            gameManager.animData["player_walkRight"][1],
+            gameManager.animData["player_walkRight"][2],
+            gameManager.animData["player_walkRight"][3],
+            gameManager.animData["player_walkRight"][4],
+            gameManager.animData["player_walkRight"][5],
+            gameManager.animData["player_walkRight"][6]
+            
+          }
+        },
+        0.1
+      )
+      
+      self.animation:set_animation(2)
+      self.animation:play()
+    
+    
+    
       gameManager.gameLoop:add(self)
       self.layer = 2
       self.dir.x = 0
@@ -42,9 +71,10 @@ function Enemy:new(x,y, id)
   end
     
   function enemy:draw()
-    love.graphics.setColor(color)
-    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
-    love.graphics.setColor(255,255,255)
+    --love.graphics.setColor(color)
+    --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+        self.animation:draw( {self.pos.x, self.pos.y} )
+    --love.graphics.setColor(255,255,255)
   end
   
   
@@ -57,6 +87,7 @@ function Enemy:new(x,y, id)
     if self.life <= 0 then
       self.isAlive = false
       self.remove = true
+      love.audio.play(asm:get("enemyouch"))
       
       player.points = player.points + self.points
       
@@ -86,6 +117,7 @@ function Enemy:new(x,y, id)
   end
   
   function enemy:move(dt)
+
     local x = self.pos.x + self.size.x / 2
     local y = self.pos.y + self.size.y / 2
     distCenter = {}
@@ -99,8 +131,11 @@ function Enemy:new(x,y, id)
     if distance <= self.distanceTrigger / 2 then
       local acc = 50
       angle = atan2(player.pos.y - self.pos.y, player.pos.x - self.pos.x)
+
       self.vel.x = cos(angle) * (velSpeed + acc)
       self.vel.y = sin(angle) * (velSpeed + acc)
+      
+      self.orientation = angle - math.pi /2 
       --print("RUN FOREST RUUUUUN!")
     elseif distance <= self.distanceTrigger and distance > self.distanceTrigger / 2 then
       -- https://gamedev.stackexchange.com/questions/48119/how-do-i-calculate-how-an-object-will-move-from-one-point-to-another
@@ -110,6 +145,9 @@ function Enemy:new(x,y, id)
       self.vel.x = cos(angle) * velSpeed
       self.vel.y = sin(angle) * velSpeed
       
+      self.orientation = angle - (3.14159265 / 2 )
+    
+      
       --print("Distance: " .. distance)
     else
       
@@ -118,12 +156,17 @@ function Enemy:new(x,y, id)
         strollTime = rand(strollTimeSpeed[1], strollTimeSpeed[2])
       end
     end
+    
+    self.animation:update(dt)
   end
   
   function enemy:stroll(dt)
     local destx = math.random(0, mapWidth)
     local desty = math.random(0, mapHeight)
     angle = atan2(desty - self.pos.y, destx - self.pos.x)
+    
+    self.orientation = angle - math.pi /2 
+    
     self.vel.x = cos(angle) * velSpeed
     self.vel.y = sin(angle) * velSpeed
     --print("x: " .. destx .. ", y: " .. desty)

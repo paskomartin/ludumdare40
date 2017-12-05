@@ -238,6 +238,76 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "coin", "image")
 
+
+  -- enemy
+  
+  
+  filename = "assets/sprites/enemy-up.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-up", "image")
+  
+  filename = "assets/sprites/enemy-left.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-left", "image")
+  
+  filename = "assets/sprites/enemy-left-up.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-left-up", "image")
+  
+  filename = "assets/sprites/enemy-left-down.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-left-down", "image")
+  
+  filename = "assets/sprites/enemy-right.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-right", "image")
+  
+  filename = "assets/sprites/enemy-right-up.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-right-up", "image")
+  
+  filename = "assets/sprites/enemy-right-down.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-right-down", "image")
+  
+  filename = "assets/sprites/enemy-down.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "enemy-down", "image")
+  
+  filename = "assets/sprites/coin.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "coin", "image")
+
+
+
+  filename = "assets/sounds/coin.wav"
+  image = love.audio.newSource(filename)
+  asm:add(image, "coinsound", "sound")
+
+  filename = "assets/sounds/enemyouch.wav"
+  image = love.audio.newSource(filename)
+  asm:add(image, "enemyouch", "sound")
+  
+  
+  filename = "assets/sounds/fire.wav"
+  image = love.audio.newSource(filename)
+  asm:add(image, "fire", "sound")
+  
+ 
+  filename = "assets/sounds/playerouch.wav"
+  image = love.audio.newSource(filename)
+  asm:add(image, "playerouch", "sound")
+
+
 end
   
   

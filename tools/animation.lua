@@ -50,8 +50,9 @@ return{
       self.image = image
     end,
 
-		draw = function(self,data)
-			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2])
+		draw = function(self,data, orientation)
+      local orient = orientation or 0
+			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient)
 		end,	
 
 	}

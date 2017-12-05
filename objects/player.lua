@@ -29,6 +29,7 @@ function Player:new(x, y)
   player.currentBlinkTime = 0
   player.lastBlinkTime = 0
   
+  
   function player:init()
     -- add to loop?
     -- add to renderer?
@@ -224,6 +225,8 @@ function Player:new(x, y)
       bullet:shoot(x,y)
       isShoot = false
       cooldown = cooldownSpeed
+      local sound = asm:get("fire")
+      love.audio.play(sound)
     end
     
   end
@@ -277,12 +280,14 @@ function Player:new(x, y)
   
   function player:addCoin(val)
     self.coins = self.coins + val
+    love.audio.play(asm:get("coinsound"))
     --print("Points: ", self.points, " coins: ", self.coins)
   end
   function player:takeHit(damage)
     -- simple take, have no time for rest :/ --
     if not self.blink and self.isAlive then
       player.life = player.life - 1
+      love.audio.play(asm:get("playerouch"))
       if player.life > 0 then
         self.blink = true
         self.currentBlinkTime = 0
