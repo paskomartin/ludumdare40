@@ -7,6 +7,14 @@
 
 local gfx = love.graphics
 
+local push = love.graphics.push
+local pop = love.graphics.pop
+local rotate = love.graphics.rotate
+local translate = love.graphics.translate
+local scale = love.graphics.scale
+
+
+
 return{
 	new = function(self,image,animation,time)
 	return{
@@ -51,9 +59,28 @@ return{
     end,
 
 		draw = function(self,data, orientation)
-      local orient = orientation or 0
-			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient)
+      
+      local angle = orientation or 0
+      --local orient = orientation or 0
+			--gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient)
+      --[[
+      push()
+      translate( worldWidth / 2, worldHeigth / 2)
+      rotate(angle)
+      translate( -worldWidth / 2, -worldHeigth / 2)
+      -- scale(1,1)
+      gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2])
+            
+      pop()
+      ]]
+      gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient,1 ,1, 0,0)
+      
 		end,	
+    
+    draw2 = function(self, pos, angle)
+      
+      gfx.draw(self.image,self.a[self.current_anim][self.current_frame],pos[1],pos[2], angle,1 ,1, pos[3],pos[4])
+    end,
 
 	}
 	end,

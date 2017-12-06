@@ -10,6 +10,7 @@ local sin = math.sin
 local cos = math.cos
 local rand = math.random
 
+
 function Enemy:new(x,y, id)
   assert(type(id) == "string")
   local tile_w = 32
@@ -73,7 +74,9 @@ function Enemy:new(x,y, id)
   function enemy:draw()
     --love.graphics.setColor(color)
     --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
-        self.animation:draw( {self.pos.x, self.pos.y} )
+        --self.animation:draw( {self.pos.x, self.pos.y}, self.orientation)
+        self.animation:draw2( {self.pos.x, self.pos.y, self.size.x , self.size.y }, self.orientation)
+        love.graphics.rectangle('line', self.pos.x, self.pos.y, self.size.x, self.size.y)
     --love.graphics.setColor(255,255,255)
   end
   
@@ -116,62 +119,61 @@ function Enemy:new(x,y, id)
     end
   end
   
-  function enemy:move(dt)
-
-    local x = self.pos.x + self.size.x / 2
-    local y = self.pos.y + self.size.y / 2
-    distCenter = {}
-    distCenter.pos = require("tools/vec2"):new(x,y)
+  
+  
+    function enemy:move(dt)
+    -- self center
+    local enemyCenter = {}
+    enemyCenter.pos = require("tools/vec2"):new(x,y)
+    enemyCenter.pos.x = self.pos.x + self.size.x / 2
+    enemyCenter.pos.y = self.pos.y + self.size.y / 2
+    -- player center
     local playerCenter = {}
-    x = player.pos.x + player.size.x / 2
-    y = player.pos.y + player.size.y / 2
     playerCenter.pos = require("tools/vec2"):new(x,y)
+    playerCenter.pos.x = player.pos.x + player.size.x / 2
+    playerCenter.pos.y = player.pos.y + player.size.y / 2
     
-    local distance = floor(distance(playerCenter, distCenter) )
-    if distance <= self.distanceTrigger / 2 then
-      local acc = 50
-      angle = atan2(player.pos.y - self.pos.y, player.pos.x - self.pos.x)
+    local acc = 0
+    angle = atan2(playerCenter.pos.y - enemyCenter.pos.y, playerCenter.pos.x - enemyCenter.pos.x)
 
-      self.vel.x = cos(angle) * (velSpeed + acc)
-      self.vel.y = sin(angle) * (velSpeed + acc)
-      
-      self.orientation = angle - math.pi /2 
-      --print("RUN FOREST RUUUUUN!")
-    elseif distance <= self.distanceTrigger and distance > self.distanceTrigger / 2 then
-      -- https://gamedev.stackexchange.com/questions/48119/how-do-i-calculate-how-an-object-will-move-from-one-point-to-another
-      -- get angle --
-      -- go to player position--
-      angle = atan2(player.pos.y - self.pos.y, player.pos.x - self.pos.x)
-      self.vel.x = cos(angle) * velSpeed
-      self.vel.y = sin(angle) * velSpeed
-      
-      self.orientation = angle - (3.14159265 / 2 )
     
-      
-      --print("Distance: " .. distance)
-    else
-      
+    local distance = floor(distance(playerCenter, enemyCenter) )
+    if distance <= self.distanceTrigger / 2 then
+      acc = 50
+    elseif distance <= self.distanceTrigger and distance > self.distanceTrigger / 2 then
+      acc = 0
+    else     
       if strollTime <= 0 then
         self:stroll(dt)
         strollTime = rand(strollTimeSpeed[1], strollTimeSpeed[2])
+        goto skip_toanim
       end
     end
-    
+
+    self.vel.x = cos(angle) * (velSpeed + acc)
+    self.vel.y = sin(angle) * (velSpeed + acc)
+    self.orientation = angle - math.pi/2
+
+    ::skip_toanim::
     self.animation:update(dt)
   end
+  
   
   function enemy:stroll(dt)
     local destx = math.random(0, mapWidth)
     local desty = math.random(0, mapHeight)
-    angle = atan2(desty - self.pos.y, destx - self.pos.x)
+    local centerx = self.pos.x + self.size.x / 2
+    local centery = self.pos.x + self.size.y / 2
+    angle = atan2(desty - centerx, destx - centery)
     
     self.orientation = angle - math.pi /2 
     
     self.vel.x = cos(angle) * velSpeed
     self.vel.y = sin(angle) * velSpeed
-    --print("x: " .. destx .. ", y: " .. desty)
+
   end
 
+  
   
   function enemy:collisionWithPlayer()
     local result = rect_collision(self, player)
@@ -183,5 +185,7 @@ function Enemy:new(x,y, id)
   
   return enemy
 end
+
+
 
 return Enemy

@@ -12,6 +12,7 @@ local quad = love.graphics.newQuad
 function GameManager:create()
   local gameManager = {}
   
+  
 	gameManager.gameLoop = require("tools/gameLoop"):create()
 	gameManager.renderer = require("tools/render"):create()
   gameManager.collectibles = nil --obm:create() --require("tools/objectmanager")
@@ -361,8 +362,6 @@ function GameManager:create()
     gameManager.gameOverTileImage = asm:get("gameover")
     gameManager.theEndTileImage = asm:get("theend")
   end
-  
-  
   
   
   return gameManager

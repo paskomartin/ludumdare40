@@ -7,6 +7,9 @@ require("tools/mapbuilder")
 --obm = require("tools/objectmanager")
 
 
+worldWidth = 800
+worldHeigth = 600
+
 local scalex = 1--1920 / 800
 local scaley = 1--1080 / 600
 local windowWidth = 0
