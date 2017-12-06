@@ -1,0 +1,6 @@
+* rotation bug           [SOLVED]
+* fire bug               [SOLVED]
+* add rect collision     [ NOT DONE YET ]
+* special fire           [ NOT DONE YET ]
+* pickups and bonuses    [ NOT DONE YET ]
+* slow down player if have more coins, increase enemy speed [ NOT DONE YET ]

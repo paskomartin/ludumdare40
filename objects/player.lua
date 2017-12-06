@@ -16,7 +16,7 @@ function Player:new(x, y)
   local color = { 255,0,255,255}
   player.life = 5
   local velSpeed = 250
-  local cooldownSpeed = 45--15
+  local cooldownSpeed = 55--65--15
   local cooldown = 0
   local isShoot = false
   player.points = 0
@@ -104,10 +104,16 @@ function Player:new(x, y)
   
   function player:tick(dt)
     player:checkBlink(dt)
+    cooldown = cooldown - 1
 
+    --[[
     if cooldown > 0 then
       cooldown = cooldown - 1
+    else
+      isShoot = true
     end
+    ]]--
+    
     self:checkKeys()
     self:move(dt)
     self.pos.x = self.pos.x + self.vel.x * dt
@@ -120,16 +126,16 @@ function Player:new(x, y)
     wallCollision(self,dt)
     
     self.animation:update(dt)
-    self:shoot()
+    --self:shoot()
 
   end
 
   function player:checkKeys()
-    keys.action.pressed =  love.keyboard.isDown(keys.action.val)
     keys.up.pressed =  love.keyboard.isDown(keys.up.val)
     keys.down.pressed =  love.keyboard.isDown(keys.down.val)
     keys.left.pressed =  love.keyboard.isDown(keys.left.val)
     keys.right.pressed =  love.keyboard.isDown(keys.right.val)
+    keys.action.pressed =  love.keyboard.isDown(keys.action.val)
     keys.special.pressed = love.keyboard.isDown(keys.special.val)
   end
 
@@ -200,9 +206,10 @@ function Player:new(x, y)
       self.animation:set_animation(1)
     end
     
-    if keys.action.pressed then
-      --self:shoot()
-      isShoot = true
+    if keys.action.pressed and not isShoot then
+      --print("ACTION PRESSED")
+      self:shoot()
+      --isShoot = true
     end
     
     if keys.special.pressed then
@@ -213,9 +220,10 @@ function Player:new(x, y)
 
  -- add cooldown
   function player:shoot(dt)
-    
-    if cooldown <= 0  and isShoot then
+      --print("cooldown = ", cooldown, " isShoot = ", isShoot)
+    if cooldown <= 0  then --and isShoot then
       --print("shoot")
+      --print("cooldown = ", cooldown, " isShoot = ", isShoot)
       
       local x = self.dir.x
       local y = self.dir.y
@@ -226,12 +234,15 @@ function Player:new(x, y)
       gameManager.playerBullets:add(bullet)
       
       bullet:shoot(x,y)
-      isShoot = false
-      cooldown = cooldownSpeed
       local sound = asm:get("fire")
       love.audio.play(sound)
       
       keys.action.pressed = false
+      --print("aft cooldown = ", cooldown, " isShoot = ", isShoot)
+      
+      isShoot = false
+      cooldown = cooldownSpeed
+      --print("aft cooldown = ", cooldown, " isShoot = ", isShoot)
     end
     
   end

@@ -91,7 +91,7 @@ function GameManager:create()
     end
     
     if gameManager.state == "menu" then
-      --love.keyboard.setKeyRepeat( false )
+      
       gameManager:getKeys()
       gameManager:selectMenu()
       goto skip_update
@@ -122,8 +122,6 @@ function GameManager:create()
     end
     
     
-    
-    --love.keyboard.setKeyRepeat( true )
     if (player.coins % gameManager.spawnerChange) == 0 and player.coins ~= 0 and player.coins < gameManager.maxCoins  and gameManager.lastCoinsCounter ~= player.coins then
       gameManager.lastCoinsCounter = player.coins
       gameManager.maxEnemy = gameManager.maxEnemy + gameManager.enemyStep

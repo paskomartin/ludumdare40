@@ -37,6 +37,8 @@ function love.load()
   loadTextures()
   gameManager:init()
   gameManager:startNewGame()
+  
+  love.keyboard.setKeyRepeat(false)
 
   local w, h = love.window.getMode()
   canvas = love.graphics.newCanvas(w,h)
@@ -96,7 +98,14 @@ function love.keypressed(key)
 
 end
 
-
+--[[
+function love.keyreleased(key)
+  
+  if key == 'rctrl' then
+    print("Fire released!")
+  end
+end
+]]
 
 function love.resize(w, h)
   local _,_,mode = love.window.getMode()
@@ -297,7 +306,8 @@ function loadTextures()
   asm:add(image, "coin", "image")
 
 
-
+  -- sound
+  -- TODO: put it to another function
   filename = "assets/sounds/coin.wav"
   image = love.audio.newSource(filename)
   asm:add(image, "coinsound", "sound")
