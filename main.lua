@@ -46,7 +46,9 @@ end
 
 function love.update(dt)
   local delta = smoothDeltaTime(dt)
-	gameManager.gameLoop:update(delta)
+  if not gameManager.paused then
+    gameManager.gameLoop:update(delta)
+  end
   gameManager.update(delta)
 end
 
@@ -86,6 +88,10 @@ function love.keypressed(key)
   -- temporary
   if key == 'escape' then
     quit()
+  end
+  
+  if love.keyboard.isDown('p') then 
+    gameManager.paused = not gameManager.paused
   end
 
 end

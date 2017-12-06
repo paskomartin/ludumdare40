@@ -7,4 +7,5 @@ function love.conf(t)
     t.window.resizable = true
     t.window.minwidth = t.window.width
     t.window.minheight = t.window.height
+    t.title = "Smash & Survive!"
 end

@@ -10,13 +10,13 @@ local insert = table.insert
 local floor = math.floor
 
 function Player:new(x, y)
-  local tile_w = 32
-  local tile_h = 32
+  local tile_w = 64
+  local tile_h = 64
   local player = require("objects/entity"):new(x, y, tile_w, tile_h, "player")
   local color = { 255,0,255,255}
   player.life = 5
   local velSpeed = 250
-  local cooldownSpeed = 15
+  local cooldownSpeed = 45--15
   local cooldown = 0
   local isShoot = false
   player.points = 0
@@ -92,6 +92,9 @@ function Player:new(x, y)
     --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
     --love.graphics.setColor(0,0,0)
     self.animation:draw( {self.pos.x, self.pos.y} )
+    love.graphics.setColor(255,0,0)
+    love.graphics.rectangle('line', self.pos.x, self.pos.y, self.size.x, self.size.y)
+    love.graphics.setColor(255,255,255)
     ::skip_anim::
   end
 
@@ -227,6 +230,8 @@ function Player:new(x, y)
       cooldown = cooldownSpeed
       local sound = asm:get("fire")
       love.audio.play(sound)
+      
+      keys.action.pressed = false
     end
     
   end

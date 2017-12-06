@@ -62,7 +62,7 @@ return{
       
       local angle = orientation or 0
       --local orient = orientation or 0
-			--gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient)
+			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], angle)
       --[[
       push()
       translate( worldWidth / 2, worldHeigth / 2)
@@ -73,13 +73,44 @@ return{
             
       pop()
       ]]
-      gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient,1 ,1, 0,0)
+      --gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient,1 ,1, 0,0)
       
 		end,	
     
+    draw4 = function(self, data, ang)
+      local img = self.image
+      local quad = self.a[self.current_anim][self.current_frame]
+      local originX = data[3] / 2
+      local originY = data[4] / 2
+      local x = data[1] + originX
+      local y = data[2] + originY
+      local angle = ang or 0
+      local scaleX = 1
+      local scaleY = 1
+      gfx.draw(img, quad, x, y, angle, scaleX, scaleY, originX, originY)
+    end,
+    
+    draw3 = function(self, pos, orientation)
+      local angle = orientation or 0
+      --local orient = orientation or 0
+			--gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], orient)
+      
+      print("before: tr x=", pos[1], ", y=", pos[2])
+      push()
+      translate( -pos[1], -pos[2])
+      rotate(angle)
+      translate( pos[1], pos[2])
+      --scale(1,1)
+      print("after: tr x=", pos[1], ", y=", pos[2])
+      gfx.draw(self.image,self.a[self.current_anim][self.current_frame],pos[1],pos[2])
+            
+      pop()
+    end,
+    
     draw2 = function(self, pos, angle)
       
-      gfx.draw(self.image,self.a[self.current_anim][self.current_frame],pos[1],pos[2], angle,1 ,1, pos[3],pos[4])
+      --gfx.draw(self.image,self.a[self.current_anim][self.current_frame],pos[1],pos[2], angle,1 ,1, pos[1] + pos[3] /2, pos[2] + pos[4] / 2)
+      gfx.draw(self.image,self.a[self.current_anim][self.current_frame],pos[1],pos[2], angle,1 ,1, pos[3], pos[4])--, 400, 300)
     end,
 
 	}

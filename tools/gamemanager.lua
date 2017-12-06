@@ -19,6 +19,8 @@ function GameManager:create()
   gameManager.enemies = nil --obm:create() --require("tools/objectmanager")
   gameManager.playerBullets = nil --obm:create() -- require("tools/objectmanager")
   gameManager.spawners = nil
+  gameManager.paused = false
+  
   
   gameManager.level = 1
   gameManager.maxEnemy = 1

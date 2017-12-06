@@ -13,8 +13,8 @@ local rand = math.random
 
 function Enemy:new(x,y, id)
   assert(type(id) == "string")
-  local tile_w = 32
-  local tile_h = 32
+  local tile_w = 64
+  local tile_h = 64
   local enemy = require("objects/entity"):new(x, y, tile_w, tile_h, id)
   local color = { 201,20,72,255}
   enemy.life = 1
@@ -75,8 +75,15 @@ function Enemy:new(x,y, id)
     --love.graphics.setColor(color)
     --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
         --self.animation:draw( {self.pos.x, self.pos.y}, self.orientation)
-        self.animation:draw2( {self.pos.x, self.pos.y, self.size.x , self.size.y }, self.orientation)
+        local cx = self.size.x / 2
+        local cy = self.size.y / 2
+        local x = self.pos.x
+        local y = self.pos.y
+        --self.animation:draw( {x  , y , self.size.x , self.size.y }, self.orientation)
+        --self.animation:draw2( {x  , y , cx , cy }, self.orientation)
+        self.animation:draw4( {self.pos.x, self.pos.y, self.size.x , self.size.y }, self.orientation)
         love.graphics.rectangle('line', self.pos.x, self.pos.y, self.size.x, self.size.y)
+        --print("after: x=", self.pos.x, ", y=", self.pos.y)
     --love.graphics.setColor(255,255,255)
   end
   
@@ -164,9 +171,10 @@ function Enemy:new(x,y, id)
     local desty = math.random(0, mapHeight)
     local centerx = self.pos.x + self.size.x / 2
     local centery = self.pos.x + self.size.y / 2
-    angle = atan2(desty - centerx, destx - centery)
+    angle = atan2(desty - centery, destx - centerx)
     
-    self.orientation = angle - math.pi /2 
+    
+    self.orientation = angle - math.pi /2
     
     self.vel.x = cos(angle) * velSpeed
     self.vel.y = sin(angle) * velSpeed
