@@ -36,8 +36,8 @@ function Player:new(x, y)
     -- init physics?
       gameManager.gameLoop:add(self)
       self.layer = 3
-      self.dir.x = 0
-      self.dir.y = 1
+      self.dir.x = 1
+      self.dir.y = 0
       gameManager.renderer:add(self,self.layer)
       
       self.isAlive = true
@@ -68,6 +68,15 @@ function Player:new(x, y)
       
       self.animation:play()
       
+      
+      -- init collision rect
+      self.offset.x =18
+      self.offset.y = 22
+      self.rect.pos.x = 0--18
+      self.rect.pos.y = 0--22
+      self.rect.size.x = 22
+      self.rect.size.y = 22
+      
   end
   
   function player:reinit()
@@ -92,12 +101,11 @@ function Player:new(x, y)
     --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
     --love.graphics.setColor(0,0,0)
     self.animation:draw( {self.pos.x, self.pos.y} )
-    love.graphics.setColor(255,0,0)
-    love.graphics.rectangle('line', self.pos.x, self.pos.y, self.size.x, self.size.y)
-    love.graphics.setColor(255,255,255)
+    if debugRect then
+      self:drawDebugRect()
+    end
     ::skip_anim::
   end
-
 
 
   
@@ -117,11 +125,16 @@ function Player:new(x, y)
     self:checkKeys()
     self:move(dt)
     self.pos.x = self.pos.x + self.vel.x * dt
+    --collectibleCollision(self)
+    --wallCollision(self,dt)
+    self:updateCollisionRect()
     collectibleCollision(self)
     wallCollision(self,dt)
     
-    
     self.pos.y = self.pos.y + self.vel.y * dt
+    --collectibleCollision(self)
+    --wallCollision(self,dt)
+    self:updateCollisionRect()
     collectibleCollision(self)
     wallCollision(self,dt)
     
@@ -218,6 +231,11 @@ function Player:new(x, y)
 
   end
 
+  function player:updateCollisionRect()
+    self.rect.pos.x = self.pos.x + self.offset.x
+    self.rect.pos.y = self.pos.y + self.offset.y
+  end
+ 
  -- add cooldown
   function player:shoot(dt)
       --print("cooldown = ", cooldown, " isShoot = ", isShoot)

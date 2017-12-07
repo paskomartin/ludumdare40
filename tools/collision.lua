@@ -11,6 +11,7 @@ function rect_collision(obj1, obj2)
 end
 
 
+
 -- thank you stackoverflow :P
 -- https://stackoverflow.com/questions/29861096/detect-which-side-of-a-rectangle-is-colliding-with-another-rectangle
 function collisionSide(r1, r2)
@@ -41,7 +42,8 @@ function collisionSide(r1, r2)
     return collision
 end
 
-function wallCollision(obj, dt)
+--  [[ DEPRICATED --
+function wallCollision2(obj, dt)
   local walls = tlm.walls
   local result = false
   
@@ -71,14 +73,55 @@ function wallCollision(obj, dt)
   return result
   --isObjectOnMapBounds(obj)
 end
+--]]
+
+
+
+function wallCollision(obj, dt)
+  local walls = tlm.walls
+  local result = false
+  
+  for i = 1, #walls do
+    local wall = walls[i]
+    local r2 = { x = wall.pos.x, y = wall.pos.y, w = wall.size.x, h = wall.size.y }
+    local r1 = { x = obj.rect.pos.x, y = obj.rect.pos.y, w = obj.rect.size.x, h = obj.rect.size.y }
+    local side = collisionSide(r2, r1)
+    if side ~= 'none' then
+      if side == 'right' then
+        obj.pos.x = wall.pos.x -  (obj.size.x - 1 - obj.rect.size.x )
+        obj.rect.x = wall.pos.x - obj.rect.size.x - 1
+        result = true
+      elseif side == 'left' then
+        obj.pos.x = wall.pos.x + wall.size.x + 1 - obj.rect.size.x
+        obj.rect.pos.x = wall.pos.x + wall.size.x  + 1--+ 1 + obj.rect.size.x
+        result = true
+      elseif side == 'top' then
+        --obj.pos.y = wall.pos.y + wall.size.y + 1 --+ obj.rect.size.y
+        obj.rect.pos.y = wall.pos.y + wall.size.y + 1 --+ obj.rect.size.y
+        obj.pos.y = obj.rect.pos.y - obj.rect.size.y--wall.pos.y + wall.size.y + 1 --+ obj.rect.size.y
+        result = true
+      elseif side == 'bottom' then
+        --obj.pos.y = wall.pos.y -  obj.rect.size.y - 1--obj.size.y - 1
+        obj.rect.pos.y = wall.pos.y - obj.rect.size.y - 1
+        --obj.pos.y = wall.pos.y -  obj.rect.size.y - 1--obj.size.y - 1
+        obj.pos.y = obj.rect.pos.y -  obj.rect.size.y - 1
+        
+        result = true
+      end
+      
+      --print(side)
+    end
+  end
+  return result
+  --isObjectOnMapBounds(obj)
+end
 
 
 function collectibleCollision(obj)
   local objects = gameManager.collectibles.objects
-  
-  for i = 1, #objects do
+    for i = 1, #objects do
     if objects[i] ~= nil then
-      local result = rect_collision(obj, objects[i])
+      local result = rect_collision(obj.rect, objects[i])
       if result then
         objects[i]:pickup(obj)
       end
@@ -93,7 +136,7 @@ function collisionWithPlayerBullet(obj)
   
   for i = 1, #objects do
     if objects[i] ~= nil then
-      local result = rect_collision(obj, objects[i])
+      local result = rect_collision(obj.rect, objects[i].rect)
       if result then
         obj:takeHit(objects[i].damage)
         objects[i]:setDead()

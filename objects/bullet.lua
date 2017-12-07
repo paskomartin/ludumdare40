@@ -3,7 +3,8 @@ require("tools/collision")
 
 function Bullet:new(x,y,damage,id)
   local w = 5
-  local h = 8
+  local h = 5
+  
   
   local bullet = require("objects/entity"):new(x,y,w,h,id)
   bullet.damage = damage
@@ -26,6 +27,10 @@ function Bullet:new(x,y,damage,id)
     if self.remove then goto cont end
     
     self.pos.x = self.pos.x + self.vel.x * dt
+    self:updateCollisionRect()
+    -- only for drawing circles
+    self.rect.pos.x = self.rect.pos.x - self.size.x / 2
+    self.rect.pos.y = self.rect.pos.y - self.size.y / 2
     local result = wallCollision(self, dt)    
     if result then
       self:setDead()
@@ -33,6 +38,10 @@ function Bullet:new(x,y,damage,id)
     
     
     self.pos.y = self.pos.y + self.vel.y * dt
+    self:updateCollisionRect()
+    -- only for drawing circles
+    self.rect.pos.x = self.rect.pos.x - self.size.x / 2
+    self.rect.pos.y = self.rect.pos.y - self.size.y / 2
     result = wallCollision(self, dt)    
     if result then
       self:setDead()
@@ -51,7 +60,10 @@ function Bullet:new(x,y,damage,id)
     love.graphics.setColor(0, 20, 255)
     love.graphics.circle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
     love.graphics.setColor(112, 128, 255)
-    love.graphics.circle("fill", self.pos.x + 2, self.pos.y + 2, self.size.x - 2, self.size.y - 2)
+    love.graphics.circle("fill", self.pos.x , self.pos.y , self.size.x - 2, self.size.y - 2)
+    if debugRect then
+      self:drawDebugRect()
+    end
 
     love.graphics.setColor(255, 255, 255)
   end

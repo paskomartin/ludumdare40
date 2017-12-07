@@ -24,7 +24,7 @@ function Enemy:new(x,y, id)
   local cooldown = 0
   local isShoot = false
   enemy.isAlive = true
-  enemy.distanceTrigger = 200
+  enemy.distanceTrigger = 20
   enemy.damage = 5
   
   enemy.orientation = 0
@@ -69,22 +69,26 @@ function Enemy:new(x,y, id)
       self.dir.x = 0
       self.dir.y = 1
       gameManager.renderer:add(self,self.layer)
+      
+       -- init collision rect
+      self.offset.x =15
+      self.offset.y = 15
+      self.rect.pos.x = 0--18
+      self.rect.pos.y = 0--22
+      self.rect.size.x = 30
+      self.rect.size.y = 30
   end
     
   function enemy:draw()
-    --love.graphics.setColor(color)
-    --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
-        --self.animation:draw( {self.pos.x, self.pos.y}, self.orientation)
         local cx = self.size.x / 2
         local cy = self.size.y / 2
         local x = self.pos.x
         local y = self.pos.y
-        --self.animation:draw( {x  , y , self.size.x , self.size.y }, self.orientation)
-        --self.animation:draw2( {x  , y , cx , cy }, self.orientation)
         self.animation:draw4( {self.pos.x, self.pos.y, self.size.x , self.size.y }, self.orientation)
-        love.graphics.rectangle('line', self.pos.x, self.pos.y, self.size.x, self.size.y)
-        --print("after: x=", self.pos.x, ", y=", self.pos.y)
-    --love.graphics.setColor(255,255,255)
+        
+        if debugRect then
+          self:drawDebugRect()
+        end
   end
   
   
@@ -110,7 +114,8 @@ function Enemy:new(x,y, id)
   end
   
   function enemy:spawnCoin()
-    local coin = require("objects/coin"):new(self.pos.x, self.pos.y)
+    --local coin = require("objects/coin"):new(self.pos.x, self.pos.y)
+    local coin = require("objects/coin"):new(self.rect.pos.x, self.rect.pos.y)
     gameManager.collectibles:add(coin)
   end
   
@@ -120,6 +125,7 @@ function Enemy:new(x,y, id)
       self:move(dt)
       self.pos.x = self.pos.x + self.vel.x * dt
       self.pos.y = self.pos.y + self.vel.y * dt
+      self:updateCollisionRect()
       collisionWithPlayerBullet(self)
       self:collisionWithPlayer()
       wallCollision(self,dt)
@@ -140,10 +146,34 @@ function Enemy:new(x,y, id)
     playerCenter.pos.x = player.pos.x + player.size.x / 2
     playerCenter.pos.y = player.pos.y + player.size.y / 2
     
+        local acc= 0
+    if strollTime <= 0 then
+      self:stroll(dt)
+      strollTime = rand(strollTimeSpeed[1], strollTimeSpeed[2])
+      goto skip_toanim
+    end
+
+    --[[
     local acc = 0
     angle = atan2(playerCenter.pos.y - enemyCenter.pos.y, playerCenter.pos.x - enemyCenter.pos.x)
 
-    
+    local distance = floor(distance(playerCenter, enemyCenter) )
+    if distance <= self.distanceTrigger then
+      acc = 0
+      if distance < self.distanceTrigger / 2 then
+        acc = 50
+      end
+    else     
+      if strollTime <= 0 then
+        self:stroll(dt)
+        strollTime = rand(strollTimeSpeed[1], strollTimeSpeed[2])
+        goto skip_toanim
+      end
+    end
+    --]]
+
+
+  --[[
     local distance = floor(distance(playerCenter, enemyCenter) )
     if distance <= self.distanceTrigger / 2 then
       acc = 50
@@ -156,7 +186,7 @@ function Enemy:new(x,y, id)
         goto skip_toanim
       end
     end
-
+  --]]
     self.vel.x = cos(angle) * (velSpeed + acc)
     self.vel.y = sin(angle) * (velSpeed + acc)
     self.orientation = angle - math.pi/2
@@ -184,7 +214,7 @@ function Enemy:new(x,y, id)
   
   
   function enemy:collisionWithPlayer()
-    local result = rect_collision(self, player)
+    local result = rect_collision(self.rect, player.rect)
     if result then
       player:takeHit(self.damage)
     end

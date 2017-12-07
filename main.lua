@@ -6,6 +6,7 @@ width = love.graphics.getWidth()
 require("tools/mapbuilder")
 --obm = require("tools/objectmanager")
 
+debugRect = false
 
 worldWidth = 800
 worldHeigth = 600
@@ -98,14 +99,14 @@ function love.keypressed(key)
 
 end
 
---[[
+-- --[[
 function love.keyreleased(key)
   
-  if key == 'rctrl' then
-    print("Fire released!")
+  if key == 'f1' then
+    debugRect = not debugRect
   end
 end
-]]
+--]]
 
 function love.resize(w, h)
   local _,_,mode = love.window.getMode()
