@@ -105,7 +105,7 @@ function love.keyreleased(key)
   if key == 'f1' then
     debugRect = not debugRect
   elseif key == 'f2' then
-    love.window.setPosition(0,0)
+    love.window.maximize( )    
   end
 end
 --]]

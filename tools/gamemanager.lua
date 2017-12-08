@@ -121,19 +121,30 @@ function GameManager:create()
       goto skip_update
     end
     
+    gameManager:changeEnemiesOnArena()
+
+    gameManager:checkNextLevel()
+    ::skip_update::
     
+    --self.gameLoop:update(dt)
+  end
+
+  function gameManager:changeEnemiesOnArena()
+    -- change enemies on arena
     if (player.coins % gameManager.spawnerChange) == 0 and player.coins ~= 0 and player.coins < gameManager.maxCoins  and gameManager.lastCoinsCounter ~= player.coins then
       gameManager.lastCoinsCounter = player.coins
       gameManager.maxEnemy = gameManager.maxEnemy + gameManager.enemyStep
       if gameManager.maxEnemy > gameManager.maxLevelEnemy then
         gameManager.maxEnemy = gameManager.maxLevelEnemy
       end
+      
+      player.cooldownSpeed = player.cooldownSpeed - 10
+      if player.cooldownSpeed < player.cooldownMaxSpeed then
+        player.cooldownSpeed = player.cooldownMaxSpeed
+      end
+      
     end
-    
-    gameManager:checkNextLevel()
-    ::skip_update::
-    
-    --self.gameLoop:update(dt)
+        
   end
 
   

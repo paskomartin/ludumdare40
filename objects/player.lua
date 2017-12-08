@@ -1,7 +1,5 @@
 local Player = {}
 
-
-
 require "tools/collision"
 require "tools/keys"
 vec2 = require("tools/vec2")
@@ -16,9 +14,12 @@ function Player:new(x, y)
   local color = { 255,0,255,255}
   player.life = 10
   local velSpeed = 250
-  local cooldownSpeed = 25--55--65--15
-  local cooldown = 0
+  player.cooldownBaseSpeed = 50
+  player.cooldownMaxSpeed = 15
+  player.cooldownSpeed = player.cooldownBaseSpeed --15--55--65--15
+  player.cooldown = 0
   local isShoot = false
+  player.canShoot = true  -- info for gui
   player.points = 0
   player.coins = 0
   player.isAlive = true
@@ -68,7 +69,6 @@ function Player:new(x, y)
       
       self.animation:play()
       
-      
       -- init collision rect
       self.offset.x =18
       self.offset.y = 22
@@ -85,7 +85,10 @@ function Player:new(x, y)
       self.dir.x = 0
       self.dir.y = 1
       gameManager.renderer:add(self,self.layer)
-      
+      self.cooldownSpeed = self.cooldownBaseSpeed
+      player.canShoot = true
+      player.cooldown = 0
+      player.cooldownSpeed = player.cooldownBaseSpeed
       self.isAlive = true
   end
   
@@ -97,9 +100,6 @@ function Player:new(x, y)
       end
     end
     
-    --love.graphics.setColor(color)
-    --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
-    --love.graphics.setColor(0,0,0)
     self.animation:draw( {self.pos.x, self.pos.y} )
     if debugRect then
       self:drawDebugRect()
@@ -112,35 +112,26 @@ function Player:new(x, y)
   
   function player:tick(dt)
     player:checkBlink(dt)
-    cooldown = cooldown - 1
-
-    --[[
-    if cooldown > 0 then
-      cooldown = cooldown - 1
-    else
-      isShoot = true
+    self.cooldown = self.cooldown - 1
+    if self.cooldown <= 0 then
+      self.canShoot = true
     end
-    ]]--
     
     self:checkKeys()
     self:move(dt)
     self.pos.x = self.pos.x + self.vel.x * dt
-    --collectibleCollision(self)
-    --wallCollision(self,dt)
+    
     self:updateCollisionRect()
     collectibleCollision(self)
     wallCollision(self,dt)
     
     self.pos.y = self.pos.y + self.vel.y * dt
-    --collectibleCollision(self)
-    --wallCollision(self,dt)
+    
     self:updateCollisionRect()
     collectibleCollision(self)
     wallCollision(self,dt)
     
     self.animation:update(dt)
-    --self:shoot()
-
   end
 
   function player:checkKeys()
@@ -219,10 +210,8 @@ function Player:new(x, y)
       self.animation:set_animation(1)
     end
     
-    if keys.action.pressed and not isShoot then
-      --print("ACTION PRESSED")
+    if keys.action.pressed then --and not isShoot then
       self:shoot()
-      --isShoot = true
     end
     
     if keys.special.pressed then
@@ -236,18 +225,13 @@ function Player:new(x, y)
     self.rect.pos.y = self.pos.y + self.offset.y
   end
  
- -- add cooldown
   function player:shoot(dt)
-      --print("cooldown = ", cooldown, " isShoot = ", isShoot)
-    if cooldown <= 0  then --and isShoot then
-      --print("shoot")
-      --print("cooldown = ", cooldown, " isShoot = ", isShoot)
+    if self.cooldown <= 0  then 
       
       local x = self.dir.x
       local y = self.dir.y
       local posx, posy = self:genBulletPosition()
 
-      --local bullet = require("objects/bullet"):new(self.pos.x, self.pos.y, 5, "playerBullet")   
       local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
       gameManager.playerBullets:add(bullet)
       
@@ -256,11 +240,10 @@ function Player:new(x, y)
       love.audio.play(sound)
       
       keys.action.pressed = false
-      --print("aft cooldown = ", cooldown, " isShoot = ", isShoot)
-      
+     
       isShoot = false
-      cooldown = cooldownSpeed
-      --print("aft cooldown = ", cooldown, " isShoot = ", isShoot)
+      self.canShoot = false
+      self.cooldown = self.cooldownSpeed
     end
     
   end
@@ -315,7 +298,6 @@ function Player:new(x, y)
   function player:addCoin(val)
     self.coins = self.coins + val
     love.audio.play(asm:get("coinsound"))
-    --print("Points: ", self.points, " coins: ", self.coins)
   end
   function player:takeHit(damage)
     -- simple take, have no time for rest :/ --

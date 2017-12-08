@@ -5,6 +5,7 @@ function GameGui:new()
   gameGui.points = 0
   gameGui.coins = 0
   gameGui.playerLife = 0
+  gameGui.canShoot = false
   --gameGui.level = 1
   gameGui.x = 0
   gameGui.y = 17 * 32
@@ -21,6 +22,7 @@ function GameGui:new()
     self.points = player.points
     self.coins = player.coins
     self.playerLife = player.life
+    self.canShoot = player.canShoot
   end
   
   function gameGui:draw()
@@ -38,6 +40,15 @@ function GameGui:new()
     love.graphics.print(text, x, self.y + 2, 0, 2, 2)
     text = "Level: " .. gameManager.level
     love.graphics.print(text, x, self.y + 16 + margin * 2, 0, 2, 2)
+    
+    if self.canShoot then
+      text = "Shoot!"
+    else
+      text = "Reloading"
+    end
+    x = self.w - 200
+    love.graphics.print(text, x + 12, self.y, 0, 2, 2)
+      
     
     love.graphics.setColor(255,255,255)
   end
