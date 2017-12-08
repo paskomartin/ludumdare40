@@ -17,9 +17,11 @@ local windowWidth = 0
 local windowHeight = 0
 
 function love.load()
-    if arg[#arg] == "-debug" then
+  -- [[--
+  if arg[#arg] == "-debug" then
     require("mobdebug").start() 
   end  
+  --]]
   
   --[[
   local _,_,mode = love.window.getMode()

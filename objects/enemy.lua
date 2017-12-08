@@ -170,9 +170,9 @@ function Enemy:new(x,y, id)
     local distance = floor(distance(playerCenter, enemyCenter) )
     if distance <= self.distanceTrigger then
       acc = 0
-      if distance < self.distanceTrigger / 2 then
+    else if distance < self.distanceTrigger / 2 then
         acc = 50
-      end
+--      end
     else     
       if strollTime <= 0 then
         self:stroll(dt)
@@ -181,7 +181,7 @@ function Enemy:new(x,y, id)
       end
     end
     --]]
-
+  end
 
   --[[
     local distance = floor(distance(playerCenter, enemyCenter) )

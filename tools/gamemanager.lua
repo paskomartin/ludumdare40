@@ -154,8 +154,6 @@ function GameManager:create()
       local lifeBonus = 100
       player.points = player.points + bonus * player.coins + lifeBonus * player.coins
       
-      
-      
       player.coins = 0
       gameManager:resetValues()
       gameManager:resetContainers()

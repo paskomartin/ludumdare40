@@ -48,6 +48,8 @@ function GameGui:new()
     end
     x = self.w - 200
     love.graphics.print(text, x + 12, self.y, 0, 2, 2)
+    text = "Cooldown: " .. player.cooldownSpeed
+    love.graphics.print(text, x + 12, self.y+16+margin, 0, 2, 2)
       
     
     love.graphics.setColor(255,255,255)

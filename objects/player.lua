@@ -25,8 +25,8 @@ function Player:new(x, y)
   player.isAlive = true
   player.blink = false
   player.blinkAnim = false
-  player.blinkStep = 0.5
-  player.blinkTime = 3
+  player.blinkStep = 0.15 --0.5
+  player.blinkTime = 20
   player.currentBlinkTime = 0
   player.lastBlinkTime = 0
   
@@ -299,33 +299,65 @@ function Player:new(x, y)
     self.coins = self.coins + val
     love.audio.play(asm:get("coinsound"))
   end
+  
+  
   function player:takeHit(damage)
     -- simple take, have no time for rest :/ --
     if not self.blink and self.isAlive then
-      player.life = player.life - 1
-      love.audio.play(asm:get("playerouch"))
-      if player.life > 0 then
+      if player.life > 0 and not self.blink then
+        player.life = player.life - 1
         self.blink = true
+        self.blinkAnim = true
         self.currentBlinkTime = 0
       else
         isActive = false
       end
+      love.audio.play(asm:get("playerouch"))
     end
   end
   
+  local blinkCounter = 0
   function player:checkBlink(dt)
     if self.blink then
-      self.currentBlinkTime = self.currentBlinkTime + dt
-      if self.currentBlinkTime < self.blinkTime then
+      if blinkCounter < self.blinkTime then
       
-        if floor(self.currentBlinkTime * 100) >=  self.lastBlinkTime + player.blinkStep * 100 then
+        self.currentBlinkTime = self.currentBlinkTime + dt
+        if self.currentBlinkTime >= self.blinkStep then
+          self.currentBlinkTime = 0
           self.blinkAnim = not self.blinkAnim
-          self.currentBlinkTime = floor(self.currentBlinkTime*100) / 100
-          self.lastBlinkTIme = self.currentBlinkTime
+          blinkCounter = blinkCounter + 1
         end
       else
         self.blink = false
         self.blinkAnim = false
+        blinkCounter = 0
+      end
+    end
+  end
+  
+  -- [[ DEPRICATED! ]] --
+  function player:checkBlink2(dt)
+    if self.blink then
+      self.currentBlinkTime = self.currentBlinkTime + dt
+      if self.currentBlinkTime < self.blinkTime then
+        --[[
+        if self.currentBlinkTime >= self.lastBlinkTime + player.blinkStep then
+          self.blinkAnim = not self.blinkAnim
+          self.currentBlinkTime = floor(self.currentBlinkTime*100) / 100
+          self.lastBlinkTime = self.currentBlinkTime
+        end
+        --]]
+      -- [[
+        if floor(self.currentBlinkTime * 100) >=  self.lastBlinkTime + player.blinkStep * 100 then
+          self.blinkAnim = not self.blinkAnim
+          self.currentBlinkTime = floor(self.currentBlinkTime*100) / 100
+          self.lastBlinkTime = self.currentBlinkTime
+        end
+      --]]
+      else
+        self.blink = false
+        self.blinkAnim = false
+        self.lastBlinkTime = 0
       end
     end
     
