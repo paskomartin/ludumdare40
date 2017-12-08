@@ -32,7 +32,7 @@ function Enemy:new(x,y, id)
     
   local mapWidth = tlm.mapwidth * tlm.tilewidth
   local mapHeight = tlm.mapheight * tlm.tileheight
-  local strollTimeSpeed = { 10, 35}
+  local strollTimeSpeed = { 20, 50}
   local strollTime = 0
   
   function enemy:load()
@@ -124,6 +124,11 @@ function Enemy:new(x,y, id)
       strollTime = strollTime - 1
       self:move(dt)
       self.pos.x = self.pos.x + self.vel.x * dt
+      self:updateCollisionRect()
+      collisionWithPlayerBullet(self)
+      self:collisionWithPlayer()
+      wallCollision(self,dt)
+      
       self.pos.y = self.pos.y + self.vel.y * dt
       self:updateCollisionRect()
       collisionWithPlayerBullet(self)
@@ -146,14 +151,19 @@ function Enemy:new(x,y, id)
     playerCenter.pos.x = player.pos.x + player.size.x / 2
     playerCenter.pos.y = player.pos.y + player.size.y / 2
     
+    --[[ -- TEST
         local acc= 0
     if strollTime <= 0 then
       self:stroll(dt)
+      math.randomseed(love.timer.getTime())
       strollTime = rand(strollTimeSpeed[1], strollTimeSpeed[2])
+      --print(strollTime)
       goto skip_toanim
     end
+    --]]--
 
-    --[[
+
+    -- [[
     local acc = 0
     angle = atan2(playerCenter.pos.y - enemyCenter.pos.y, playerCenter.pos.x - enemyCenter.pos.x)
 
@@ -203,6 +213,7 @@ function Enemy:new(x,y, id)
     local centery = self.pos.x + self.size.y / 2
     angle = atan2(desty - centery, destx - centerx)
     
+    --print(destx, " ", desty)
     
     self.orientation = angle - math.pi /2
     

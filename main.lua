@@ -6,7 +6,7 @@ width = love.graphics.getWidth()
 require("tools/mapbuilder")
 --obm = require("tools/objectmanager")
 
-debugRect = false
+debugRect = true
 
 worldWidth = 800
 worldHeigth = 600
@@ -104,6 +104,8 @@ function love.keyreleased(key)
   
   if key == 'f1' then
     debugRect = not debugRect
+  elseif key == 'f2' then
+    love.window.setPosition(0,0)
   end
 end
 --]]
@@ -136,7 +138,7 @@ function saveConf()
   local result = love.filesystem.write( filename, text)
   text = "config.width = " .. w .. "\nconfig.height = " .. h .. "\nconfig.fullscreen = " .. fullscreen .. "\n"
   result = love.filesystem.append(filename, text)
-  
+  print("saved")
 end
 
 function loadConf()
@@ -159,9 +161,13 @@ function loadConf()
     windowWidth = config.width 
     windowHeight = config.height
 --end
+
     
   end
 end
+
+
+
 
 
 local remove, insert = table.remove,

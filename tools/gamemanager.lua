@@ -100,7 +100,7 @@ function GameManager:create()
     
     if player.life <= 0 then
       gameManager.isGameOver = true
-      gameManager.state ="gameover"
+      gameManager.state = 'theend'--"gameover"
     end
     
     
@@ -132,6 +132,8 @@ function GameManager:create()
     
     gameManager:checkNextLevel()
     ::skip_update::
+    
+    --self.gameLoop:update(dt)
   end
 
   

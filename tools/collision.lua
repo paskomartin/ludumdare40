@@ -11,7 +11,6 @@ function rect_collision(obj1, obj2)
 end
 
 
-
 -- thank you stackoverflow :P
 -- https://stackoverflow.com/questions/29861096/detect-which-side-of-a-rectangle-is-colliding-with-another-rectangle
 function collisionSide(r1, r2)
@@ -42,40 +41,6 @@ function collisionSide(r1, r2)
     return collision
 end
 
---  [[ DEPRICATED --
-function wallCollision2(obj, dt)
-  local walls = tlm.walls
-  local result = false
-  
-  for i = 1, #walls do
-    local wall = walls[i]
-    local r2 = { x = wall.pos.x, y = wall.pos.y, w = wall.size.x, h = wall.size.y }
-    local r1 = { x = obj.pos.x, y = obj.pos.y, w = obj.size.x, h = obj.size.y }
-    local side = collisionSide(r2, r1)
-    if side ~= 'none' then
-      if side == 'right' then
-        obj.pos.x = wall.pos.x - obj.size.x - 1
-        result = true
-      elseif side == 'left' then
-        obj.pos.x = wall.pos.x + wall.size.x + 1
-        result = true
-      elseif side == 'top' then
-        obj.pos.y = wall.pos.y + wall.size.y + 1
-        result = true
-      elseif side == 'bottom' then
-        obj.pos.y = wall.pos.y - obj.size.y - 1
-        result = true
-      end
-      
-      --print(side)
-    end
-  end
-  return result
-  --isObjectOnMapBounds(obj)
-end
---]]
-
-
 
 function wallCollision(obj, dt)
   local walls = tlm.walls
@@ -86,34 +51,29 @@ function wallCollision(obj, dt)
     local r2 = { x = wall.pos.x, y = wall.pos.y, w = wall.size.x, h = wall.size.y }
     local r1 = { x = obj.rect.pos.x, y = obj.rect.pos.y, w = obj.rect.size.x, h = obj.rect.size.y }
     local side = collisionSide(r2, r1)
+    -- side is relative to character, that's mean if character collide his right side
+    -- the variable side will be 'right'
     if side ~= 'none' then
       if side == 'right' then
-        obj.pos.x = wall.pos.x -  (obj.size.x - 1 - obj.rect.size.x )
-        obj.rect.x = wall.pos.x - obj.rect.size.x - 1
+        obj.rect.pos.x = wall.pos.x - obj.rect.size.x
+        obj.pos.x = obj.rect.pos.x - obj.offset.x
         result = true
       elseif side == 'left' then
-        obj.pos.x = wall.pos.x + wall.size.x + 1 - obj.rect.size.x
-        obj.rect.pos.x = wall.pos.x + wall.size.x  + 1--+ 1 + obj.rect.size.x
+        obj.rect.pos.x = wall.pos.x + wall.size.x
+        obj.pos.x = obj.rect.pos.x - obj.offset.x
         result = true
       elseif side == 'top' then
-        --obj.pos.y = wall.pos.y + wall.size.y + 1 --+ obj.rect.size.y
-        obj.rect.pos.y = wall.pos.y + wall.size.y + 1 --+ obj.rect.size.y
-        obj.pos.y = obj.rect.pos.y - obj.rect.size.y--wall.pos.y + wall.size.y + 1 --+ obj.rect.size.y
+        obj.rect.pos.y = wall.pos.y + wall.size.y
+        obj.pos.y = obj.rect.pos.y - obj.offset.y
         result = true
-      elseif side == 'bottom' then
-        --obj.pos.y = wall.pos.y -  obj.rect.size.y - 1--obj.size.y - 1
-        obj.rect.pos.y = wall.pos.y - obj.rect.size.y - 1
-        --obj.pos.y = wall.pos.y -  obj.rect.size.y - 1--obj.size.y - 1
-        obj.pos.y = obj.rect.pos.y -  obj.rect.size.y - 1
-        
+      elseif side == 'bottom' then       
+        obj.rect.pos.y = wall.pos.y - obj.rect.size.y
+        obj.pos.y = obj.rect.pos.y - obj.offset.y
         result = true
-      end
-      
-      --print(side)
+      end     
     end
   end
   return result
-  --isObjectOnMapBounds(obj)
 end
 
 
@@ -130,7 +90,6 @@ function collectibleCollision(obj)
 end
 
 
-
 function collisionWithPlayerBullet(obj)
   local objects = gameManager.playerBullets.objects
   
@@ -145,22 +104,3 @@ function collisionWithPlayerBullet(obj)
     end
   end
 end
-
-
---[[ -- DEPRICATED 
-function deepcopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
-        end
-        setmetatable(copy, deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
-end
-
---]]

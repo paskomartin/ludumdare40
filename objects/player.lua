@@ -14,9 +14,9 @@ function Player:new(x, y)
   local tile_h = 64
   local player = require("objects/entity"):new(x, y, tile_w, tile_h, "player")
   local color = { 255,0,255,255}
-  player.life = 5
+  player.life = 10
   local velSpeed = 250
-  local cooldownSpeed = 55--65--15
+  local cooldownSpeed = 25--55--65--15
   local cooldown = 0
   local isShoot = false
   player.points = 0
