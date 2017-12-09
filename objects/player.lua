@@ -6,6 +6,9 @@ vec2 = require("tools/vec2")
 local keyDown = love.keyboard.isDown
 local insert = table.insert
 local floor = math.floor
+local cos = math.cos
+local sin = math.sin
+
 
 function Player:new(x, y)
   local tile_w = 64
@@ -18,6 +21,11 @@ function Player:new(x, y)
   player.cooldownMaxSpeed = 15
   player.cooldownSpeed = player.cooldownBaseSpeed --15--55--65--15
   player.cooldown = 0
+  -- special cooldown
+  player.canUseSpecial = true
+  player.specialCooldown = 0
+  player.specialTimes = { min = 50, max = 150 }
+  
   local isShoot = false
   player.canShoot = true  -- info for gui
   player.points = 0
@@ -75,8 +83,7 @@ function Player:new(x, y)
       self.rect.pos.x = 0--18
       self.rect.pos.y = 0--22
       self.rect.size.x = 22
-      self.rect.size.y = 22
-      
+      self.rect.size.y = 22      
   end
   
   function player:reinit()
@@ -90,6 +97,8 @@ function Player:new(x, y)
       player.cooldown = 0
       player.cooldownSpeed = player.cooldownBaseSpeed
       self.isAlive = true
+      self.canUseSpecial = true
+      self.specialCooldown = 0
   end
   
   
@@ -112,10 +121,19 @@ function Player:new(x, y)
   
   function player:tick(dt)
     player:checkBlink(dt)
+    -- fire cooldown
     self.cooldown = self.cooldown - 1
     if self.cooldown <= 0 then
       self.canShoot = true
     end
+    -- special cooldown
+    if self.specialCooldown > 0 then
+      self.specialCooldown = self.specialCooldown - 1
+      if self.specialCooldown <= 0 then
+        self.canUseSpecial = true
+      end
+    end
+    
     
     self:checkKeys()
     self:move(dt)
@@ -215,7 +233,7 @@ function Player:new(x, y)
     end
     
     if keys.special.pressed then
-      
+      self:shootSpecial()
     end
 
   end
@@ -249,15 +267,30 @@ function Player:new(x, y)
   end
   
   function player:shootSpecial()
-    local count = 15;
-    local step = 360 / count
+    if self.canUseSpecial then
+      local count = 30--15;
+      local step = 360 / count
     
-    local destx = math.random(0, mapWidth)
-    local desty = math.random(0, mapHeight)
-    angle = atan2(player.pos.y - self.pos.y, player.pos.x - self.pos.x)
-    self.vel.x = cos(angle) * velSpeed
-    self.vel.y = sin(angle) * velSpeed
-    
+      local velX = 0
+      local velY = 0
+      local posx = self.rect.pos.x + self.rect.size.x / 2
+      local posy = self.rect.pos.y + self.rect.size.y / 2
+      for angle= 0, 360, step do
+        local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
+        gameManager.playerBullets:add(bullet)
+      
+        x = cos( math.rad(angle) )
+        y = sin( math.rad(angle) )
+        bullet:shoot(x,y)
+      
+      end      
+      self.canUseSpecial = false
+      self.specialCooldown = math.random( self.specialTimes.min, self.specialTimes.max)
+      
+      local sound = asm:get("fire")
+      love.audio.play(sound)
+      keys.special.pressed = false
+    end
   end
 
   function player:genBulletPosition()

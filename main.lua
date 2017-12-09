@@ -6,7 +6,7 @@ width = love.graphics.getWidth()
 require("tools/mapbuilder")
 --obm = require("tools/objectmanager")
 
-debugRect = true
+debugRect = false
 
 worldWidth = 800
 worldHeigth = 600

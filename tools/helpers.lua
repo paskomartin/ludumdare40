@@ -19,6 +19,7 @@ function distance(obj1, obj2)
   return distance
 end
 
+
 function clearTable(t)
   for i, v in ipairs(t) do t[i] = nil end
 end
