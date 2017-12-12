@@ -81,15 +81,23 @@ function Enemy:new(x,y, id)
   end
     
   function enemy:draw()
-        local cx = self.size.x / 2
-        local cy = self.size.y / 2
-        local x = self.pos.x
-        local y = self.pos.y
-        self.animation:draw4( {self.pos.x, self.pos.y, self.size.x , self.size.y }, self.orientation)
+    local cx = self.size.x / 2
+    local cy = self.size.y / 2
+    local x = self.pos.x
+    local y = self.pos.y
+   
+    -- cast shadow
+    love.graphics.setColor(0,0,0,128)
+    self.animation:draw4( {self.pos.x +3 , self.pos.y + 3, self.size.x , self.size.y }, self.orientation)
+    love.graphics.setColor(255,255,255)
+
+    -- main character
+    self.animation:draw4( {self.pos.x, self.pos.y, self.size.x , self.size.y }, self.orientation)
         
-        if debugRect then
-          self:drawDebugRect()
-        end
+        
+    if debugRect then
+      self:drawDebugRect()
+    end
   end
   
   

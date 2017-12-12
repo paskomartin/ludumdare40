@@ -59,6 +59,7 @@ function Tlm:draw()
         --if self.tiles[i][j] ~= nil then
         if self.tiles[layer][i][j] ~= nil then
           local tile = self.tiles[layer][i][j]
+          -- main draw
           love.graphics.draw(self.img, tile.quad, tile.pos.x, tile.pos.y) --, 0, 1, 1)
         end
         

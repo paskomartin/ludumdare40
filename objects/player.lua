@@ -17,8 +17,8 @@ function Player:new(x, y)
   local color = { 255,0,255,255}
   player.life = 10
   local velSpeed = 250
-  player.cooldownBaseSpeed = 50
-  player.cooldownMaxSpeed = 15
+  player.cooldownBaseSpeed = 10--50
+  player.cooldownMaxSpeed = 7--15
   player.cooldownSpeed = player.cooldownBaseSpeed --15--55--65--15
   player.cooldown = 0
   -- special cooldown
@@ -109,7 +109,14 @@ function Player:new(x, y)
       end
     end
     
-    self.animation:draw( {self.pos.x, self.pos.y} )
+    -- cast shadow
+    love.graphics.setColor(0,0,0,128)
+    self.animation:draw( {self.pos.x+3, self.pos.y+3} )
+    love.graphics.setColor(255,255,255)
+    -- main character
+    self.animation:draw( {self.pos.x, self.pos.y} )    
+    
+    
     if debugRect then
       self:drawDebugRect()
     end

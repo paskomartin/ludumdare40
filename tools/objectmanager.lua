@@ -49,6 +49,10 @@ function ObjectManager:create(id)
   function objectManager:clear()
     clearTable(objectManager.objects)
   end
+  
+  function objectManager:count()
+    return #self.objects
+  end
 
 
 return objectManager

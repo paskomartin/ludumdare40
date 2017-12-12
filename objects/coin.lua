@@ -26,6 +26,11 @@ function Coin:new(x,y)
 		if coin.isAlive then
 			--love.graphics.setColor(color)
 			--love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
+      -- shadow
+      love.graphics.setColor(0,0,0,128)
+      love.graphics.draw(self.image, self.pos.x+1, self.pos.y +1,0,1, 1)
+      love.graphics.setColor(255,255,255)
+      -- main
       love.graphics.draw(self.image, self.pos.x, self.pos.y,0,1, 1)
       --love.graphics.setColor(255,255,255)
 		end

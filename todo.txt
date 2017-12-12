@@ -14,9 +14,14 @@ https://github.com/razorgamedev/Lets-Make-a-Platformer/blob/master/tools/animati
 * music
 * sounds
 
-* after game over jump to main many
+* after game over jump to main menu
 
 ==== IF I WILL HAVE TIME: =======
-* make special fire
+* make special fire                V
 * make another enemy
 * load keyboard from config
+
+
+
+
+https://stackoverflow.com/questions/8762601/how-do-i-rename-my-git-master-branch-to-release

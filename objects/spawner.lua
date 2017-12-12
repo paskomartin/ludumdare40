@@ -24,9 +24,11 @@ function Spawner:new(x,y)
   end
   
   function spawner:draw()
-    love.graphics.setColor(color)
-    love.graphics.rectangle("line", self.pos.x, self.pos.y, self.size.x, self.size.y)
-    love.graphics.setColor(255,255,255)
+    if debugRect then
+      love.graphics.setColor(color)
+      love.graphics.rectangle("line", self.pos.x, self.pos.y, self.size.x, self.size.y)
+      love.graphics.setColor(255,255,255)
+    end
   end
   
   function spawner:spawn(dt)

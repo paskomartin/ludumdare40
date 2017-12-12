@@ -57,6 +57,10 @@ function Bullet:new(x,y,damage,id)
   end
   
   function bullet:draw()
+    -- shadow
+    love.graphics.setColor(0, 0, 0, 255)
+    love.graphics.circle("fill", self.pos.x+3, self.pos.y+3, self.size.x, self.size.y)
+    -- main
     love.graphics.setColor(0, 20, 255)
     love.graphics.circle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
     love.graphics.setColor(112, 128, 255)

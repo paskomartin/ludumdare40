@@ -35,11 +35,16 @@ function GameGui:new()
     text = "Points: " .. self.points
     love.graphics.print(text, self.x + 16, self.y + 16 + margin * 2, 0, 2, 2)
     
+    -- DEBUG ONLY
+    --[[--
     text = "En: " .. gameManager.enemyCounter .. "/" .. gameManager.maxEnemy
     local x = self.w / 2 - self.w / 4
     love.graphics.print(text, x, self.y + 2, 0, 2, 2)
-    text = "EnC: " .. #gameManager.enemies
+    
+    text = "EnC: " .. gameManager.enemies:count()
     love.graphics.print(text, x, self.y + 16 + margin * 2, 0, 2, 2)
+    --]]--
+    
     
     
     text = "Life: " .. self.playerLife
