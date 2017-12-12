@@ -36,7 +36,8 @@ function Enemy:new(x,y, id)
   local strollTime = 0
   
   function enemy:load()
-      local image = asm:get("enemy-down")
+      --local image = asm:get("enemy-down")
+      local image = asm:get("lizard")
             
       self.animation = require("tools/animation"):new(
         image,
@@ -97,20 +98,25 @@ function Enemy:new(x,y, id)
   end
 
   function enemy:takeHit(damage)
-    self.life = self.life - damage
-    if self.life <= 0 then
-      self.isAlive = false
-      self.remove = true
-      love.audio.play(asm:get("enemyouch"))
-      
-      player.points = player.points + self.points
-      
-      local result = rand()
-      if result >= 0.3 then
-        self:spawnCoin()
+    if self.isAlive and not self.remove then
+      self.life = self.life - damage
+      if self.life <= 0 then
+        self.isAlive = false
+        self.remove = true
+        love.audio.play(asm:get("enemyouch"))
+        
+        player.points = player.points + self.points
+        
+        local result = rand()
+        if result >= 0.3 then
+          self:spawnCoin()
+        end
+        
+        gameManager:decreaseEnemy()
+        
       end
-      
     end
+    
   end
   
   function enemy:spawnCoin()

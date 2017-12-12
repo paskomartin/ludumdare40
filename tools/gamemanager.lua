@@ -297,7 +297,14 @@ function GameManager:create()
   
   function gameManager:decreaseEnemy()
     self.enemyCounter = self.enemyCounter - 1
-    if self.enemyCounter < 0 then self.enemyCounter = 0 end
+    if self.enemyCounter == 0 then
+      print("NO ENEMY!")
+    end
+    if self.enemyCounter < 0 then
+      print("something goes wrong, enemies: " .. self.enemyCounter)
+      self.enemyCounter = 0
+    end
+    
   end
   
   function gameManager:createAnimations()

@@ -10,11 +10,11 @@ return {
   tileheight = 32,
   nextobjectid = 23,
   properties = {
-    ["enemyStep"] = "2",
-    ["maxCoins"] = "16",
-    ["maxEnemy"] = "7",
-    ["spawnerChange"] = "4",
-    ["startEnemy"] = "1"
+    ["enemyStep"] = "1",
+    ["maxCoins"] = "30",
+    ["maxEnemy"] = "21",
+    ["spawnerChange"] = "3",
+    ["startEnemy"] = "2"
   },
   tilesets = {
     {
@@ -26,7 +26,7 @@ return {
       margin = 0,
       image = "../sprites/tiles.png",
       imagewidth = 256,
-      imageheight = 96,
+      imageheight = 160,
       tileoffset = {
         x = 0,
         y = 0
@@ -39,7 +39,7 @@ return {
           properties = {}
         }
       },
-      tilecount = 24,
+      tilecount = 40,
       tiles = {
         {
           id = 5,

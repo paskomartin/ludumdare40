@@ -26,7 +26,7 @@ return {
       margin = 0,
       image = "../sprites/tiles.png",
       imagewidth = 256,
-      imageheight = 96,
+      imageheight = 160,
       tileoffset = {
         x = 0,
         y = 0
@@ -39,7 +39,7 @@ return {
           properties = {}
         }
       },
-      tilecount = 24,
+      tilecount = 40,
       tiles = {
         {
           id = 5,

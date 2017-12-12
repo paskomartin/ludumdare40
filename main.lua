@@ -268,7 +268,7 @@ function loadTextures()
 
   -- enemy
   
-  
+  --[[
   filename = "assets/sprites/enemy-up.png"
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
@@ -308,6 +308,13 @@ function loadTextures()
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "enemy-down", "image")
+  --]]
+  filename = "assets/sprites/lizard.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "lizard", "image")
+
+  
   
   filename = "assets/sprites/coin.png"
   image = love.graphics.newImage(filename)

@@ -7,7 +7,7 @@ function Spawner:new(x,y)
   local spawner = require("objects/entity"):new(x,y,h,w, "spawner")
   spawner.currentTime = 0
   spawner.lastTime = 0
-  spawner.spawnTime = 3
+  spawner.spawnTime = 1--3
   spawner.canSpawn = true
   spawner.isAlive = true
   local color = { 134, 53, 56,255 }

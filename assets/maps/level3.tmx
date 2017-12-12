@@ -7,8 +7,8 @@
   <property name="spawnerChange" value="4"/>
   <property name="startEnemy" value="3"/>
  </properties>
- <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="24" columns="8">
-  <image source="../sprites/tiles.png" width="256" height="96"/>
+ <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="40" columns="8">
+  <image source="../sprites/tiles.png" width="256" height="160"/>
   <terraintypes>
    <terrain name="" tile="-1"/>
   </terraintypes>
