@@ -26,6 +26,11 @@ function Rifle:new()
       
       local x = player.dir.x
       local y = player.dir.y
+      if keys.reverseShoot.pressed then
+          x = x * -1
+          y = y * -1
+      end
+      
       local posx, posy = player:genBulletPosition()
       
 
