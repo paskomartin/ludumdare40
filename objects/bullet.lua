@@ -10,6 +10,10 @@ function Bullet:new(x,y,damage,id)
   bullet.damage = damage
   bullet.isAlive = true
   bullet.life = 1
+  bullet.color = {}
+  bullet.color.first = { 0, 20, 255 }
+  bullet.color.second = { 112, 128, 255 }
+  
   local velSpeed = 650
   
   function bullet:hit(obj)
@@ -61,15 +65,22 @@ function Bullet:new(x,y,damage,id)
     love.graphics.setColor(0, 0, 0, 255)
     love.graphics.circle("fill", self.pos.x+3, self.pos.y+3, self.size.x, self.size.y)
     -- main
-    love.graphics.setColor(0, 20, 255)
+    --love.graphics.setColor(0, 20, 255)
+    love.graphics.setColor(self.color.first)
     love.graphics.circle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
-    love.graphics.setColor(112, 128, 255)
+    --love.graphics.setColor(112, 128, 255)
+    love.graphics.setColor(self.color.second)
     love.graphics.circle("fill", self.pos.x , self.pos.y , self.size.x - 2, self.size.y - 2)
     if debugRect then
       self:drawDebugRect()
     end
 
     love.graphics.setColor(255, 255, 255)
+  end
+  
+  function bullet:setColor(first, second)
+    self.color.first = first
+    self.color.second = second
   end
   
   function bullet:load()

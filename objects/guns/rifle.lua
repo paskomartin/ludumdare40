@@ -27,6 +27,7 @@ function Rifle:new()
       local x = player.dir.x
       local y = player.dir.y
       local posx, posy = player:genBulletPosition()
+      
 
       local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
       gameManager.playerBullets:add(bullet)

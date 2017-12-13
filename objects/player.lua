@@ -185,6 +185,7 @@ function Player:new(x, y)
     keys.left.pressed =  love.keyboard.isDown(keys.left.val)
     keys.right.pressed =  love.keyboard.isDown(keys.right.val)
     keys.action.pressed =  love.keyboard.isDown(keys.action.val)
+    keys.reverseShoot.pressed = love.keyboard.isDown(keys.reverseShoot.val)
     keys.special.pressed = love.keyboard.isDown(keys.special.val)
   end
 
@@ -195,18 +196,33 @@ function Player:new(x, y)
     local lastDirX = self.dir.x
     local lastDirY = self.dir.y
     
+    local reversed = keys.reverseShoot.pressed
+    
     if keys.up.pressed then
       self.vel.y = -velSpeed
       self.dir.y = -1
+
       upDownPressed = true
       self.animation:set_animation(2)
       if keys.left.pressed then
-        self.animation:set_image( asm:get("hero-left-up") )
+        if not reversed then
+          self.animation:set_image( asm:get("hero-left-up") )
+        else
+          self.animation:set_image( asm:get("hero-right-down") )
+        end
         
       elseif keys.right.pressed then
-        self.animation:set_image( asm:get("hero-right-up") )
+        if not reversed then
+          self.animation:set_image( asm:get("hero-right-up") )
+        else
+           self.animation:set_image( asm:get("hero-left-down") )
+        end
       else
-        self.animation:set_image( asm:get("hero-up") )
+        if not reversed then
+          self.animation:set_image( asm:get("hero-up") )
+        else
+          self.animation:set_image( asm:get("hero-down") )
+        end
       end
     elseif keys.down.pressed then
       self.vel.y = velSpeed
@@ -214,12 +230,23 @@ function Player:new(x, y)
       upDownPressed = true
       self.animation:set_animation(2)
       if keys.left.pressed then
-        self.animation:set_image( asm:get("hero-left-down") )
-        
+        if not reversed then
+          self.animation:set_image( asm:get("hero-left-down") )
+        else
+          self.animation:set_image( asm:get("hero-right-up") )
+        end
       elseif keys.right.pressed then
-        self.animation:set_image( asm:get("hero-right-down") )
+        if not reversed then
+          self.animation:set_image( asm:get("hero-right-down") )
+        else
+          self.animation:set_image( asm:get("hero-left-up") )
+        end
       else
-        self.animation:set_image( asm:get("hero-down") )
+        if not reversed then
+          self.animation:set_image( asm:get("hero-down") )
+        else
+          self.animation:set_image( asm:get("hero-up") )
+        end
       end
     else 
       self.vel.y = 0
@@ -231,7 +258,11 @@ function Player:new(x, y)
       leftRightPressed = true
       self.animation:set_animation(2)
       if not upDownPressed then
-        self.animation:set_image( asm:get("hero-left") )
+        if not reversed then 
+          self.animation:set_image( asm:get("hero-left") )
+        else
+          self.animation:set_image( asm:get("hero-right") )
+        end
       end
     elseif keys.right.pressed then
       self.vel.x = velSpeed
@@ -239,7 +270,11 @@ function Player:new(x, y)
       leftRightPressed = true
       self.animation:set_animation(2)
       if not upDownPressed then
-        self.animation:set_image( asm:get("hero-right") )
+        if not reversed then
+          self.animation:set_image( asm:get("hero-right") )
+        else
+          self.animation:set_image( asm:get("hero-left") )
+        end
       end
     else 
       self.vel.x = 0
@@ -278,6 +313,7 @@ function Player:new(x, y)
       
       local x = self.dir.x
       local y = self.dir.y
+
       local posx, posy = self:genBulletPosition()
 
       local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
@@ -330,6 +366,15 @@ function Player:new(x, y)
       local posx = self.pos.x
       local posy = self.pos.y
       
+      -- needed for reverse
+      local xdir = self.dir.x
+      local ydir = self.dir.y
+      if keys.reverseShoot.pressed then
+        self.dir.x = self.dir.x * -1
+        self.dir.y = self.dir.y * -1
+      end
+      
+      
       if self.dir.x ~= 0 then
          if self.dir.y == 0 then
             posy = posy + self.size.y / 2
@@ -357,6 +402,10 @@ function Player:new(x, y)
       elseif self.dir.y == -1 and self.dir.x == 1 then
         posx = posx + self.size.x
       end
+      
+      self.dir.x = xdir
+      self.dir.y = ydir
+      
       return posx, posy
   end
 

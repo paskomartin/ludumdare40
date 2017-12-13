@@ -52,7 +52,9 @@ end
 function love.update(dt)
   local delta = smoothDeltaTime(dt)
   if not gameManager.paused then
-    gameManager.gameLoop:update(delta)
+    if gameManager.state == 'game' then
+      gameManager.gameLoop:update(delta)
+    end
   end
   gameManager.update(delta)
 end

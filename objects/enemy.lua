@@ -24,7 +24,7 @@ function Enemy:new(x,y, id)
   local cooldown = 0
   local isShoot = false
   enemy.isAlive = true
-  enemy.distanceTrigger = 20
+  enemy.distanceTrigger = 200
   enemy.damage = 5
   
   enemy.orientation = 0
@@ -141,13 +141,17 @@ function Enemy:new(x,y, id)
       self:updateCollisionRect()
       collisionWithPlayerBullet(self)
       self:collisionWithPlayer()
-      wallCollision(self,dt)
+      if wallCollision(self,dt) then
+        strollTime = 0
+      end
       
       self.pos.y = self.pos.y + self.vel.y * dt
       self:updateCollisionRect()
       collisionWithPlayerBullet(self)
       self:collisionWithPlayer()
-      wallCollision(self,dt)
+      if wallCollision(self,dt) then
+        strollTime = 0
+      end
     end
   end
   
@@ -181,11 +185,32 @@ function Enemy:new(x,y, id)
     local acc = 0
     angle = atan2(playerCenter.pos.y - enemyCenter.pos.y, playerCenter.pos.x - enemyCenter.pos.x)
 
+
+    local distance = floor(distance(playerCenter, enemyCenter) )
+    if distance <= self.distanceTrigger  then
+      acc = 0
+      if distance < self.distanceTrigger / 2 then
+        acc = 50
+      end
+    else
+      -- i have to think about this --
+      --[[
+      if strollTime <= 0 then
+        self:stroll(dt)
+        strollTime = rand(strollTimeSpeed[1], strollTimeSpeed[2])
+        --goto skip_toanim
+      end
+      goto skip_toanim
+      --]]
+    end
+
+
+    --[[
     local distance = floor(distance(playerCenter, enemyCenter) )
     if distance <= self.distanceTrigger then
       acc = 0
     else if distance < self.distanceTrigger / 2 then
-        acc = 50
+        acc = 150
 --      end
     else     
       if strollTime <= 0 then
@@ -194,8 +219,14 @@ function Enemy:new(x,y, id)
         goto skip_toanim
       end
     end
-    --]]
+    -- ---]-]
   end
+
+  --]]
+
+
+
+
 
   --[[
     local distance = floor(distance(playerCenter, enemyCenter) )
