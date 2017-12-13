@@ -22,7 +22,7 @@ function GameGui:new()
     self.points = player.points
     self.coins = player.coins
     self.playerLife = player.life
-    self.canShoot = player.canShoot
+    self.canShoot = player.gun.canShoot
   end
   
   function gameGui:draw()
@@ -60,7 +60,7 @@ function GameGui:new()
     end
     x = self.w - 200
     love.graphics.print(text, x + 12, self.y, 0, 2, 2)
-    text = "Cooldown: " .. player.cooldownSpeed
+    text = "Cooldown: " .. player.gun.cooldownSpeed
     love.graphics.print(text, x + 12, self.y+16+margin, 0, 2, 2)
       
     

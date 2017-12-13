@@ -138,10 +138,17 @@ function GameManager:create()
         gameManager.maxEnemy = gameManager.maxLevelEnemy
       end
       
+      -- [[ ALMOST DEPRICATED ]] --
       player.cooldownSpeed = player.cooldownSpeed - 10
       if player.cooldownSpeed < player.cooldownMaxSpeed then
         player.cooldownSpeed = player.cooldownMaxSpeed
       end
+      
+      player.gun.cooldownSpeed = player.gun.cooldownSpeed - 10
+      if player.gun.cooldownSpeed < player.gun.cooldownMaxSpeed then
+        player.gun.cooldownSpeed = player.gun.cooldownMaxSpeed
+      end
+      
       
     end
         

@@ -40,29 +40,10 @@
 	"buffers":
 	[
 		{
-			"file": "tools/collision.lua",
+			"file": "objects/guns/shotgun.lua",
 			"settings":
 			{
-				"buffer_size": 4449,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "function rect_collision(obj1, obj2)\n  if (obj1.pos.x + obj1.size.x > obj2.pos.x) and\n     (obj1.pos.x < obj2.pos.x + obj2.size.x) and\n     (obj1.pos.y + obj1.size.y > obj2.pos.y) and\n     (obj1.pos.y < obj2.pos.y + obj2.size.y) then\n  \n    return true, obj2\n  end\n  \n  return false,nil\nend\n\n\n\n-- thank you stackoverflow :P\n-- https://stackoverflow.com/questions/29861096/detect-which-side-of-a-rectangle-is-colliding-with-another-rectangle\nfunction collisionSide(r1, r2)\n  local dx=(r1.x+r1.w/2)-(r2.x+r2.w/2);\n  local dy=(r1.y+r1.h/2)-(r2.y+r2.h/2);\n  local width=(r1.w+r2.w)/2;\n  local height=(r1.h+r2.h)/2;\n  local crossWidth=width*dy;\n  local crossHeight=height*dx;\n  local collision='none';\n  \n    if(math.abs(dx)<=width and math.abs(dy)<=height) then\n        if(crossWidth>crossHeight) then\n          if crossWidth > -crossHeight then\n            collision = 'bottom'\n          else\n            collision = 'left'\n          end\n            \n        else\n          if crossWidth > -crossHeight then\n            collision = 'right'\n          else\n            collision = 'top'\n          end\n        end\n    end\n    return collision\nend\n\nfunction wallCollision(obj, dt)\n  local walls = tlm.walls\n  local result = false\n  \n  for i = 1, #walls do\n    local wall = walls[i]\n    local r2 = { x = wall.pos.x, y = wall.pos.y, w = wall.size.x, h = wall.size.y }\n    local r1 = { x = obj.pos.x, y = obj.pos.y, w = obj.size.x, h = obj.size.y }\n    local side = collisionSide(r2, r1)\n    if side ~= 'none' then\n      if side == 'right' then\n        obj.pos.x = wall.pos.x - obj.size.x - 1\n        result = true\n      elseif side == 'left' then\n        obj.pos.x = wall.pos.x + wall.size.x + 1\n        result = true\n      elseif side == 'top' then\n        obj.pos.y = wall.pos.y + wall.size.y + 1\n        result = true\n      elseif side == 'bottom' then\n        obj.pos.y = wall.pos.y - obj.size.y - 1\n        result = true\n      end\n      \n      --print(side)\n    end\n  end\n  return result\n  --isObjectOnMapBounds(obj)\nend\n\n\nfunction collectibleCollision(obj)\n  local objects = gameManager.collectibles.objects\n  \n  for i = 1, #objects do\n    if objects[i] ~= nil then\n      local result = rect_collision(obj, objects[i])\n      if result then\n        objects[i]:pickup(obj)\n      end\n    end\n  end\nend\n\n\n\nfunction collisionWithPlayerBullet(obj)\n  local objects = gameManager.playerBullets.objects\n  \n  for i = 1, #objects do\n    if objects[i] ~= nil then\n      local result = rect_collision(obj, objects[i])\n      if result then\n        obj:takeHit(objects[i].damage)\n        objects[i]:setDead()\n        gameManager:decreaseEnemy()\n      end\n    end\n  end\nend\n\n\n--[[ -- DEPRICATED \nfunction deepcopy(orig)\n    local orig_type = type(orig)\n    local copy\n    if orig_type == 'table' then\n        copy = {}\n        for orig_key, orig_value in next, orig, nil do\n            copy[deepcopy(orig_key)] = deepcopy(orig_value)\n        end\n        setmetatable(copy, deepcopy(getmetatable(orig)))\n    else -- number, string, boolean, etc\n        copy = orig\n    end\n    return copy\nend\n\n--]]",
-			"file": "tools/collision2.lua",
-			"file_size": 3200,
-			"file_write_time": 131571503151746412,
-			"settings":
-			{
-				"buffer_size": 3077,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "objects/entity.lua",
-			"settings":
-			{
-				"buffer_size": 869,
+				"buffer_size": 4729,
 				"line_ending": "Windows"
 			}
 		}
@@ -110,13 +91,16 @@
 	[
 		"/M/temp/love2d/ld40",
 		"/M/temp/love2d/ld40/objects",
+		"/M/temp/love2d/ld40/objects/guns",
 		"/M/temp/love2d/ld40/tools"
 	],
 	"file_history":
 	[
-		"/M/temp/love2d/ld40/objects/enemy.lua",
+		"/M/temp/love2d/ld40/objects/guns/rifle.lua",
 		"/M/temp/love2d/ld40/tools/collision2.lua",
 		"/M/temp/love2d/ld40/objects/entity.lua",
+		"/M/temp/love2d/ld40/tools/collision.lua",
+		"/M/temp/love2d/ld40/objects/enemy.lua",
 		"/M/temp/love2d/ld40/objects/collectible.lua",
 		"/M/temp/love2d/ld40/objects/player.lua",
 		"/M/temp/love2d/ld40/objects/coin.lua",
@@ -170,27 +154,29 @@
 			[
 				{
 					"buffer": 0,
-					"file": "tools/collision.lua",
+					"file": "objects/guns/shotgun.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4449,
+						"buffer_size": 4729,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								133,
-								133
+								1188,
+								1188
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/User/SublimeLove/Love.tmLanguage"
+							"syntax": "Packages/User/SublimeLove/Love.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 630.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -199,69 +185,8 @@
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 1,
-					"file": "tools/collision2.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3077,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1273,
-								1273
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/SublimeLove/Love.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "objects/entity.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 869,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/SublimeLove/Love.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -345,7 +270,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},

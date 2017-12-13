@@ -11,7 +11,7 @@ return {
   nextobjectid = 23,
   properties = {
     ["enemyStep"] = "2",
-    ["maxCoins"] = "16",
+    ["maxCoins"] = "1",
     ["maxEnemy"] = "7",
     ["spawnerChange"] = "4",
     ["startEnemy"] = "1"

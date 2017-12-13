@@ -38,6 +38,8 @@ function Player:new(x, y)
   player.currentBlinkTime = 0
   player.lastBlinkTime = 0
   
+  player.gun = nil
+  
   
   function player:init()
     -- add to loop?
@@ -84,6 +86,9 @@ function Player:new(x, y)
       self.rect.pos.y = 0--22
       self.rect.size.x = 22
       self.rect.size.y = 22      
+      
+      -- init gun -- TEST
+      self.gun = require("objects/guns/shotgun"):new()
   end
   
   function player:reinit()
@@ -99,6 +104,11 @@ function Player:new(x, y)
       self.isAlive = true
       self.canUseSpecial = true
       self.specialCooldown = 0
+      
+      --self.gun = require("objects/guns/rifle"):new()
+      self.gun.cooldown = 0
+      self.gun.cooldownSpeed = self.gun.cooldownBaseSpeed
+      self.gun.canShoot = true
   end
   
   
@@ -128,11 +138,21 @@ function Player:new(x, y)
   
   function player:tick(dt)
     player:checkBlink(dt)
+    
+    -- test
+    self.gun.cooldown = self.gun.cooldown - 1
+    if self.gun.cooldown <= 0 then
+      self.gun.canShoot = true
+    end
+    
     -- fire cooldown
     self.cooldown = self.cooldown - 1
     if self.cooldown <= 0 then
       self.canShoot = true
     end
+    
+    
+    
     -- special cooldown
     if self.specialCooldown > 0 then
       self.specialCooldown = self.specialCooldown - 1
@@ -251,6 +271,9 @@ function Player:new(x, y)
   end
  
   function player:shoot(dt)
+    self.gun:shoot(dt)
+    goto SKIP
+    
     if self.cooldown <= 0  then 
       
       local x = self.dir.x
@@ -270,6 +293,9 @@ function Player:new(x, y)
       self.canShoot = false
       self.cooldown = self.cooldownSpeed
     end
+    
+    
+    ::SKIP::
     
   end
   
@@ -324,10 +350,10 @@ function Player:new(x, y)
       end
       
       if self.dir.y == 1 and self.dir.x == 1 then
-          posx = posx + self.size.x
-          posy = posy + self.size.y
+          posx = posx + self.size.x 
+          posy = posy + self.size.y 
       elseif self.dir.y == 1 and self.dir.x == -1 then
-        posy = posy + self.size.y
+        posy = posy + self.size.y 
       elseif self.dir.y == -1 and self.dir.x == 1 then
         posx = posx + self.size.x
       end

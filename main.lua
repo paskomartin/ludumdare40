@@ -324,23 +324,34 @@ function loadTextures()
 
   -- sound
   -- TODO: put it to another function
+  local type = "static"
+  local sound = nil
   filename = "assets/sounds/coin.wav"
-  image = love.audio.newSource(filename)
-  asm:add(image, "coinsound", "sound")
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "coinsound", "sound")
 
   filename = "assets/sounds/enemyouch.wav"
-  image = love.audio.newSource(filename)
-  asm:add(image, "enemyouch", "sound")
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "enemyouch", "sound")
   
   
   filename = "assets/sounds/fire.wav"
-  image = love.audio.newSource(filename)
-  asm:add(image, "fire", "sound")
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "fire", "sound")
+  
+  filename = "assets/sounds/laserrifle.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "laserrifle", "sound")
   
  
   filename = "assets/sounds/playerouch.wav"
-  image = love.audio.newSource(filename)
-  asm:add(image, "playerouch", "sound")
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "playerouch", "sound")
+  
+  filename = "assets/sounds/shotgun.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "shotgun", "sound")
+
 
 
 end

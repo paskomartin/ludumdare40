@@ -14,6 +14,10 @@ https://github.com/razorgamedev/Lets-Make-a-Platformer/blob/master/tools/animati
 * music
 * sounds
 
+reverse fire
+shotgun
+
+
 * after game over jump to main menu
 
 ==== IF I WILL HAVE TIME: =======
