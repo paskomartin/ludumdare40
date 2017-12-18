@@ -284,10 +284,56 @@ function Player:new(x, y)
       self.dir.x = 0
     elseif leftRightPressed and upDownPressed == false then
       self.dir.y = 0
+    elseif not leftRightPressed and not upDownPressed then
+      ----- REFACTOR THIS! ------------------------
+      -- setup proper image------------------------
+      local horizontal = ""
+      if self.dir.x == -1 then
+        if not reversed then
+          horizontal = "-left"
+        else
+          horizontal = "-right"
+        end
+        
+      elseif self.dir.x == 1 then
+        if not reversed then
+          horizontal = "-right"
+        else
+          horizontal = "-left"
+        end
+      end
+      
+      local vertical = ""
+      if self.dir.y == -1 then
+        if not reversed then
+          vertical = "-up"
+        else
+          vertical = "-down"
+        end
+      elseif self.dir.y == 1 then
+        if not reversed then
+          vertical = "-down"
+        else
+          vertical = "-up"
+        end
+      end
+      
+      if self.dir.x ~= 0 then
+        local imageName = "hero" .. horizontal
+        if self.dir.y ~= 0 then
+          imageName = imageName .. vertical
+        end
+        self.animation:set_image( asm:get(imageName) )
+      else 
+        local imageName = "hero" .. vertical
+        self.animation:set_image( asm:get(imageName) )
+      end
+      ----------------------------------------------------------------
     end
     
     if not upDownPressed and not leftRightPressed then
       self.animation:set_animation(1)
+      --here?
     end
     
     if keys.action.pressed then --and not isShoot then
