@@ -1,29 +1,29 @@
 local vec2 = require("tools/vec2")
-local Coin = {}
+local FastReload = {}
 
-function Coin:new(x,y)
+function FastReload:new(x,y)
 	local tile_w = 16
 	local tile_h = 16
 
-	--local coin = require("objects/entity"):new(x,y, tile_w, tile_h, "coin")
-  local coin = require("objects/collectible"):new(x,y,tile_w, tile_h, "coin", true)
-	coin.isAlive = true
-  coin.canPickUp = true -- can player pick up this object?
-  coin.canUse = false   -- can we use this object? 
-  coin.value = 1
-  coin.image = asm:get("coin")
+	--local fastReload = require("objects/entity"):new(x,y, tile_w, tile_h, "fastReload")
+  local fastReload = require("objects/collectible"):new(x,y,tile_w, tile_h, "fastreload", true)
+	fastReload.isAlive = true
+  fastReload.canPickUp = true -- can player pick up this object?
+  fastReload.canUse = false   -- can we use this object? 
+  fastReload.value = 1
+  fastReload.image = asm:get("fastreload")
   
 	local color = {196,146,21,255}
 
-	function coin:load()
-		-- add coin quad here --
+	function fastReload:load()
+		-- add fastReload quad here --
     self.layer = 1
 		gameManager.gameLoop:add(self)
 		gameManager.renderer:add(self, self.layer)
 	end	
 
-	function coin:draw()
-		if coin.isAlive then
+	function fastReload:draw()
+		if fastReload.isAlive then
 			--love.graphics.setColor(color)
 			--love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
       -- shadow
@@ -39,21 +39,22 @@ function Coin:new(x,y)
 		end
 	end
 
-	function coin:pickup(obj)
+	function fastReload:pickup(obj)
     if self.isAlive and not self.remove then
       self.isAlive = false
       self.remove = true
-      obj:addCoin(self.value)
-      love.audio.play(asm:get("coinsound"))
-      --print("coin is picked up") 
+      player.gun.cooldownSpeed = player.gun.cooldownMaxSpeed
+      love.audio.play(asm:get("pickupsound02"))
+      --print("fastReload is picked up") 
     end
 	end
 
 
-	return coin
+	return fastReload
 end
 
 	
 
 
-return Coin
+return FastReload
+

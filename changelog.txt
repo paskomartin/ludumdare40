@@ -4,10 +4,10 @@
 * spawner bug		 [FIXED]
 * ADD RANDOM STROLL MOVEMENT FOR ANY ENEMIES [ ]
 * FIX DISTANCE IN ENEMY! 
-* special fire           [ PARTIALY DONE] (depends on time, not kils)
+* special fire           [ PARTIALY DONE] (depends on time, not kills)
 * add some guns          [ DONE ]
 * reverse fire           [ DONE ]
-* pickups and bonuses    [ NOT DONE YET ]
+* pickups and bonuses    [ DONE ]
 * add some new graphics	 [ PARTIALY DONE]
 * slow down player if have more coins, increase enemy speed [ NOT DONE YET ]
 (probably i'll not implement this)

@@ -38,6 +38,7 @@ function love.load()
   asm:create()
   tlm:create()
   loadTextures()
+  loadSounds()
   gameManager:init()
   gameManager:startNewGame()
   
@@ -267,7 +268,39 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "coin", "image")
 
-
+  filename = "assets/sprites/medkit.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "medkit", "image")
+  
+  filename = "assets/sprites/bomb.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "bomb", "image")
+  
+  -- guns
+  filename = "assets/sprites/shotgun.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "shotgun", "image")
+  
+  filename = "assets/sprites/rifle.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "rifle", "image")
+  
+  filename = "assets/sprites/pistol.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "pistol", "image")
+  
+  -- add it later
+  filename = "assets/sprites/fastreload.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "fastreload", "image")
+    
+  
   -- enemy
   
   --[[
@@ -315,17 +348,10 @@ function loadTextures()
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "lizard", "image")
-
+end
   
   
-  filename = "assets/sprites/coin.png"
-  image = love.graphics.newImage(filename)
-  image:setFilter("nearest","nearest")
-  asm:add(image, "coin", "image")
-
-
-  -- sound
-  -- TODO: put it to another function
+function loadSounds()
   local type = "static"
   local sound = nil
   filename = "assets/sounds/coin.wav"
@@ -339,27 +365,38 @@ function loadTextures()
   
   filename = "assets/sounds/fire.wav"
   sound = love.audio.newSource(filename, type)
-  asm:add(sound, "fire", "sound")
+  asm:add(sound, "firesound", "sound")
   
   filename = "assets/sounds/laserrifle.wav"
   sound = love.audio.newSource(filename, type)
-  asm:add(sound, "laserrifle", "sound")
+  asm:add(sound, "laserriflesound", "sound")
   
- 
+  filename = "assets/sounds/gun.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "gunsound", "sound")
+    
+   
   filename = "assets/sounds/playerouch.wav"
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "playerouch", "sound")
   
   filename = "assets/sounds/shotgun.wav"
   sound = love.audio.newSource(filename, type)
-  asm:add(sound, "shotgun", "sound")
+  asm:add(sound, "shotgunsound", "sound")
 
+  filename = "assets/sounds/pickup.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "pickupsound", "sound")
+  
+  filename = "assets/sounds/pickup02.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "pickupsound02", "sound")
 
+  filename = "assets/sounds/explosion04.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "explosionsound", "sound")
 
 end
-  
-  
-  
   
   
   

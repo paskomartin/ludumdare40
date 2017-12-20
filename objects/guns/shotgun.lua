@@ -5,8 +5,8 @@ local cos = math.cos
 
 function Shotgun:new()
   local shotgun = {}
-   
-  shotgun = require("objects/guns/gun"):new()
+  shotgun = require("objects/guns/gun"):new() --0,0,32,32,"shotgun", true, true)
+  
   --setmetatable(shotgun, Gun)
   --shotgun.__init = Gun
   shotgun.cooldownBaseSpeed = 60
@@ -18,12 +18,12 @@ function Shotgun:new()
   shotgun.colors.first = { 102, 0, 51 }
   shotgun.colors.second = { 204, 102, 153 }
   
-  
   function shotgun:update(self, dt)
     
   end
   
   function shotgun:draw()
+    
   end
   
   function shotgun:shoot(dt)
@@ -67,7 +67,7 @@ function Shotgun:new()
       gameManager.playerBullets:add(bullet)
       bullet:shoot(x,y)
       --]]
-      local sound = asm:get("shotgun")
+      local sound = asm:get("shotgunsound")
       if sound:isPlaying() then
         sound:stop()
       end

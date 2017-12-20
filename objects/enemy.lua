@@ -66,7 +66,7 @@ function Enemy:new(x,y, id)
     
     
       gameManager.gameLoop:add(self)
-      self.layer = 2
+      self.layer = 3
       self.dir.x = 0
       self.dir.y = 1
       gameManager.renderer:add(self,self.layer)
@@ -116,8 +116,13 @@ function Enemy:new(x,y, id)
         player.points = player.points + self.points
         
         local result = rand()
-        if result >= 0.3 then
-          self:spawnCoin()
+        -- only 10 %
+        if result <= 0.15 then
+          if result <= 0.02 then
+            self:spawnBonus()
+          else
+            self:spawnCoin()  
+          end
         end
         
         gameManager:decreaseEnemy()
@@ -131,6 +136,27 @@ function Enemy:new(x,y, id)
     --local coin = require("objects/coin"):new(self.pos.x, self.pos.y)
     local coin = require("objects/coin"):new(self.rect.pos.x, self.rect.pos.y)
     gameManager.collectibles:add(coin)
+  end
+  
+  function enemy:spawnBonus()
+    -- medkit, rifle, shotgun or bomb
+    -- temporary --
+    local bonusesCount = 3
+    local r = math.random(0, 256) % bonusesCount
+    
+    local bonus = nil
+    if r == 0 then
+      bonus = require("objects/medkit"):new(self.rect.pos.x, self.rect.pos.y)
+    elseif r == 1 then
+      bonus = require("objects/bomb"):new(self.rect.pos.x, self.rect.pos.y)
+    elseif r == 2 then
+      local guns = { "shotgun", "rifle", "pistol" }
+      local gunNum = math.random(0, 1024) % #guns
+      gunNum = gunNum + 1
+      bonus = require("objects/guns/gunfactory"):new(self.rect.pos.x, self.rect.pos.y, guns[gunNum] )
+    end
+    -- check collision with walls here!
+    gameManager.collectibles:add(bonus)
   end
   
   function enemy:ai(dt)

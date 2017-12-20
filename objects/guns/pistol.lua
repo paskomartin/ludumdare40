@@ -1,27 +1,27 @@
-local Rifle = {}
+local Pistol = {}
 local Gun = require("objects/guns/gun")
 
 
-function Rifle:new()
-  local rifle = {}
+function Pistol:new()
+  local pistol = {}
    
-  rifle = require("objects/guns/gun"):new()
-  --setmetatable(rifle, Gun)
-  --rifle.__init = Gun
-  rifle.cooldownBaseSpeed = 15
-  rifle.cooldown = 0
-  rifle.cooldownSpeed = rifle.cooldownBaseSpeed
-  rifle.cooldownMaxSpeed = 7
-  rifle.damage = 10
+  pistol = require("objects/guns/gun"):new()
+  --setmetatable(pistol, Gun)
+  --pistol.__init = Gun
+  pistol.cooldownBaseSpeed = 45
+  pistol.cooldown = 0
+  pistol.cooldownSpeed = pistol.cooldownBaseSpeed
+  pistol.cooldownMaxSpeed = 25
+  pistol.damage = 7
   
-  function rifle:update(self, dt)
+  function pistol:update(self, dt)
     
   end
   
-  function rifle:draw()
+  function pistol:draw()
   end
   
-  function rifle:shoot(dt)
+  function pistol:shoot(dt)
     if self.cooldown <= 0  then 
       
       local x = player.dir.x
@@ -35,10 +35,13 @@ function Rifle:new()
       
 
       local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
+      bullet.color.second = { 255, 175, 46 }
+      bullet.color.first = { 255, 70, 46 }
+
       gameManager.playerBullets:add(bullet)
       
       bullet:shoot(x,y)
-      local sound = asm:get("laserriflesound")
+      local sound = asm:get("gunsound")
       if sound:isPlaying() then
         sound:stop()
       end
@@ -53,7 +56,8 @@ function Rifle:new()
   end  
     
     
-  return rifle
+  return pistol
 end
   
-return Rifle
+return Pistol
+

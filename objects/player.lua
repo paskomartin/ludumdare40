@@ -15,6 +15,7 @@ function Player:new(x, y)
   local tile_h = 64
   local player = require("objects/entity"):new(x, y, tile_w, tile_h, "player")
   local color = { 255,0,255,255}
+  player.maxLife = 255
   player.life = 10
   local velSpeed = 250
   player.cooldownBaseSpeed = 10--50
@@ -88,7 +89,7 @@ function Player:new(x, y)
       self.rect.size.y = 22      
       
       -- init gun -- TEST
-      self.gun = require("objects/guns/shotgun"):new()
+      self.gun = require("objects/guns/pistol"):new()
   end
   
   function player:reinit()
@@ -366,7 +367,7 @@ function Player:new(x, y)
       gameManager.playerBullets:add(bullet)
       
       bullet:shoot(x,y)
-      local sound = asm:get("fire")
+      local sound = asm:get("firesound")
       love.audio.play(sound)
       
       keys.action.pressed = false
@@ -402,7 +403,7 @@ function Player:new(x, y)
       self.canUseSpecial = false
       self.specialCooldown = math.random( self.specialTimes.min, self.specialTimes.max)
       
-      local sound = asm:get("fire")
+      local sound = asm:get("firesound")
       love.audio.play(sound)
       keys.special.pressed = false
     end
@@ -458,9 +459,14 @@ function Player:new(x, y)
   
   function player:addCoin(val)
     self.coins = self.coins + val
-    love.audio.play(asm:get("coinsound"))
   end
   
+  function player:addLife(val)
+    self.life = self.life + val
+    if self.life > self.maxLife then
+      self.life = self.maxLife
+    end
+  end
   
   function player:takeHit(damage)
     -- simple take, have no time for rest :/ --

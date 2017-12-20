@@ -8,15 +8,18 @@ https://github.com/razorgamedev/Lets-Make-a-Platformer/blob/master/tools/animati
 * game menu                         V
 * player take hits                  V
 * player blinks                     V
-* game update                       -- almost!
+* game update                       V
 
-* graphics
-* music
-* sounds
+* graphics			                    - some
+* music					
+* sounds			                      V
 
-reverse fire
-shotgun
-
+reverse fire			                  V
+shotgun				                      V
+rifle                               V
+bomb                                V
+fast reload                         V
+medkit                              V
 
 * after game over jump to main menu
 

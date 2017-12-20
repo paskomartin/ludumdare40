@@ -100,7 +100,7 @@ function GameManager:create()
     
     if player.life <= 0 then
       gameManager.isGameOver = true
-      gameManager.state = 'theend'--"gameover"
+      gameManager.state = "gameover"
     end
     
     
