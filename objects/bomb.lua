@@ -47,10 +47,16 @@ function Bomb:new(x,y)
 
   function bomb:hitEnemies()
     for _, enemy in pairs(gameManager.enemies.objects) do
-      --enemy.remove = true
+      local x = enemy.pos.x
+      local y = enemy.pos.y
+      
+      local explosion = require("objects/animations/explosion"):new(x,y)
+      explosion:load()
       enemy:takeHit(self.value)
+      
     end
   end
+
 
 	return bomb
 end

@@ -12,7 +12,7 @@ function Shotgun:new()
   shotgun.cooldownBaseSpeed = 60
   shotgun.cooldown = 0
   shotgun.cooldownSpeed = shotgun.cooldownBaseSpeed
-  shotgun.cooldownMaxSpeed = 40
+  shotgun.cooldownMaxSpeed = 30
   shotgun.damage = 20
   shotgun.colors = {}
   shotgun.colors.first = { 102, 0, 51 }

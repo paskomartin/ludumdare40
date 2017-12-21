@@ -94,7 +94,7 @@ function collisionWithPlayerBullet(obj)
   local objects = gameManager.playerBullets.objects
   
   for i = 1, #objects do
-    if objects[i] ~= nil then
+    if objects[i] ~= nil and objects[i].isAlive then
       local result = rect_collision(obj.rect, objects[i].rect)
       if result then
         obj:takeHit(objects[i].damage)

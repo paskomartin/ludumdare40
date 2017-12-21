@@ -19,7 +19,7 @@ function Enemy:new(x,y, id)
   local color = { 201,20,72,255}
   enemy.life = 1
   enemy.points = 50
-  local velSpeed = 100
+  local velSpeed = 70--100
   local cooldownSpeed = 5
   local cooldown = 0
   local isShoot = false
@@ -59,7 +59,7 @@ function Enemy:new(x,y, id)
         },
         0.1
       )
-      
+      self.animation.scale = 2
       self.animation:set_animation(2)
       self.animation:play()
     
@@ -111,14 +111,15 @@ function Enemy:new(x,y, id)
       if self.life <= 0 then
         self.isAlive = false
         self.remove = true
-        love.audio.play(asm:get("enemyouch"))
-        
+        local sound = asm:get("enemyouch")
+
+        love.audio.play(sound)
         player.points = player.points + self.points
         
         local result = rand()
         -- only 10 %
-        if result <= 0.15 then
-          if result <= 0.02 then
+        if result <= 0.19 then
+          if result <= 0.05 then --0.02
             self:spawnBonus()
           else
             self:spawnCoin()  
@@ -141,8 +142,8 @@ function Enemy:new(x,y, id)
   function enemy:spawnBonus()
     -- medkit, rifle, shotgun or bomb
     -- temporary --
-    local bonusesCount = 3
-    local r = math.random(0, 256) % bonusesCount
+    local bonusesCount = 4
+    local r = math.random(0, 4096) % bonusesCount
     
     local bonus = nil
     if r == 0 then
@@ -150,8 +151,10 @@ function Enemy:new(x,y, id)
     elseif r == 1 then
       bonus = require("objects/bomb"):new(self.rect.pos.x, self.rect.pos.y)
     elseif r == 2 then
+      bonus = require("objects/fastreload"):new(self.rect.pos.x, self.rect.pos.y)
+    elseif r == 3 then
       local guns = { "shotgun", "rifle", "pistol" }
-      local gunNum = math.random(0, 1024) % #guns
+      local gunNum =  math.random(0, 8192)  % #guns
       gunNum = gunNum + 1
       bonus = require("objects/guns/gunfactory"):new(self.rect.pos.x, self.rect.pos.y, guns[gunNum] )
     end

@@ -13,16 +13,16 @@ local rotate = love.graphics.rotate
 local translate = love.graphics.translate
 local scale = love.graphics.scale
 
-
-
 return{
-	new = function(self,image,animation,time)
+	new = function(self,image,animation,time,once)
 	return{
 		current_frame = 1,
 		current_anim  = 1,
 		image 		  = image,
-		a 			  = animation,
+		a 			  = animation,  -- quads table
 		play		  = false,
+    playOnce  = once or false,
+    scale     = 1,
 		time          = time or 0.2,
 		counter		  = 0,
 
@@ -33,9 +33,12 @@ return{
 					self.counter = 0
 					self.current_frame = self.current_frame + 1
 				end
-
 				if self.current_frame > #self.a[self.current_anim] then
-					self.current_frame = 1
+          if not self.playOnce then
+            self.current_frame = 1
+          else
+            self:stop()
+          end
 				end
 			else
 
@@ -62,7 +65,7 @@ return{
       
       local angle = orientation or 0
       --local orient = orientation or 0
-			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], angle)
+			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], angle, self.scale)
       --[[
       push()
       translate( worldWidth / 2, worldHeigth / 2)

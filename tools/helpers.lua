@@ -1,3 +1,8 @@
+
+local insert = table.insert
+local quad = love.graphics.newQuad
+
+
 -- returns table index
 function table.find(table, obj)
   for index,value in pairs(table) do
@@ -23,3 +28,24 @@ end
 function clearTable(t)
   for i, v in ipairs(t) do t[i] = nil end
 end
+
+
+
+-- generate animation quads
+function genAnimQuads( cols, rows, width, height)
+  local maxRows = rows or 1
+  local maxCols = cols or 1
+  local quads = {}
+  
+  for row = 1,  maxRows, 1 do
+    for col = 1,  maxCols, 1 do
+      
+      local q = quad( (col - 1) * width, (row - 1) * height, width, height,  width * cols, height * rows)
+      insert(quads, q)
+      
+    end
+  end
+  
+  return quads
+end
+

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="17" tilewidth="32" tileheight="32" nextobjectid="28">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="17" tilewidth="32" tileheight="32" nextobjectid="29">
  <properties>
   <property name="enemyStep" value="5"/>
   <property name="maxCoins" value="30"/>
@@ -7,8 +7,8 @@
   <property name="spawnerChange" value="4"/>
   <property name="startEnemy" value="4"/>
  </properties>
- <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="40" columns="8">
-  <image source="../sprites/tiles.png" width="256" height="160"/>
+ <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="56" columns="8">
+  <image source="../sprites/tiles.png" width="256" height="224"/>
   <terraintypes>
    <terrain name="" tile="-1"/>
   </terraintypes>
@@ -30,9 +30,9 @@
 0,32,32,32,32,32,32,35,36,36,36,35,32,32,32,21,21,21,21,21,32,15,14,32,0,
 32,32,32,32,32,32,34,33,34,32,32,32,34,14,14,32,32,32,32,32,32,15,15,32,0,
 0,32,14,14,14,32,34,34,34,32,32,14,14,14,34,32,32,32,32,32,27,30,15,32,0,
-0,32,32,32,14,14,34,32,32,32,32,32,32,27,23,22,24,30,32,32,28,31,32,32,0,
-0,32,32,32,32,14,32,32,21,21,21,21,32,26,22,25,22,29,32,32,32,32,32,32,0,
-0,32,32,32,33,32,32,32,21,21,21,21,32,28,23,22,24,31,21,32,32,33,32,32,0,
+0,32,32,32,14,14,34,32,32,32,32,32,32,27,23,22,25,30,32,32,28,31,32,32,0,
+0,32,32,32,32,14,32,32,21,21,21,21,32,26,22,18,22,29,32,32,32,32,32,32,0,
+0,32,32,32,33,32,32,32,21,21,21,21,32,28,23,22,25,31,21,32,32,33,32,32,0,
 0,32,32,34,32,34,32,32,21,21,21,21,32,32,35,36,36,32,21,32,32,32,32,32,0,
 0,32,32,34,34,34,32,32,21,21,21,21,32,32,32,32,32,32,32,32,32,32,32,32,0,
 0,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,0,
@@ -79,5 +79,6 @@
  </objectgroup>
  <objectgroup name="spawner">
   <object id="16" name="spawner1" x="704" y="448" width="32" height="32"/>
+  <object id="28" x="480" y="256" width="32" height="32"/>
  </objectgroup>
 </map>

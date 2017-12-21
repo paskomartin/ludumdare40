@@ -11,7 +11,7 @@ function Rifle:new()
   rifle.cooldownBaseSpeed = 15
   rifle.cooldown = 0
   rifle.cooldownSpeed = rifle.cooldownBaseSpeed
-  rifle.cooldownMaxSpeed = 7
+  rifle.cooldownMaxSpeed = 8
   rifle.damage = 10
   
   function rifle:update(self, dt)

@@ -294,11 +294,15 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "pistol", "image")
   
-  -- add it later
   filename = "assets/sprites/fastreload.png"
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "fastreload", "image")
+    
+  filename = "assets/sprites/explosion.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "explosion", "image")
     
   
   -- enemy
