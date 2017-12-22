@@ -9,8 +9,8 @@ function buildMap(levelname)
   love.timer.sleep(0.25)
   
   
-    local bomb = require("objects/bomb"):new(100, 464)
-  gameManager.collectibles:add(bomb)
+  --local bomb = require("objects/bomb"):new(100, 464)
+  --gameManager.collectibles:add(bomb)
 
   --[[
   local coin = require("objects/coin"):new(100,300)

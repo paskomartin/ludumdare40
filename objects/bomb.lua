@@ -40,8 +40,15 @@ function Bomb:new(x,y)
     if self.isAlive and not self.remove then
       self.isAlive = false
       self.remove = true
-      love.audio.play(asm:get("explosionsound"))
+
       self:hitEnemies()
+      self:resetSpawners()
+      local sound = asm:get("explosionsound")
+      if sound:isPlaying() then
+        sound:stop()
+      end
+      love.audio.play(sound)
+
     end
 	end
 
@@ -57,6 +64,12 @@ function Bomb:new(x,y)
     end
   end
 
+
+  function bomb:resetSpawners()
+    for _,spawner in pairs(gameManager.spawners.objects) do
+      spawner:setCurrentTime( (math.random(0, 5) * -1) )
+    end
+  end
 
 	return bomb
 end

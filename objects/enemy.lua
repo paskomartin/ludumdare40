@@ -19,7 +19,7 @@ function Enemy:new(x,y, id)
   local color = { 201,20,72,255}
   enemy.life = 1
   enemy.points = 50
-  local velSpeed = 70--100
+  local velSpeed = 85--100
   local cooldownSpeed = 5
   local cooldown = 0
   local isShoot = false
@@ -111,8 +111,11 @@ function Enemy:new(x,y, id)
       if self.life <= 0 then
         self.isAlive = false
         self.remove = true
-        local sound = asm:get("enemyouch")
-
+        local r =  math.random(1, 7) 
+        local name = "enemyouch" .. tostring(r)
+        --local sound = asm:get("enemyouch")
+        local sound = asm:get(name)
+        
         love.audio.play(sound)
         player.points = player.points + self.points
         

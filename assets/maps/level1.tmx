@@ -3,9 +3,9 @@
  <properties>
   <property name="enemyStep" value="2"/>
   <property name="maxCoins" value="16"/>
-  <property name="maxEnemy" value="7"/>
+  <property name="maxEnemy" value="15"/>
   <property name="spawnerChange" value="4"/>
-  <property name="startEnemy" value="1"/>
+  <property name="startEnemy" value="5"/>
  </properties>
  <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="56" columns="8">
   <image source="../sprites/tiles.png" width="256" height="224"/>
@@ -26,7 +26,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,47,23,25,23,44,32,32,32,32,32,32,32,32,32,32,32,32,47,24,25,24,44,32,0,
-0,47,25,20,25,44,32,32,32,32,15,32,32,32,32,32,32,32,47,25,17,25,44,32,0,
+0,47,25,23,25,44,32,32,32,32,15,32,32,32,32,32,32,32,47,25,23,25,44,32,0,
 0,47,23,25,23,44,32,32,32,15,15,32,32,27,30,15,32,32,47,24,25,24,44,32,0,
 0,32,36,35,46,45,32,48,32,32,32,14,14,26,29,34,32,32,32,46,35,36,45,14,0,
 0,32,32,34,15,15,32,32,32,32,32,32,14,28,31,16,32,32,32,32,32,32,14,14,0,

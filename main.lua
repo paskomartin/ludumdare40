@@ -1,5 +1,9 @@
-
-gameManager = require("tools/gameManager"):create()
+--[[ -- put it in release
+local paths = "assets/maps/?.lua;assets/sounds/?.wav;assets/sprites/?.png;objects/animations/?.lua;objects/guns/?.lua;objects/?.lua;tiles/?.lua;tools/?.lua;?.lua"
+package.path = paths
+love.filesystem.setRequirePath(paths)
+--]]
+gameManager = require("tools/gamemanager"):create()
 asm = require("tools/assetsmanager")
 tlm = require("tiles/tlm")
 width = love.graphics.getWidth()
@@ -304,6 +308,11 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "explosion", "image")
     
+  filename = "assets/sprites/portal.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "portal", "image")
+    
   
   -- enemy
   
@@ -362,10 +371,33 @@ function loadSounds()
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "coinsound", "sound")
 
-  filename = "assets/sounds/enemyouch.wav"
+  filename = "assets/sounds/enemyouch1.wav"
   sound = love.audio.newSource(filename, type)
-  asm:add(sound, "enemyouch", "sound")
+  asm:add(sound, "enemyouch1", "sound")
   
+  filename = "assets/sounds/enemyouch2.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "enemyouch2", "sound")
+  
+  filename = "assets/sounds/enemyouch3.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "enemyouch3", "sound")
+  
+  filename = "assets/sounds/enemyouch4.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "enemyouch4", "sound")  
+  
+  filename = "assets/sounds/enemyouch5.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "enemyouch5", "sound")
+  
+  filename = "assets/sounds/enemyouch6.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "enemyouch6", "sound")  
+  
+  filename = "assets/sounds/enemyouch7.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "enemyouch7", "sound")  
   
   filename = "assets/sounds/fire.wav"
   sound = love.audio.newSource(filename, type)

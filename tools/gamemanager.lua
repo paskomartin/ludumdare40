@@ -144,7 +144,9 @@ function GameManager:create()
         player.cooldownSpeed = player.cooldownMaxSpeed
       end
       
-      player.gun.cooldownSpeed = player.gun.cooldownSpeed - 10
+      local cooldownSpeed = 3
+      
+      player.gun.cooldownSpeed = player.gun.cooldownSpeed - cooldownSpeed
       if player.gun.cooldownSpeed < player.gun.cooldownMaxSpeed then
         player.gun.cooldownSpeed = player.gun.cooldownMaxSpeed
       end

@@ -44,7 +44,12 @@ function Coin:new(x,y)
       self.isAlive = false
       self.remove = true
       obj:addCoin(self.value)
-      love.audio.play(asm:get("coinsound"))
+      local sound = asm:get("coinsound")
+      if sound:isPlaying() then
+        sound:stop()
+      end
+      --love.audio.play(asm:get("coinsound"))
+      love.audio.play(sound)
       --print("coin is picked up") 
     end
 	end

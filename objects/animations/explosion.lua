@@ -12,7 +12,7 @@ function Explosion:new(x,y)
   local animSpeed = 0.05
   explosion.animation = require("tools/animation"):new(image, { genAnimQuads(9, 1, 32, 32) }, animSpeed, true)
 
-  explosion.animation.scale = 2
+  explosion.animation.scale = 1.5
   explosion.animation:set_animation(1)
   explosion.animation:play()
   

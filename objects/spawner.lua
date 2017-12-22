@@ -10,6 +10,14 @@ function Spawner:new(x,y)
   spawner.spawnTime = 1--3
   spawner.canSpawn = true
   spawner.isAlive = true
+  -- animation
+  local image = asm:get("portal")
+  local animSpeed = 0.08
+  spawner.animation = require("tools/animation"):new(image, { genAnimQuads(6, 1, w, h) }, animSpeed)
+  spawner.animation.currentFrame = math.random(1, 6)
+  spawner.animation:set_animation(1)
+  love.timer.sleep(0.04)
+  spawner.animation:play()
   local color = { 134, 53, 56,255 }
 
   function spawner:load()
@@ -20,10 +28,12 @@ function Spawner:new(x,y)
   end
 
   function spawner:tick(dt)
+    self.animation:update(dt)
     self:spawn(dt)
   end
   
   function spawner:draw()
+    self.animation:draw( {self.pos.x, self.pos.y} ) 
     if debugRect then
       love.graphics.setColor(color)
       love.graphics.rectangle("line", self.pos.x, self.pos.y, self.size.x, self.size.y)
@@ -52,6 +62,10 @@ function Spawner:new(x,y)
     local enemy = require("objects/enemy"):new(self.pos.x, self.pos.y, id)
     gameManager.enemies:add(enemy)
     gameManager:increaseEnemy()
+  end
+  
+  function spawner:setCurrentTime(time)
+    self.currentTime = time
   end
   
   return spawner
