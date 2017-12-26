@@ -18,8 +18,10 @@ function Shotgun:new()
   shotgun.colors.first = { 102, 0, 51 }
   shotgun.colors.second = { 204, 102, 153 }
   
+  
+  
   function shotgun:update(self, dt)
-    
+    self.animation:update(dt)
   end
   
   function shotgun:draw()

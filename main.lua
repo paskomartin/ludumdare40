@@ -271,6 +271,16 @@ function loadTextures()
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "coin", "image")
+  
+  filename = "assets/sprites/coin2 silver.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "coin2 silver", "image")
+
+  filename = "assets/sprites/coin2 gold.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "coin2 gold", "image")
 
   filename = "assets/sprites/medkit.png"
   image = love.graphics.newImage(filename)
@@ -303,7 +313,7 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "fastreload", "image")
     
-  filename = "assets/sprites/explosion.png"
+  filename = "assets/sprites/explosion03.png"
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "explosion", "image")
@@ -312,7 +322,32 @@ function loadTextures()
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "portal", "image")
+  
+  filename = "assets/sprites/rifle anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "rifle anim", "image")
+  
+  filename = "assets/sprites/gun anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "gun anim", "image")
+  
+  filename = "assets/sprites/shotgun anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "shotgun anim", "image")
+  
+  filename = "assets/sprites/bomb anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "bomb anim", "image")
     
+  filename = "assets/sprites/fastreload anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "fastreload anim", "image")
+  
   
   -- enemy
   
@@ -403,7 +438,7 @@ function loadSounds()
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "firesound", "sound")
   
-  filename = "assets/sounds/laserrifle.wav"
+  filename = "assets/sounds/rifle.wav"
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "laserriflesound", "sound")
   
@@ -424,7 +459,7 @@ function loadSounds()
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "pickupsound", "sound")
   
-  filename = "assets/sounds/pickup02.wav"
+  filename = "assets/sounds/powerup.wav"
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "pickupsound02", "sound")
 

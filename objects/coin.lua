@@ -1,9 +1,10 @@
 local vec2 = require("tools/vec2")
 local Coin = {}
+local quad = love.graphics.newQuad
 
 function Coin:new(x,y)
-	local tile_w = 16
-	local tile_h = 16
+	local tile_w = 8--16
+	local tile_h = 8--16
 
 	--local coin = require("objects/entity"):new(x,y, tile_w, tile_h, "coin")
   local coin = require("objects/collectible"):new(x,y,tile_w, tile_h, "coin", true)
@@ -11,9 +12,20 @@ function Coin:new(x,y)
   coin.canPickUp = true -- can player pick up this object?
   coin.canUse = false   -- can we use this object? 
   coin.value = 1
-  coin.image = asm:get("coin")
-  
+  -- animation
+  local val = math.random(0, 2) % 2
+  local subname = ""
+  if val == 0 then
+    subname = "gold"
+  else
+    subname = "silver"
+  end
+  coin.idleQuad = quad(0,0, 8,8, 144, 8)
+  coin.image = asm:get("coin2 " .. subname )
+  coin.scale = 1.5
+  coin.animation = require("objects/animations/genericanim"):new("coin2 " .. subname, coin.pos.x, coin.pos.y, tile_w, tile_h,1, 18, 0.05, 5, coin.scale)
 	local color = {196,146,21,255}
+
 
 	function coin:load()
 		-- add coin quad here --
@@ -22,16 +34,34 @@ function Coin:new(x,y)
 		gameManager.renderer:add(self, self.layer)
 	end	
 
+
+  function coin:tick(dt)
+    self.animation:update(dt)
+  end
+
+
 	function coin:draw()
 		if coin.isAlive then
 			--love.graphics.setColor(color)
 			--love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
+      --[[ --
       -- shadow
       love.graphics.setColor(0,0,0,128)
-      love.graphics.draw(self.image, self.pos.x+1, self.pos.y +1,0,1, 1)
+      love.graphics.draw(self.image, self.idleQuad, self.pos.x+1, self.pos.y +1,0,1.5, self.scale)
       love.graphics.setColor(255,255,255)
+      --]]
       -- main
-      love.graphics.draw(self.image, self.pos.x, self.pos.y,0,1, 1)
+      if self.animation:isPlaying() then
+      --  self.animation:draw( {self.pos.x, self.pos.y} ) 
+        self.animation:draw(true) 
+      else
+        -- shadow
+        love.graphics.setColor(0,0,0,128)
+        love.graphics.draw(self.image, self.idleQuad, self.pos.x+1, self.pos.y +1,0,1.5, self.scale)
+        love.graphics.setColor(255,255,255)
+        -- main
+        love.graphics.draw(self.image, self.idleQuad, self.pos.x, self.pos.y,0,1.5, self.scale)
+      end
       --love.graphics.setColor(255,255,255)
       if debugRect then
         self:drawDebugRect()

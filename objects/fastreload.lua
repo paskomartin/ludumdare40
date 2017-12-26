@@ -13,7 +13,15 @@ function FastReload:new(x,y)
   fastReload.value = 1
   fastReload.image = asm:get("fastreload")
   
+  fastReload.animation = require("objects/animations/genericanim"):new("fastreload anim", fastReload.pos.x, fastReload.pos.y, 32, 32,1, 22, 0.05, 4)
+  
 	local color = {196,146,21,255}
+
+  fastReload.rect.pos.y = fastReload.pos.y + 7
+  fastReload.rect.pos.x = fastReload.pos.x + 9
+  fastReload.rect.size.y = 16
+  fastReload.rect.size.x = 12
+
 
 	function fastReload:load()
 		-- add fastReload quad here --
@@ -21,6 +29,10 @@ function FastReload:new(x,y)
 		gameManager.gameLoop:add(self)
 		gameManager.renderer:add(self, self.layer)
 	end	
+
+  function fastReload:tick(dt)
+    self.animation:update(dt)
+  end
 
 	function fastReload:draw()
 		if fastReload.isAlive then
@@ -31,7 +43,11 @@ function FastReload:new(x,y)
       love.graphics.draw(self.image, self.pos.x+1, self.pos.y +1,0,1, 1)
       love.graphics.setColor(255,255,255)
       -- main
-      love.graphics.draw(self.image, self.pos.x, self.pos.y,0,1, 1)
+      if self.animation:isPlaying() then
+        self.animation:draw()
+      else
+        love.graphics.draw(self.image, self.pos.x, self.pos.y,0,1, 1)
+      end
       --love.graphics.setColor(255,255,255)
       if debugRect then
         self:drawDebugRect()

@@ -27,17 +27,24 @@ function Gunfactory:new(x,y, gunID)
     if self.id == "shotgun" then
       self.rect.pos.y = self.pos.y + 11
       self.rect.size.y = 9
+      self.animation = require("objects/animations/genericanim"):new("shotgun anim", self.pos.x, self.pos.y, tile_w, tile_h,1, 18, 0.02, 5)
     elseif self.id == "rifle" then
       self.rect.pos.y = self.pos.y + 10
       self.rect.size.y = 11
+      self.animation = require("objects/animations/genericanim"):new("rifle anim", self.pos.x, self.pos.y, tile_w, tile_h,1, 20, 0.02, 5)
     elseif self.id == "pistol" then
       self.rect.pos.y = self.pos.y + 11
       self.rect.pos.x = self.pos.x + 8
       self.rect.size.y = 8
       self.rect.size.x = 15
+      self.animation = require("objects/animations/genericanim"):new("gun anim", self.pos.x, self.pos.y, tile_w, tile_h,1, 15, 0.02, 5)
     end
     
 	end	
+  
+  function gunfactory:tick(dt)
+    self.animation:update(dt)
+  end
 
 	function gunfactory:draw()
 		if gunfactory.isAlive then
@@ -48,7 +55,11 @@ function Gunfactory:new(x,y, gunID)
       love.graphics.draw(self.image, self.pos.x+1, self.pos.y +1,0,1, 1)
       love.graphics.setColor(255,255,255)
       -- main
-      love.graphics.draw(self.image, self.pos.x, self.pos.y,0,1, 1)
+      if self.animation:isPlaying() then
+        self.animation:draw()
+      else
+        love.graphics.draw(self.image, self.pos.x, self.pos.y,0,1, 1)
+      end
       --love.graphics.setColor(255,255,255)
       if debugRect then
         self:drawDebugRect()

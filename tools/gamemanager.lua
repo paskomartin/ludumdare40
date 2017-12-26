@@ -304,11 +304,11 @@ function GameManager:create()
     self.enemyCounter = self.enemyCounter + 1
   end
   
-  function gameManager:decreaseEnemy()
+  function gameManager:decreaseEnemy()   
     self.enemyCounter = self.enemyCounter - 1
-    if self.enemyCounter == 0 then
-      print("NO ENEMY!")
-    end
+    
+    
+    assert (self.enemyCounter >= 0)
     if self.enemyCounter < 0 then
       print("something goes wrong, enemies: " .. self.enemyCounter)
       self.enemyCounter = 0
@@ -391,6 +391,14 @@ function GameManager:create()
     gameManager.gameOverTileImage = asm:get("gameover")
     gameManager.theEndTileImage = asm:get("theend")
   end
+  
+  function gameManager:resetSpawnersTime(min, max)
+    for _,spawner in pairs(gameManager.spawners.objects) do
+      spawner:setCurrentTime( (math.random(min, max) * -1) )
+    end
+  end
+  
+  
   
   
   return gameManager

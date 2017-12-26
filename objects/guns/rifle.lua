@@ -8,7 +8,7 @@ function Rifle:new()
   rifle = require("objects/guns/gun"):new()
   --setmetatable(rifle, Gun)
   --rifle.__init = Gun
-  rifle.cooldownBaseSpeed = 15
+  rifle.cooldownBaseSpeed = 25
   rifle.cooldown = 0
   rifle.cooldownSpeed = rifle.cooldownBaseSpeed
   rifle.cooldownMaxSpeed = 8

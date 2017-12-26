@@ -6,6 +6,7 @@ function GameGui:new()
   gameGui.coins = 0
   gameGui.playerLife = 0
   gameGui.canShoot = false
+  gameGui.kills = 0
   --gameGui.level = 1
   gameGui.x = 0
   gameGui.y = 17 * 32
@@ -23,6 +24,7 @@ function GameGui:new()
     self.coins = player.coins
     self.playerLife = player.life
     self.canShoot = player.gun.canShoot
+    self.kills = player.kills
   end
   
   function gameGui:draw()
@@ -45,7 +47,15 @@ function GameGui:new()
     love.graphics.print(text, x, self.y + 16 + margin * 2, 0, 2, 2)
     --]]--
     
+    text = "Kills: " .. self.kills
+    x = self.x + self.w / 4
+    love.graphics.setColor(255,255,255)
+    love.graphics.print(text, x + 16, self.y + 2, 0, 2, 2)
     
+    text = "Enemy: " .. gameManager.enemyCounter .. '/' .. gameManager.maxEnemy
+    --x = self.x + self.w / 4
+    love.graphics.setColor(255,255,255)
+    love.graphics.print(text, x + 16, self.y + 16 + margin *2, 0, 2, 2)
     
     text = "Life: " .. self.playerLife
     x = self.w / 2

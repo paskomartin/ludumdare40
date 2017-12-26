@@ -44,12 +44,17 @@ return{
 
 			end
 		end,
-
+    -- [[ DEPRICATED ]] -- FIX: change dependencies
 		play   = function(self)
 			self.play = true
 		end,
 		stop   = function(self)
 			self.play = false
+		end,
+    
+    start   = function(self)
+			self.play = true
+      self.current_frame = 1
 		end,
 
 		set_animation = function(self,anim)
@@ -61,11 +66,20 @@ return{
       self.image = image
     end,
 
-		draw = function(self,data, orientation)
-      
+		draw = function(self,data, orientation, shadow) -- orientation, shadow)
       local angle = orientation or 0
       --local orient = orientation or 0
+      
+      local sh = shadow or false
+      if sh then
+        love.graphics.setColor(0,0,0,128)
+        gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1] + 1,data[2] + 1, angle, self.scale)
+        love.graphics.setColor(255,255,255)
+      end
+      
+
 			gfx.draw(self.image,self.a[self.current_anim][self.current_frame],data[1],data[2], angle, self.scale)
+
       --[[
       push()
       translate( worldWidth / 2, worldHeigth / 2)

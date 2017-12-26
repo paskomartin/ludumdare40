@@ -12,7 +12,7 @@ return {
   properties = {
     ["enemyStep"] = "5",
     ["maxCoins"] = "30",
-    ["maxEnemy"] = "8",
+    ["maxEnemy"] = "15",
     ["spawnerChange"] = "4",
     ["startEnemy"] = "4"
   },

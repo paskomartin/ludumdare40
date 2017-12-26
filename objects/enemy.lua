@@ -19,7 +19,7 @@ function Enemy:new(x,y, id)
   local color = { 201,20,72,255}
   enemy.life = 1
   enemy.points = 50
-  local velSpeed = 85--100
+  local velSpeed = 75--100
   local cooldownSpeed = 5
   local cooldown = 0
   local isShoot = false
@@ -118,6 +118,7 @@ function Enemy:new(x,y, id)
         
         love.audio.play(sound)
         player.points = player.points + self.points
+        player.kills = player.kills + 1
         
         local result = rand()
         -- only 10 %
@@ -127,6 +128,10 @@ function Enemy:new(x,y, id)
           else
             self:spawnCoin()  
           end
+        end
+        
+        if gameManager.enemyCounter == gameManager.maxEnemy then
+          gameManager:resetSpawnersTime(0, 1.5)
         end
         
         gameManager:decreaseEnemy()

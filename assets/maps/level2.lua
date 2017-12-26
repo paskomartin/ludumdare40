@@ -11,10 +11,10 @@ return {
   nextobjectid = 23,
   properties = {
     ["enemyStep"] = "3",
-    ["maxCoins"] = "15",
+    ["maxCoins"] = "25",
     ["maxEnemy"] = "6",
     ["spawnerChange"] = "3",
-    ["startEnemy"] = "2"
+    ["startEnemy"] = "7"
   },
   tilesets = {
     {

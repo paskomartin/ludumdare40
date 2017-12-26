@@ -38,7 +38,7 @@ function Player:new(x, y)
   player.blinkTime = 20
   player.currentBlinkTime = 0
   player.lastBlinkTime = 0
-  
+  player.kills = 0
   player.gun = nil
   
   
@@ -51,8 +51,9 @@ function Player:new(x, y)
       self.dir.x = 1
       self.dir.y = 0
       gameManager.renderer:add(self,self.layer)
-      
+      self.kills = 0
       self.isAlive = true
+      
       
       
       local image = asm:get("hero-right")

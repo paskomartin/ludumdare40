@@ -3,16 +3,16 @@ local Explosion = {}
   
 function Explosion:new(x,y)
  
-  local w = 32
-  local h = 32
+  local w = 64
+  local h = 64
   local explosion = require("objects/entity"):new(x,y,w,h,"explosion")
   
   local image = asm:get("explosion")
   local quads = genAnimQuads(9, 1, 32, 32)
   local animSpeed = 0.05
-  explosion.animation = require("tools/animation"):new(image, { genAnimQuads(9, 1, 32, 32) }, animSpeed, true)
+  explosion.animation = require("tools/animation"):new(image, { genAnimQuads(9, 1, w, h) }, animSpeed, true)
 
-  explosion.animation.scale = 1.5
+  explosion.animation.scale = 1--1.5
   explosion.animation:set_animation(1)
   explosion.animation:play()
   
