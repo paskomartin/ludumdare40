@@ -35,7 +35,7 @@ function Rifle:new()
       
 
       local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
-      gameManager.playerBullets:add(bullet)
+      gameManager.bullets:add(bullet)
       
       bullet:shoot(x,y)
       local sound = asm:get("laserriflesound")

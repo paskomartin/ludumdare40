@@ -17,7 +17,7 @@ function GameManager:create()
 	gameManager.renderer = require("tools/render"):create()
   gameManager.collectibles = nil --obm:create() --require("tools/objectmanager")
   gameManager.enemies = nil --obm:create() --require("tools/objectmanager")
-  gameManager.playerBullets = nil --obm:create() -- require("tools/objectmanager")
+  gameManager.bullets = nil --obm:create() -- require("tools/objectmanager")
   gameManager.spawners = nil
   gameManager.paused = false
   
@@ -52,8 +52,8 @@ function GameManager:create()
     self.collectibles:init()
     self.enemies = obm:create("enemies")
     self.enemies:init()
-    self.playerBullets = obm:create("playerBullets")
-    self.playerBullets:init()
+    self.bullets = obm:create("bullets")
+    self.bullets:init()
     self.spawners = obm:create("spawners")
     self.spawners:init()
     self:createAnimations()
@@ -359,14 +359,14 @@ function GameManager:create()
     gameManager.renderer:clear()    
     gameManager.collectibles:clear()
     gameManager.enemies:clear()
-    gameManager.playerBullets:clear()
+    gameManager.bullets:clear()
     gameManager.spawners:clear()
   end
   
   function gameManager:initContainers()
     gameManager.collectibles:init()
     gameManager.enemies:init()
-    gameManager.playerBullets:init()
+    gameManager.bullets:init()
     gameManager.spawners:init()
   end
  

@@ -45,7 +45,7 @@ function Shotgun:new()
       local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
       --bullet:setColor( {102, 51, 0}, {153, 102, 51} ) 
       bullet:setColor(self.colors.first, self.colors.second)
-      gameManager.playerBullets:add(bullet)
+      gameManager.bullets:add(bullet)
       bullet:shoot(x,y)
       
       self:generateBullets(posx,posy)
@@ -56,7 +56,7 @@ function Shotgun:new()
       y = sin( math.rad(angle) ) * player.dir.y
             
       bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
-      gameManager.playerBullets:add(bullet)
+      gameManager.bullets:add(bullet)
       bullet:shoot(x,y)
       --]]
       
@@ -66,7 +66,7 @@ function Shotgun:new()
       y = sin( math.rad(-angle) )
       
       bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
-      gameManager.playerBullets:add(bullet)
+      gameManager.bullets:add(bullet)
       bullet:shoot(x,y)
       --]]
       local sound = asm:get("shotgunsound")
@@ -102,7 +102,7 @@ function Shotgun:new()
       bullet:setColor(self.colors.first, self.colors.second)
       
       
-      gameManager.playerBullets:add(bullet)
+      gameManager.bullets:add(bullet)
       bullet:shoot(x,y)
   end
   

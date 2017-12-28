@@ -358,6 +358,11 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "fastreload anim", "image")
   
+  filename = "assets/sprites/demon.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "demon", "image")
+  
   
   -- enemy
   
@@ -477,6 +482,9 @@ function loadSounds()
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "explosionsound", "sound")
 
+  filename = "assets/sounds/shoot02.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "shoot02", "sound")
 end
   
   

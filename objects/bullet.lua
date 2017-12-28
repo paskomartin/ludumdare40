@@ -12,9 +12,8 @@ function Bullet:new(x,y,damage,id)
   bullet.life = 1
   bullet.color = {}
   bullet.color.first = { 0, 20, 255 }
-  bullet.color.second = { 112, 128, 255 }
-  
-  local velSpeed = 650
+  bullet.color.second = { 112, 128, 255 }  
+  bullet.velSpeed = 650
   
   function bullet:hit(obj)
     obj.takeHit(self.damage)
@@ -22,8 +21,14 @@ function Bullet:new(x,y,damage,id)
   end
   
   function bullet:shoot(velx, vely)
-    self.vel.x = velx * velSpeed
-    self.vel.y = vely * velSpeed
+    self.vel.x = velx * bullet.velSpeed
+    self.vel.y = vely * bullet.velSpeed
+  end
+    
+  -- TODO:
+  function bullet:shootDirection(direction)
+    self.vel.x = direction.x * bullet.velSpeed * 1
+    self.vel.y = direction.y * bullet.velSpeed * 1
   end
   
   function bullet:tick(dt)

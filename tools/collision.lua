@@ -90,11 +90,11 @@ function collectibleCollision(obj)
 end
 
 
-function collisionWithPlayerBullet(obj)
-  local objects = gameManager.playerBullets.objects
+function collisionWithBullet(obj, id)
+  local objects = gameManager.bullets.objects
   
   for i = 1, #objects do
-    if objects[i] ~= nil and objects[i].isAlive then
+    if objects[i] ~= nil and objects[i].isAlive and objects[i].id == id then
       local result = rect_collision(obj.rect, objects[i].rect)
       if result then
         obj:takeHit(objects[i].damage)

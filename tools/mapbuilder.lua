@@ -1,4 +1,4 @@
-
+require("objects/objectfactory")
 
 
 function buildMap(levelname)
@@ -8,6 +8,8 @@ function buildMap(levelname)
   tlm:loadmap(levelname)
   love.timer.sleep(0.25)
   
+  --local demon = demonFactory(100, 300)
+  --gameManager.enemies:add(demon)
   --[[
   local coin = require("objects/coin"):new(100,300)
   --coin:load()

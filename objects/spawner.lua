@@ -1,6 +1,8 @@
 local Spawner = {}
 local floor = math.floor
 
+require("objects/objectfactory")
+
 function Spawner:new(x,y)
   local w = 32
   local h = 32
@@ -64,7 +66,13 @@ function Spawner:new(x,y)
   
   
   function spawner:spawnEnemy(id)
-    local enemy = require("objects/enemy"):new(self.pos.x, self.pos.y, id)
+    local result = math.random(0, 1048576) % 2
+    local enemy = nil
+    if result == 0 then
+      enemy = require("objects/enemy"):new(self.pos.x, self.pos.y, id)
+    else
+      enemy = demonFactory(x,y)
+    end
     gameManager.enemies:add(enemy)
     gameManager:increaseEnemy()
   end

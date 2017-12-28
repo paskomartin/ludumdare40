@@ -19,10 +19,10 @@ function Enemy:new(x,y, id)
   local color = { 201,20,72,255}
   enemy.life = 1
   enemy.points = 50
-  local velSpeed = 75--100
-  local cooldownSpeed = 5
-  local cooldown = 0
-  local isShoot = false
+  enemy.velSpeed = 75--100
+  enemy.cooldownSpeed = 5
+  enemy.cooldown = 0
+  enemy.isShoot = false
   enemy.isAlive = true
   enemy.distanceTrigger = 200
   enemy.damage = 5
@@ -173,11 +173,13 @@ function Enemy:new(x,y, id)
   
   function enemy:ai(dt)
     if self.isAlive and not self.remove then
+      self.attack(dt)
       strollTime = strollTime - 1
       self:move(dt)
       self.pos.x = self.pos.x + self.vel.x * dt
       self:updateCollisionRect()
-      collisionWithPlayerBullet(self)
+      local bulletID = "playerBullet"
+      collisionWithBullet(self, bulletID)
       self:collisionWithPlayer()
       if wallCollision(self,dt) then
         strollTime = 0
@@ -185,7 +187,7 @@ function Enemy:new(x,y, id)
       
       self.pos.y = self.pos.y + self.vel.y * dt
       self:updateCollisionRect()
-      collisionWithPlayerBullet(self)
+      collisionWithBullet(self, bulletID)
       self:collisionWithPlayer()
       if wallCollision(self,dt) then
         strollTime = 0
@@ -193,6 +195,9 @@ function Enemy:new(x,y, id)
     end
   end
   
+  
+  function enemy:attack(dt)
+  end
   
   
     function enemy:move(dt)
@@ -280,8 +285,8 @@ function Enemy:new(x,y, id)
       end
     end
   --]]
-    self.vel.x = cos(angle) * (velSpeed + acc)
-    self.vel.y = sin(angle) * (velSpeed + acc)
+    self.vel.x = cos(angle) * (self.velSpeed + acc)
+    self.vel.y = sin(angle) * (self.velSpeed + acc)
     self.orientation = angle - math.pi/2
 
     ::skip_toanim::
@@ -300,8 +305,8 @@ function Enemy:new(x,y, id)
     
     self.orientation = angle - math.pi /2
     
-    self.vel.x = cos(angle) * velSpeed
-    self.vel.y = sin(angle) * velSpeed
+    self.vel.x = cos(angle) * self.velSpeed
+    self.vel.y = sin(angle) * self.velSpeed
 
   end
 

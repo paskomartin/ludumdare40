@@ -172,11 +172,15 @@ function Player:new(x, y)
     collectibleCollision(self)
     wallCollision(self,dt)
     
+    
     self.pos.y = self.pos.y + self.vel.y * dt
     
     self:updateCollisionRect()
     collectibleCollision(self)
     wallCollision(self,dt)
+    
+    collisionWithBullet(self, "enemyBullet")
+    
     
     self.animation:update(dt)
   end
@@ -365,7 +369,7 @@ function Player:new(x, y)
       local posx, posy = self:genBulletPosition()
 
       local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
-      gameManager.playerBullets:add(bullet)
+      gameManager.bullets:add(bullet)
       
       bullet:shoot(x,y)
       local sound = asm:get("firesound")
@@ -394,7 +398,7 @@ function Player:new(x, y)
       local posy = self.rect.pos.y + self.rect.size.y / 2
       for angle= 0, 360, step do
         local bullet = require("objects/bullet"):new(posx, posy, 5, "playerBullet")   
-        gameManager.playerBullets:add(bullet)
+        gameManager.bullets:add(bullet)
       
         x = cos( math.rad(angle) )
         y = sin( math.rad(angle) )

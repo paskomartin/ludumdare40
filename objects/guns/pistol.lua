@@ -38,7 +38,7 @@ function Pistol:new()
       bullet.color.second = { 255, 175, 46 }
       bullet.color.first = { 255, 70, 46 }
 
-      gameManager.playerBullets:add(bullet)
+      gameManager.bullets:add(bullet)
       
       bullet:shoot(x,y)
       local sound = asm:get("gunsound")
