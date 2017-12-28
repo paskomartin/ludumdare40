@@ -144,6 +144,7 @@ function Enemy:new(x,y, id)
   function enemy:spawnCoin()
     --local coin = require("objects/coin"):new(self.pos.x, self.pos.y)
     local coin = require("objects/coin"):new(self.rect.pos.x, self.rect.pos.y)
+
     gameManager.collectibles:add(coin)
   end
   

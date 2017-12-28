@@ -108,13 +108,23 @@ function love.keypressed(key)
 
 end
 
+local filter = false
+local anisotropy = 8
+
 -- --[[
 function love.keyreleased(key)
   
   if key == 'f1' then
     debugRect = not debugRect
   elseif key == 'f2' then
-    love.window.maximize( )    
+    love.window.maximize( )
+  elseif key == 'f3' then
+    filter = not filter
+    if filter then
+      canvas:setFilter("linear", "linear", anisotropy)
+    else
+      canvas:setFilter("nearest", "nearest", anisotropy)
+    end
   end
 end
 --]]
