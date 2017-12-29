@@ -26,6 +26,7 @@ function Enemy:new(x,y, id)
   enemy.isAlive = true
   enemy.distanceTrigger = 200
   enemy.damage = 5
+  enemy.value = 50
   
   enemy.orientation = 0
   --enemy.function = nil
@@ -135,6 +136,7 @@ function Enemy:new(x,y, id)
         end
         
         gameManager:decreaseEnemy()
+        player:addValToSpecial(self.value)
         
       end
     end

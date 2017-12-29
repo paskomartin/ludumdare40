@@ -25,7 +25,8 @@ function Player:new(x, y)
   -- special cooldown
   player.canUseSpecial = true
   player.specialCooldown = 0
-  player.specialTimes = { min = 50, max = 150 }
+  player.specialTimes = { min = 1350, max = 5500 }--{ min = 50, max = 150 }
+  player.specialCooldownMax = math.random( player.specialTimes.min, player.specialTimes.max)
   
   local isShoot = false
   player.canShoot = true  -- info for gui
@@ -106,6 +107,7 @@ function Player:new(x, y)
       self.isAlive = true
       self.canUseSpecial = true
       self.specialCooldown = 0
+      self.specialCooldownMax = math.random( self.specialTimes.min, self.specialTimes.max)
       
       --self.gun = require("objects/guns/rifle"):new()
       self.gun.cooldown = 0
@@ -153,15 +155,27 @@ function Player:new(x, y)
       self.canShoot = true
     end
     
-    
-    
+    --[[
     -- special cooldown
-    if self.specialCooldown > 0 then
+    if self.specialCooldown < self.specialCooldownMax then
+      self.specialCooldown = self.specialCooldown + 2
+      if self.specialCooldown >= self.specialCooldownMax then
+        self.canUseSpecial = true
+        self.specialCooldown = self.specialCooldownMax
+      end
+    end
+    --]]
+    
+    ----[[
+    -- special cooldown [[ depricated ]]
+    if self.specialCooldown >= 0 then
       self.specialCooldown = self.specialCooldown - 1
-      if self.specialCooldown <= 0 then
+      if self.specialCooldown <= 0 and not self.canUseSpecial then
         self.canUseSpecial = true
       end
     end
+    --]]
+    
     
     
     self:checkKeys()
@@ -406,11 +420,15 @@ function Player:new(x, y)
       
       end      
       self.canUseSpecial = false
-      self.specialCooldown = math.random( self.specialTimes.min, self.specialTimes.max)
+      --self.specialCooldown = math.random( self.specialTimes.min, self.specialTimes.max)
+      self.specialCooldownMax = math.random( self.specialTimes.min, self.specialTimes.max)
+      --self.specialCooldown = 0
+      self.specialCooldown = self.specialCooldownMax
       
       local sound = asm:get("firesound")
       love.audio.play(sound)
       keys.special.pressed = false
+      
     end
   end
 
@@ -535,6 +553,14 @@ function Player:new(x, y)
     
     
   end
+  
+  function player:addValToSpecial(val)
+    self.specialCooldown = self.specialCooldown - val
+    if self.specialCooldown < 0 then
+      self.specialCooldown = 0
+    end
+  end
+  
   
   return player
 end

@@ -5,7 +5,7 @@
   <property name="maxCoins" value="30"/>
   <property name="maxEnemy" value="40"/>
   <property name="spawnerChange" value="10"/>
-  <property name="startEnemy" value="4"/>
+  <property name="startEnemy" value="10"/>
  </properties>
  <tileset firstgid="1" name="tiles2" tilewidth="32" tileheight="32" tilecount="96" columns="8">
   <image source="../sprites/tiles2.png" width="256" height="384"/>

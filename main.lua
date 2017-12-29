@@ -363,7 +363,25 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "demon", "image")
   
+  filename = "assets/sprites/gui-background.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "gui-background", "image")
   
+  filename = "assets/sprites/skull.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "skull", "image")
+  
+  filename = "assets/sprites/heart.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "heart", "image")
+  
+  filename = "assets/sprites/chest2.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "treasure-chest", "image")
   -- enemy
   
   --[[

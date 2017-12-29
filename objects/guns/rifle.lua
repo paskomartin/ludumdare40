@@ -13,6 +13,7 @@ function Rifle:new()
   rifle.cooldownSpeed = rifle.cooldownBaseSpeed
   rifle.cooldownMaxSpeed = 8
   rifle.damage = 10
+  rifle.image = asm:get("rifle")
   
   function rifle:update(self, dt)
     

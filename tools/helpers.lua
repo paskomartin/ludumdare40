@@ -30,7 +30,6 @@ function clearTable(t)
 end
 
 
-
 -- generate animation quads
 function genAnimQuads( cols, rows, width, height)
   local maxRows = rows or 1
@@ -48,4 +47,40 @@ function genAnimQuads( cols, rows, width, height)
   
   return quads
 end
+
+-- color1, color2 -  {r, g, b}
+-- pos - current step
+-- max - max steps
+function interpolate2Colors(color1, color2, pos, max)
+  local r = (( color2[1] - color1[1]) * pos / max + color1[1])
+  local g = (( color2[2] - color1[2]) * pos / max + color1[2])
+  local b = (( color2[3] - color1[3]) * pos / max + color1[3])
+  return {r, g, b}
+end
+
+function interpolate3Colors(color1, color2, color3, pos, max)
+  local color = nil
+  if pos < max /2 then
+    color = interpolate2Colors(color1, color2, pos, max/2)
+  else
+    color = interpolate2Colors(color2, color3, pos - max/2, max/2)
+  end
+  return color
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

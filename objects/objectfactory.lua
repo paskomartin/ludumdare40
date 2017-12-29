@@ -6,7 +6,8 @@ function demonFactory(x, y)
   demon.points = 100
   demon.distanceTrigger = 300
   demon.damage = 10
-  demon.velSpeed = 100
+  demon.velSpeed = 65
+  demon.value = 150
   
   demon.load = function(self)
     local image = asm:get("demon")
@@ -54,7 +55,7 @@ function demonFactory(x, y)
     self.rect.size.y = 28
   end
 
-  demon.cooldownSpeed = { min = 60, max = 200 }
+  demon.cooldownSpeed = { min = 70, max = 450 }
   demon.cooldown = math.random( demon.cooldownSpeed.min, demon.cooldownSpeed.max) 
   
   demon.attack = function(self, dt)

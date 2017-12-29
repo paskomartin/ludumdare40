@@ -66,12 +66,12 @@ function Spawner:new(x,y)
   
   
   function spawner:spawnEnemy(id)
-    local result = math.random(0, 1048576) % 2
+    local result = math.random(0, 1048576) % 5
     local enemy = nil
     if result == 0 then
-      enemy = require("objects/enemy"):new(self.pos.x, self.pos.y, id)
-    else
       enemy = demonFactory(x,y)
+    else
+      enemy = require("objects/enemy"):new(self.pos.x, self.pos.y, id)      
     end
     gameManager.enemies:add(enemy)
     gameManager:increaseEnemy()

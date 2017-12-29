@@ -8,11 +8,12 @@ function Pistol:new()
   pistol = require("objects/guns/gun"):new()
   --setmetatable(pistol, Gun)
   --pistol.__init = Gun
-  pistol.cooldownBaseSpeed = 45
+  pistol.cooldownBaseSpeed = 40
   pistol.cooldown = 0
   pistol.cooldownSpeed = pistol.cooldownBaseSpeed
   pistol.cooldownMaxSpeed = 25
   pistol.damage = 7
+  pistol.image = asm:get("pistol")
   
   function pistol:update(self, dt)
     
