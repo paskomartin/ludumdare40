@@ -14,7 +14,7 @@ return {
     ["maxCoins"] = "15",
     ["maxEnemy"] = "25",
     ["spawnerChange"] = "3",
-    ["startEnemy"] = "6"
+    ["startEnemy"] = "3"
   },
   tilesets = {
     {

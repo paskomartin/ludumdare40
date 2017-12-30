@@ -34,7 +34,7 @@ function GameGui:new()
     --love.graphics.setColor(0,0,0)
     --love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
     love.graphics.draw(self.image, self.x, self.y)
-    local img = asm:get("treasure-chest")
+    local img = asm:get("chest2")
     --local text = "Wealth: " .. self.coins .. " / " .. gameManager.maxCoins
     local text = self.coins .. " / " .. gameManager.maxCoins
     local margin = 6
@@ -132,6 +132,12 @@ function GameGui:new()
     
     love.graphics.rectangle('line', x + 11, self.y+16+margin  + 10,150,7)
     --]]
+    
+    img = asm:get("special")
+    love.graphics.setColor(shadowColor)
+    love.graphics.draw(img, x - 14, self.y+22,0,1.3,1.3)
+    love.graphics.setColor(255,255,255)
+    love.graphics.draw(img, x - 16, self.y+24,0,1.3,1.3)
     self:drawGradient(x, self.y, margin)
     
     
@@ -159,7 +165,7 @@ function GameGui:new()
       if i <= player.specialCooldown then
         i = 0 --player.specialCooldownMax
       else
-        color = interpolate3Colors( {224,0,26}, {255,216,25}, {23,178,8}, i, player.specialCooldownMax)
+        color = interpolate3Colors( {23,178,8}, {255,216,25}, {224,0,26},  i, player.specialCooldownMax)
         love.graphics.setColor(color)
         love.graphics.rectangle('fill', x + (maxRectWidth - i * rectWidthStep) + 12, y+16+margin + 10, rectWidthStep, rectHeight)
       end

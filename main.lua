@@ -378,10 +378,51 @@ function loadTextures()
   image:setFilter("nearest","nearest")
   asm:add(image, "heart", "image")
   
+  filename = "assets/sprites/special.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "special", "image")
+  
   filename = "assets/sprites/chest2.png"
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
-  asm:add(image, "treasure-chest", "image")
+  asm:add(image, "chest2", "image")
+  
+  filename = "assets/sprites/chest2-anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "chest2-anim", "image")
+  
+  filename = "assets/sprites/ruby.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "ruby", "image")
+  
+  filename = "assets/sprites/ruby-anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "ruby-anim", "image")
+  
+  filename = "assets/sprites/emerald.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "emerald", "image")
+  
+  filename = "assets/sprites/emerald-anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "emerald-anim", "image")
+  
+  filename = "assets/sprites/diamond.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "diamond", "image")
+  
+  filename = "assets/sprites/diamond-anim.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "diamond-anim", "image")
+
   -- enemy
   
   --[[
@@ -503,6 +544,27 @@ function loadSounds()
   filename = "assets/sounds/shoot02.wav"
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "shoot02", "sound")
+  
+  filename = "assets/sounds/specialready.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "specialready", "sound")
+  
+  filename = "assets/sounds/gem1sound.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "gem1sound", "sound")
+  
+  filename = "assets/sounds/gem2sound.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "gem2sound", "sound")
+  
+  filename = "assets/sounds/gem3sound.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "gem3sound", "sound")
+  
+  filename = "assets/sounds/chestsound.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "chestsound", "sound")
+  
 end
   
   

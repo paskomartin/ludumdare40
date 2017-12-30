@@ -25,7 +25,7 @@ function Player:new(x, y)
   -- special cooldown
   player.canUseSpecial = true
   player.specialCooldown = 0
-  player.specialTimes = { min = 1350, max = 5500 }--{ min = 50, max = 150 }
+  player.specialTimes = { min = 1350, max = 2500 }--{ min = 1350, max = 5500 }--{ min = 50, max = 150 }
   player.specialCooldownMax = math.random( player.specialTimes.min, player.specialTimes.max)
   
   local isShoot = false
@@ -172,6 +172,7 @@ function Player:new(x, y)
       self.specialCooldown = self.specialCooldown - 1
       if self.specialCooldown <= 0 and not self.canUseSpecial then
         self.canUseSpecial = true
+        love.audio.play(asm:get("specialready"))
       end
     end
     --]]
@@ -403,7 +404,7 @@ function Player:new(x, y)
   
   function player:shootSpecial()
     if self.canUseSpecial then
-      local count = 30--15;
+      local count = 35--30--15;
       local step = 360 / count
     
       local velX = 0

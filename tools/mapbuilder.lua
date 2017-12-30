@@ -8,6 +8,12 @@ function buildMap(levelname)
   tlm:loadmap(levelname)
   love.timer.sleep(0.25)
   
+  --require("objects/objectfactory")
+  --local gem = valuableFactory(100, 300, "chest2")
+  --gem:load()
+  --gameManager.collectibles:add(gem)
+  
+  
   --local demon = demonFactory(100, 300)
   --gameManager.enemies:add(demon)
   --[[

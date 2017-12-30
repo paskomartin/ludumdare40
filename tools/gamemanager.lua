@@ -129,7 +129,8 @@ function GameManager:create()
     --self.gameLoop:update(dt)
   end
 
-  function gameManager:changeEnemiesOnArena()
+  -- [[ DEPRICATED ]] --
+  function gameManager:changeEnemiesOnArena2()
     -- change enemies on arena
     if (player.coins % gameManager.spawnerChange) == 0 and player.coins ~= 0 and player.coins < gameManager.maxCoins  and gameManager.lastCoinsCounter ~= player.coins then
       gameManager.lastCoinsCounter = player.coins
@@ -154,6 +155,50 @@ function GameManager:create()
       
     end
         
+  end
+
+  
+
+
+
+  function gameManager:changeEnemiesOnArena()
+    -- change enemies on arena
+    if player.coins > gameManager.lastCoinsCounter then
+      local difference = player.coins - gameManager.lastCoinsCounter
+      local multiplier = 0
+      if difference == 1 then 
+        if (player.coins % gameManager.spawnerChange) == 0 and player.coins ~= 0 and player.coins < gameManager.maxCoins then
+          multiplier = 1
+        end
+      else 
+          multiplier = math.floor(difference / gameManager.spawnerChange)
+      end
+        
+
+        gameManager.lastCoinsCounter = player.coins
+        gameManager.maxEnemy = gameManager.maxEnemy + gameManager.enemyStep * multiplier
+        if gameManager.maxEnemy > gameManager.maxLevelEnemy then
+          gameManager.maxEnemy = gameManager.maxLevelEnemy
+        end
+        
+        -- [[ ALMOST DEPRICATED ]] --
+        player.cooldownSpeed = player.cooldownSpeed - 10 * multiplier
+        if player.cooldownSpeed < player.cooldownMaxSpeed then
+          player.cooldownSpeed = player.cooldownMaxSpeed
+        end
+        
+        local cooldownSpeed = 3
+        
+        player.gun.cooldownSpeed = player.gun.cooldownSpeed - cooldownSpeed * multiplier
+        if player.gun.cooldownSpeed < player.gun.cooldownMaxSpeed then
+          player.gun.cooldownSpeed = player.gun.cooldownMaxSpeed
+        end
+      
+    end
+    
+    
+    --end -- if
+    
   end
 
   

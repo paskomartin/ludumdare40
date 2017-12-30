@@ -58,6 +58,29 @@ function demonFactory(x, y)
   demon.cooldownSpeed = { min = 70, max = 450 }
   demon.cooldown = math.random( demon.cooldownSpeed.min, demon.cooldownSpeed.max) 
   
+  demon.spawnCoin = function(self)
+    local result = math.random()-- % 20
+    print ("result: " .. result)
+    local valuable = nil
+    if result <= 0.03 then
+      valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "chest2")
+    elseif result <= 0.15 then
+      valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "diamond")    
+      print("DIAMOND")
+    elseif result <= 0.27 then
+      valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "ruby")
+      print("RUBY")
+    elseif result <= 0.45 then
+      valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "emerald")  
+      print("EMERALD")
+    else
+      valuable = require("objects/coin"):new(demon.rect.pos.x, demon.rect.pos.y)
+      print("COIN")
+    end
+    
+    gameManager.collectibles:add(valuable)
+  end
+  
   demon.attack = function(self, dt)
     demon.cooldown = demon.cooldown - 1
     
@@ -109,8 +132,66 @@ function demonFactory(x, y)
     end
   end
   
-  
-  
-  
   return demon
+end
+
+
+function valuableFactory(x, y, id)
+  assert(type(id) == "string")
+  if id == "ruby" then
+    return genRuby(x,y)
+  elseif id == "diamond" then
+    return genDiamond(x,y)
+  elseif id == "emerald" then
+    return genEmerald(x,y)
+  elseif id == "chest2" then
+    return genChest(x, y)
+  end
+  
+end
+
+
+function genRuby(x, y)
+  local tileSize = 16
+  local animSpeed = 0.05
+  local frames = 14
+  local sound = asm:get("gem3sound")
+  local gem = require("objects/valuable"):new(x,y, frames, "ruby", tileSize, tileSize, animSpeed, sound )
+  gem.value = 3
+  
+  return gem  
+end
+
+
+function genDiamond(x,y)
+  local tileSize = 16
+  local animSpeed = 0.05
+  local frames = 11
+  local sound = asm:get("gem2sound")
+  local gem = require("objects/valuable"):new(x,y, frames, "diamond", tileSize, tileSize, animSpeed, sound )
+  gem.value = 4
+  return gem  
+end
+
+
+
+function genEmerald(x,y)
+  local tileSize = 16
+  local animSpeed = 0.05
+  local frames = 11
+  local sound = asm:get("gem1sound")
+  local gem = require("objects/valuable"):new(x,y, frames, "emerald", tileSize, tileSize, animSpeed, sound )
+  gem.value = 2
+  return gem
+end
+
+
+function genChest(x,y)
+  local tileSize = 32
+  local animSpeed = 0.04
+  local frames = 28
+  local sound = asm:get("chestsound")
+  local chest = require("objects/valuable"):new(x,y, frames, "chest2", tileSize, tileSize, animSpeed, sound )
+  chest.value = 5
+  return chest
 end

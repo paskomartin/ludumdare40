@@ -122,9 +122,8 @@ function Enemy:new(x,y, id)
         player.kills = player.kills + 1
         
         local result = rand()
-        -- only 10 %
         if result <= 0.19 then
-          if result <= 0.05 then --0.02
+          if result <= 0.05 then --0.05--0.02
             self:spawnBonus()
           else
             self:spawnCoin()  
