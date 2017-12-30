@@ -17,7 +17,7 @@ function Shotgun:new()
   shotgun.colors = {}
   shotgun.colors.first = { 102, 0, 51 }
   shotgun.colors.second = { 204, 102, 153 }
-  rifle.image = asm:get("shotgun")
+  shotgun.image = asm:get("shotgun")
   
   
   function shotgun:update(self, dt)
