@@ -60,22 +60,21 @@ function demonFactory(x, y)
   
   demon.spawnCoin = function(self)
     local result = math.random()-- % 20
-    print ("result: " .. result)
     local valuable = nil
     if result <= 0.03 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "chest2")
+      player.points = player.points + 5000
     elseif result <= 0.15 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "diamond")    
-      print("DIAMOND")
+      player.points = player.points + 2000
     elseif result <= 0.27 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "ruby")
-      print("RUBY")
+      player.points = player.points + 500
     elseif result <= 0.45 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "emerald")  
-      print("EMERALD")
+      player.points = player.points + 250
     else
       valuable = require("objects/coin"):new(demon.rect.pos.x, demon.rect.pos.y)
-      print("COIN")
     end
     
     gameManager.collectibles:add(valuable)

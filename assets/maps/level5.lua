@@ -10,10 +10,10 @@ return {
   tileheight = 32,
   nextobjectid = 31,
   properties = {
-    ["enemyStep"] = "4",
-    ["maxCoins"] = "30",
-    ["maxEnemy"] = "40",
-    ["spawnerChange"] = "10",
+    ["enemyStep"] = "2",
+    ["maxCoins"] = "25",
+    ["maxEnemy"] = "20",
+    ["spawnerChange"] = "6",
     ["startEnemy"] = "5"
   },
   tilesets = {

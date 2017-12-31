@@ -135,10 +135,10 @@ function GameGui:new()
     
     img = asm:get("special")
     love.graphics.setColor(shadowColor)
-    love.graphics.draw(img, x - 14, self.y+22,0,1.3,1.3)
+    love.graphics.draw(img, x - 18, self.y+22,0,1.3,1.3)
     love.graphics.setColor(255,255,255)
-    love.graphics.draw(img, x - 16, self.y+24,0,1.3,1.3)
-    self:drawGradient(x, self.y, margin)
+    love.graphics.draw(img, x - 20, self.y+24,0,1.3,1.3)
+    --self:drawGradient(x, self.y, margin)
     
     
     -- debug

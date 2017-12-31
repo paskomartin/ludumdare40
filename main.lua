@@ -109,7 +109,7 @@ function love.keypressed(key)
 end
 
 local filter = false
-local anisotropy = 8
+local anisotropy = 1
 
 -- --[[
 function love.keyreleased(key)
@@ -157,7 +157,7 @@ function saveConf()
   local result = love.filesystem.write( filename, text)
   text = "config.width = " .. w .. "\nconfig.height = " .. h .. "\nconfig.fullscreen = " .. fullscreen .. "\n"
   result = love.filesystem.append(filename, text)
-  print("saved")
+  --print("saved")
 end
 
 function loadConf()
@@ -422,6 +422,16 @@ function loadTextures()
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "diamond-anim", "image")
+  
+  filename = "assets/sprites/paused.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "paused", "image")
+
+  filename = "assets/sprites/getready.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "getready", "image")
 
   -- enemy
   
@@ -564,6 +574,10 @@ function loadSounds()
   filename = "assets/sounds/chestsound.wav"
   sound = love.audio.newSource(filename, type)
   asm:add(sound, "chestsound", "sound")
+  
+  filename = "assets/sounds/getreadysound.wav"
+  sound = love.audio.newSource(filename, type)
+  asm:add(sound, "getreadysound", "sound")
   
 end
   

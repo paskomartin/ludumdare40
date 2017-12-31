@@ -32,17 +32,17 @@ function GameManager:create()
   gameManager.animData = nil -- it'll table
   gameManager.lastCoinsCounter = 0
   gameManager.isGameOver = false
-  gameManager.state = "menu"  -- menu, game, newgame, gameover, highscore, theend
+  gameManager.state = "menu"  -- menu, game, newgame, gameover, highscore, theend, getready
   
-  gameManager.endTime = 250
-  gameManager.currentEndTime = 0
+  gameManager.endTime = 200
+  gameManager.currentEndTime = gameManager.endTime
   
   local menuItems = 2 -- start exit
   local menuIterator = 1
   local menuSelected = 0;
   
-  gameManager.getReady = 100
-  gameManager.currentGetReady = 0
+  gameManager.getReadyStartTime = 80
+  gameManager.currentGetReadyTime = gameManager.getReadyStartTime
   
   
   
@@ -79,14 +79,17 @@ function GameManager:create()
     self.gameGui:init()
     
     self.isGameOver = false
+    
+
   end
   
   
   function gameManager:update(dt)
     if gameManager.state == "newgame" then
-      gameManager.state = "game"
+      gameManager.state = "getready"--"game"
       gameManager:init()
       gameManager:startNewGame()
+      love.audio.play(asm:get("getreadysound"))
       goto skip_update
     end
     
@@ -98,9 +101,10 @@ function GameManager:create()
     end
     
     
-    if player.life <= 0 then
+    if player.life <= 0 and (gameManager.state ~= "theend" and gameManager.state ~= "gameover") then
       gameManager.isGameOver = true
       gameManager.state = "gameover"
+      gameManager:resetEndWaitingTime()
     end
     
     
@@ -110,8 +114,8 @@ function GameManager:create()
     end
     ]]
     if gameManager.state == "theend" or gameManager.state == "gameover" then
-      gameManager.currentEndTime = gameManager.currentEndTime + 1
-      if gameManager.currentEndTime >= gameManager.endTime  then
+      gameManager.currentEndTime = (gameManager.currentEndTime - 1)
+      if gameManager.currentEndTime < 0 then
         if gameManager.state == "theend" then
           quit()
         else
@@ -222,14 +226,15 @@ function GameManager:create()
     local name = maplist[gameManager.level]
     if name == nil then
       gameManager.state = "theend"
-      
+      gameManager:resetEndWaitingTime()
     else
       gameManager:initContainers()
       player:reinit()
       buildMap(name)
       gameManager.renderer:add(tlm)
       self.gameGui:init()
-      
+      gameManager.state = "getready"
+      love.audio.play(asm:get("getreadysound"))
     end
   end
 
@@ -241,11 +246,38 @@ function GameManager:create()
       gameManager:showGameOver()
     elseif gameManager.state == "theend" then
       gameManager:showTheEnd()
+    elseif gameManager.state == "getready" then
+      self:showGetReady()
+        
     elseif gameManager.state == "game" then
        gameManager.renderer:draw()
+      if gameManager.paused then
+        local img = asm:get("paused")
+        local imgW, imgH = img:getDimensions()
+        local x = worldWidth / 2 - imgW / 2
+        local y = worldHeigth / 2 - imgH / 2
+        
+        love.graphics.draw(img, x, y)
+      end       
     end
   end
 
+
+  function gameManager:showGetReady()
+    gameManager.renderer:draw()
+    local img = asm:get("getready")
+    local imgW, imgH = img:getDimensions()
+    local x = worldWidth / 2 - imgW / 2
+    local y = worldHeigth / 2 - imgH / 2
+        
+    love.graphics.draw(img, x, y)
+    self.currentGetReadyTime = self.currentGetReadyTime - 1 --getReadyTime = getReadyTime - 1
+    if self.currentGetReadyTime < 0 then
+      self.currentGetReadyTime = self.getReadyStartTime
+      gameManager.state = "game"
+    end
+            
+  end
   
    
   function gameManager:showMenu()
@@ -264,6 +296,9 @@ function GameManager:create()
     
     love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
     love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
+    local text = "by Martin Pasko"
+    love.graphics.print(text, 300, 420)
+
 
   end
   
@@ -443,6 +478,10 @@ function GameManager:create()
     end
   end
   
+  
+  function gameManager:resetEndWaitingTime()
+    gameManager.currentEndTime =  gameManager.endTime
+  end
   
   
   
