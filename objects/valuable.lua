@@ -13,7 +13,7 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
   valuable.canUse = false   -- can we use this object? 
   valuable.value = 1
   valuable.sound = sound or asm:get("coinsound")
-  
+  valuable.points = 1
   
   valuable.idleQuad = quad(0,0, 8,8, 144, 8)
   valuable.image = asm:get(id)
@@ -58,6 +58,7 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
       self.isAlive = false
       self.remove = true
       obj:addCoin(self.value)
+      player:addPoints(self.points)
       if self.sound:isPlaying() then
         self.sound:stop()
       end

@@ -9,8 +9,8 @@ keys =
   -- https://gamedev.stackexchange.com/questions/108996/how-to-avoid-ghosting-when-pressing-multiple-keys/109002#109002
   action = { val = "rctrl", pressed = false },
   reverseShoot = { val = "rshift", pressed = false },
-  special = { val = "return", pressed = false }
-  
+  special = { val = "return", pressed = false },
+  paused = { val = "p", pressed = false }
 }
 
 -- DEPRICATED

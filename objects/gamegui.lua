@@ -15,9 +15,16 @@ function GameGui:new()
   gameGui.h = 56
   gameGui.w = 800
   gameGui.image = asm:get("gui-background")
+  -- font
+  gameGui.fontSize = 18
+  gameGui.font = love.graphics.newFont(gameGui.fontSize)
+  love.graphics.setFont(gameGui.font)
+  
   -- h 56
   
   function gameGui:init()
+    self.font:setFilter("linear","linear",1)
+    love.graphics.setFont(self.font)
     gameManager.gameLoop:add(self)
     gameManager.renderer:add(self, 4)
   end
@@ -31,6 +38,7 @@ function GameGui:new()
   end
   
   function gameGui:draw()
+    --love.graphics.setFont(self.font)
     --love.graphics.setColor(0,0,0)
     --love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
     love.graphics.draw(self.image, self.x, self.y)
@@ -41,18 +49,18 @@ function GameGui:new()
     local shadowColor = { 16, 16, 16 }
     love.graphics.setColor(shadowColor)
     love.graphics.draw(img, self.x + 16+2, self.y + 2+2)
-    love.graphics.print(text, self.x + 16+34 + 8, self.y + 2+2, 0, 2, 2)
+    love.graphics.print(text, self.x + 16+34 + 8, self.y + 8)--, 0, 2, 2)
     --love.graphics.print(text, self.x + 16+2, self.y + 2+2, 0, 2, 2)
     love.graphics.setColor(255,255,255)
     love.graphics.draw(img, self.x + 16, self.y + 2)
-    love.graphics.print(text, self.x + 16 + 32 + 8, self.y + 2, 0, 2, 2)
+    love.graphics.print(text, self.x + 16 + 32 + 8, self.y + 6)--, 0, 2, 2)
     --love.graphics.print(text, self.x + 16, self.y + 2, 0, 2, 2)
     
     text = "Points: " .. self.points
     love.graphics.setColor(shadowColor)
-    love.graphics.print(text, self.x + 16 + 2, self.y + 16 + 2 + margin * 2, 0, 2, 2)
+    love.graphics.print(text, self.x + 16 + 2, self.y + 16 + 2 + margin * 2)--, 0, 2, 2)
     love.graphics.setColor(255,255,255)
-    love.graphics.print(text, self.x + 16, self.y + 16 + margin * 2, 0, 2, 2)
+    love.graphics.print(text, self.x + 16, self.y + 16 + margin * 2)--, 0, 2, 2)
     
     -- DEBUG ONLY
     --[[--
@@ -69,19 +77,20 @@ function GameGui:new()
     img = asm:get("skull")
     x = self.x + self.w / 4
     love.graphics.setColor(shadowColor)
-    love.graphics.print(text, x + 16 + 2 - 24, self.y + 2 + 2, 0, 2, 2)
+    love.graphics.print(text, x + 4 + 2 - 24, self.y + 8)--, 0, 2, 2)
     love.graphics.draw(img, x + 16 + 2 - 64, self.y + 2 + 2,  0, 0.8, 0.8)
     love.graphics.setColor(255,255,255)
-    love.graphics.print(text, x + 16 - 24, self.y + 2, 0, 2, 2)
+    love.graphics.print(text, x + 4 - 24, self.y + 6, 0)--, 2, 2)
     love.graphics.draw(img, x + 16 - 64, self.y + 2,  0, 0.8, 0.8)
     
     
     text = "Enemy: " .. gameManager.enemyCounter .. '/' .. gameManager.maxEnemy
     --x = self.x + self.w / 4
+    x = x - 64
     love.graphics.setColor(shadowColor)
-    love.graphics.print(text, x + 16 + 2, self.y + 16 + 2  + margin *2, 0, 2, 2)
+    love.graphics.print(text, x + 16 + 2, self.y + 16 + 2  + margin *2)--, 0, 2, 2)
     love.graphics.setColor(255,255,255)
-    love.graphics.print(text, x + 16, self.y + 16 + margin *2, 0, 2, 2)
+    love.graphics.print(text, x + 16, self.y + 16 + margin *2)--, 0, 2, 2)
     
     img = asm:get("heart")
     --text = "Life: " .. self.playerLife
@@ -89,16 +98,16 @@ function GameGui:new()
     x = self.w / 2-- - self.w / 7 
     love.graphics.setColor(shadowColor)
     love.graphics.draw(img, x + 2, self.y + 2)
-    love.graphics.print(text, x + 2 + 32, self.y + 2, 0, 2, 2)
+    love.graphics.print(text, x + 4 + 32, self.y + 8)--, 0, 2, 2)
     love.graphics.setColor(255,255,255)
     love.graphics.draw(img, x, self.y + 2)
-    love.graphics.print(text, x + 32, self.y + 2, 0, 2, 2)
+    love.graphics.print(text, x + 36, self.y + 6, 0)--, 2, 2)
     
     text = "Level: " .. gameManager.level
     love.graphics.setColor(shadowColor)
-    love.graphics.print(text, x + 2, self.y + 16 + margin * 2 + 2, 0, 2, 2)
+    love.graphics.print(text, x + 2, self.y + 16 + margin * 2 + 2)--, 0, 2, 2)
     love.graphics.setColor(255,255,255)
-    love.graphics.print(text, x, self.y + 16 + margin * 2, 0, 2, 2)
+    love.graphics.print(text, x, self.y + 16 + margin * 2)--, 0, 2, 2)
     
     if self.canShoot then
       text = "Shoot!"
@@ -108,10 +117,10 @@ function GameGui:new()
     x = self.w - 200
     img = player.gun.image
     love.graphics.setColor(shadowColor)
-    love.graphics.print(text, x + 12 + 2, self.y, 0, 2, 2)
+    love.graphics.print(text, x + 12 + 2, self.y + 8)--, 0, 2, 2)
     love.graphics.draw(img, x + 12 + 2 - 40, self.y)
     love.graphics.setColor(255,255,255)
-    love.graphics.print(text, x + 12, self.y, 0, 2, 2)
+    love.graphics.print(text, x + 12, self.y + 6)--, 0, 2, 2)
     love.graphics.draw(img, x + 12 - 40, self.y)
     
     --[[--

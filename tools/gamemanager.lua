@@ -47,7 +47,10 @@ function GameManager:create()
   
   
   function gameManager:init()
-    
+    self.fontSize = 16
+    self.font = love.graphics.newFont(self.fontSize)
+    love.graphics.setFont(self.font)
+
     self.collectibles = obm:create("collectibles")
     self.collectibles:init()
     self.enemies = obm:create("enemies")
@@ -96,6 +99,7 @@ function GameManager:create()
     if gameManager.state == "menu" then
       
       gameManager:getKeys()
+      joypad:checkJoypad()
       gameManager:selectMenu()
       goto skip_update
     end
@@ -296,6 +300,7 @@ function GameManager:create()
     
     love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
     love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
+    love.graphics.setFont(self.font)
     local text = "by Martin Pasko"
     love.graphics.print(text, 300, 420)
 

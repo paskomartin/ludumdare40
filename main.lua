@@ -15,6 +15,8 @@ debugRect = false
 worldWidth = 800
 worldHeigth = 600
 
+joypad = nil
+
 local scalex = 1--1920 / 800
 local scaley = 1--1080 / 600
 local windowWidth = 0
@@ -48,22 +50,55 @@ function love.load()
   
   love.keyboard.setKeyRepeat(false)
 
+  local fontSize = 16
+  local font = love.graphics.newFont(fontSize)
+  love.graphics.setFont(font)
+
   local w, h = love.window.getMode()
   canvas = love.graphics.newCanvas(w,h)
-  canvas:setFilter('nearest', 'nearest')
+  --canvas:setFilter('nearest', 'nearest')
+  canvas:setFilter('linear', 'linear')
+  
+  --setJoypad()
+  joypad = require("tools/joypad"):init()
+end
+
+
+function checkJoypad()
+  if joypad:isGamepadDown("dpleft") then --or joypad:getAxis(-1) then
+    print("left")
+  end
+  
+  print(joypad:getAxis(1))
+end
+
+
+function setJoypad()
+  local joypads = love.joystick.getJoysticks()
+  if #joypads ~= 0 then
+    joypad = joypads[1]
+    local guid = joypad:getGUID()
+    print(joypad:getAxisCount())
+  end
 end
 
 
 function love.update(dt)
   local delta = smoothDeltaTime(dt)
+  
+  if joypad ~= nil then
+    --joypad:checkJoypad()
+    --joypad:printKeys()
+  end
+  
   if not gameManager.paused then
     if gameManager.state == 'game' then
       gameManager.gameLoop:update(delta)
     end
   end
   gameManager.update(delta)
+  --pausedKey()
 end
-
 
 
 function love.draw()
@@ -94,6 +129,13 @@ function love.draw()
 end
 
 
+function pausedKey()
+  joypad:checkButtons()
+  if keys.paused.pressed then
+    gameManager.paused = not gameManager.paused
+    keys.paused.pressed = false
+  end
+end
 
 
 function love.keypressed(key)
@@ -139,6 +181,10 @@ function love.resize(w, h)
 end
 
 ---
+
+function love.quit()
+  quit()
+end
 
 function quit()
   saveConf()

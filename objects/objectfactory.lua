@@ -61,18 +61,14 @@ function demonFactory(x, y)
   demon.spawnCoin = function(self)
     local result = math.random()-- % 20
     local valuable = nil
-    if result <= 0.03 then
+    if result <= 0.045 then -- 0.035
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "chest2")
-      player.points = player.points + 5000
     elseif result <= 0.15 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "diamond")    
-      player.points = player.points + 2000
     elseif result <= 0.27 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "ruby")
-      player.points = player.points + 500
     elseif result <= 0.45 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "emerald")  
-      player.points = player.points + 250
     else
       valuable = require("objects/coin"):new(demon.rect.pos.x, demon.rect.pos.y)
     end
@@ -157,7 +153,7 @@ function genRuby(x, y)
   local sound = asm:get("gem3sound")
   local gem = require("objects/valuable"):new(x,y, frames, "ruby", tileSize, tileSize, animSpeed, sound )
   gem.value = 3
-  
+  gem.points = 500
   return gem  
 end
 
@@ -169,6 +165,7 @@ function genDiamond(x,y)
   local sound = asm:get("gem2sound")
   local gem = require("objects/valuable"):new(x,y, frames, "diamond", tileSize, tileSize, animSpeed, sound )
   gem.value = 4
+  gem.points = 2000
   return gem  
 end
 
@@ -181,6 +178,7 @@ function genEmerald(x,y)
   local sound = asm:get("gem1sound")
   local gem = require("objects/valuable"):new(x,y, frames, "emerald", tileSize, tileSize, animSpeed, sound )
   gem.value = 2
+  gem.points = 250
   return gem
 end
 
@@ -192,5 +190,6 @@ function genChest(x,y)
   local sound = asm:get("chestsound")
   local chest = require("objects/valuable"):new(x,y, frames, "chest2", tileSize, tileSize, animSpeed, sound )
   chest.value = 5
+  chest.points = 5000
   return chest
 end

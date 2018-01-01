@@ -180,6 +180,7 @@ function Player:new(x, y)
     
     
     self:checkKeys()
+    joypad:checkJoypad()
     self:move(dt)
     self.pos.x = self.pos.x + self.vel.x * dt
     
@@ -208,6 +209,10 @@ function Player:new(x, y)
     keys.action.pressed =  love.keyboard.isDown(keys.action.val)
     keys.reverseShoot.pressed = love.keyboard.isDown(keys.reverseShoot.val)
     keys.special.pressed = love.keyboard.isDown(keys.special.val)
+    if keys.paused.pressed then
+      gameManager.paused = not gameManager.paused
+      keys.paused.pressed = false
+    end
   end
 
   function player:move(dt)
@@ -404,7 +409,7 @@ function Player:new(x, y)
   
   function player:shootSpecial()
     if self.canUseSpecial then
-      local count = 35--30--15;
+      local count = 50--30--15;
       local step = 360 / count
     
       local velX = 0
@@ -560,6 +565,10 @@ function Player:new(x, y)
     if self.specialCooldown < 0 then
       self.specialCooldown = 0
     end
+  end
+  
+  function player:addPoints(points)
+    self.points = self.points + points
   end
   
   
