@@ -47,7 +47,7 @@ function Spawner:new(x,y)
   end
   
   function spawner:spawn(dt)
-    if self.isAlive and not self.remove then
+    if self.isAlive and not self.remove and not self.animation.play then
       self.currentTime = self.currentTime + dt
       --self.currentTime = floor(love.timer.getTime())
       if gameManager.enemyCounter < gameManager.maxEnemy then
@@ -69,8 +69,12 @@ function Spawner:new(x,y)
     local result = math.random(0, 1048576) % 5
     local enemy = nil
     if result == 0 then
+      self.image = asm:get("redportal")
+      self.animation:set_image(self.image)
       enemy = demonFactory(x,y)
     else
+      self.image = asm:get("portal")
+      self.animation:set_image(self.image)
       enemy = require("objects/enemy"):new(self.pos.x, self.pos.y, id)      
     end
     gameManager.enemies:add(enemy)

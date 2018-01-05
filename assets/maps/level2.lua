@@ -12,9 +12,9 @@ return {
   properties = {
     ["enemyStep"] = "3",
     ["maxCoins"] = "15",
-    ["maxEnemy"] = "15",
+    ["maxEnemy"] = "25",
     ["spawnerChange"] = "3",
-    ["startEnemy"] = "3"
+    ["startEnemy"] = "4"
   },
   tilesets = {
     {

@@ -41,7 +41,7 @@ function Medkit:new(x,y)
       self.isAlive = false
       self.remove = true
       obj:addLife(self.value)
-      love.audio.play(asm:get("pickupsound"))
+      --love.audio.play(asm:get("pickupsound"))
     end
 	end
 

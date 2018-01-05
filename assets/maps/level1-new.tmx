@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="17" tilewidth="32" tileheight="32" nextobjectid="23">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="17" tilewidth="32" tileheight="32" nextobjectid="25">
  <properties>
   <property name="enemyStep" value="2"/>
   <property name="maxCoins" value="16"/>
@@ -68,16 +68,17 @@
   <object id="4" name="leftBounds" x="-128" y="-96" width="152" height="800"/>
   <object id="5" name="rightBounds" x="775" y="-96" width="137" height="800"/>
   <object id="9" x="256" y="224" width="128" height="96"/>
-  <object id="13" x="-128" y="535" width="1056" height="169"/>
+  <object id="13" x="-128" y="544" width="1056" height="169"/>
   <object id="20" x="608" y="224" width="32" height="32"/>
   <object id="21" x="64" y="288" width="32" height="32"/>
   <object id="22" x="320" y="416" width="64" height="32"/>
  </objectgroup>
  <objectgroup name="player">
-  <object id="12" name="playerPosition" x="608" y="480" width="32" height="32"/>
+  <object id="12" name="playerPosition" x="448" y="416" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="spawner">
   <object id="16" name="spawner1" x="96" y="96" width="32" height="32"/>
-  <object id="17" name="spawner2" x="640" y="96" width="32" height="32"/>
+  <object id="17" name="spawner2" x="640" y="128" width="32" height="32"/>
+  <object id="24" name="spawner3" x="672" y="416" width="32" height="32"/>
  </objectgroup>
 </map>

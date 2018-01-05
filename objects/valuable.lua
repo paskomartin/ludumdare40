@@ -58,6 +58,7 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
       self.isAlive = false
       self.remove = true
       obj:addCoin(self.value)
+      self:addBonus()
       player:addPoints(self.points)
       if self.sound:isPlaying() then
         self.sound:stop()
@@ -65,6 +66,8 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
       love.audio.play(self.sound)
     end
 	end
+  
+  function valuable:addBonus() end
 
 
 	return valuable

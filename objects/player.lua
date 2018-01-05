@@ -40,6 +40,7 @@ function Player:new(x, y)
   player.currentBlinkTime = 0
   player.lastBlinkTime = 0
   player.kills = 0
+  player.killBonus = 500
   player.gun = nil
   
   
@@ -134,6 +135,7 @@ function Player:new(x, y)
     if debugRect then
       self:drawDebugRect()
     end
+    
     ::skip_anim::
   end
 
@@ -196,7 +198,6 @@ function Player:new(x, y)
     wallCollision(self,dt)
     
     collisionWithBullet(self, "enemyBullet")
-    
     
     self.animation:update(dt)
   end
@@ -435,6 +436,8 @@ function Player:new(x, y)
       love.audio.play(sound)
       keys.special.pressed = false
       
+      shaderManager:setActiveShader("shockwave")
+      shaderManager:startShader( {self.pos.x + self.size.x / 2, self.pos.y + self.size.y / 2} )
     end
   end
 
@@ -495,6 +498,7 @@ function Player:new(x, y)
     if self.life > self.maxLife then
       self.life = self.maxLife
     end
+    love.audio.play(asm:get("pickupsound"))
   end
   
   function player:takeHit(damage)
@@ -571,6 +575,12 @@ function Player:new(x, y)
     self.points = self.points + points
   end
   
+  function player:increaseKill()
+    self.kills = self.kills + 1
+    if self.kills ~= 0 and self.kills % self.killBonus == 0 then
+      self:addLife(1)
+    end
+  end
   
   return player
 end

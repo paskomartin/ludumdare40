@@ -22,11 +22,13 @@ fast reload                         V
 medkit                              V
 
 * after game over jump to main menu
+* highscore
 
 ==== IF I WILL HAVE TIME: =======
 * make special fire                V
 * make another enemy
 * load keyboard from config
+
 
 
 

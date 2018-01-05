@@ -118,8 +118,9 @@ function Enemy:new(x,y, id)
         local sound = asm:get(name)
         
         love.audio.play(sound)
-        player.points = player.points + self.points
-        player.kills = player.kills + 1
+        player:addPoints(self.points)
+        player:increaseKill()
+        
         
         local result = rand()
         if result <= 0.19 then

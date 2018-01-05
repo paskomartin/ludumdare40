@@ -182,7 +182,7 @@ function GameManager:create()
           multiplier = math.floor(difference / gameManager.spawnerChange)
       end
         
-
+        -- change enemy
         gameManager.lastCoinsCounter = player.coins
         gameManager.maxEnemy = gameManager.maxEnemy + gameManager.enemyStep * multiplier
         if gameManager.maxEnemy > gameManager.maxLevelEnemy then
@@ -197,9 +197,15 @@ function GameManager:create()
         
         local cooldownSpeed = 3
         
+        -- change gun cooldown
         player.gun.cooldownSpeed = player.gun.cooldownSpeed - cooldownSpeed * multiplier
         if player.gun.cooldownSpeed < player.gun.cooldownMaxSpeed then
           player.gun.cooldownSpeed = player.gun.cooldownMaxSpeed
+        end
+      
+        -- slow down spawners
+        for _,spawner in pairs(gameManager.spawners.objects) do
+          spawner:setCurrentTime( (math.random(0, 5) * -1) )
         end
       
     end

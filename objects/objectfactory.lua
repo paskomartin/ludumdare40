@@ -61,7 +61,7 @@ function demonFactory(x, y)
   demon.spawnCoin = function(self)
     local result = math.random()-- % 20
     local valuable = nil
-    if result <= 0.045 then -- 0.035
+    if result <= 0.055 then-- 0.045 then -- 0.035
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "chest2")
     elseif result <= 0.15 then
       valuable = valuableFactory(demon.rect.pos.x, demon.rect.pos.y, "diamond")    
@@ -189,7 +189,10 @@ function genChest(x,y)
   local frames = 28
   local sound = asm:get("chestsound")
   local chest = require("objects/valuable"):new(x,y, frames, "chest2", tileSize, tileSize, animSpeed, sound )
-  chest.value = 5
+  chest.value = 8
   chest.points = 5000
+  chest.addBonus = function(self)
+    player.specialCooldown = 0
+  end
   return chest
 end

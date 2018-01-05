@@ -8,7 +8,11 @@ asm = require("tools/assetsmanager")
 tlm = require("tiles/tlm")
 width = love.graphics.getWidth()
 require("tools/mapbuilder")
+-- post effects
+shaderManager = require("shaders/shadermanager"):new()
 --obm = require("tools/objectmanager")
+
+
 
 debugRect = false
 
@@ -49,6 +53,7 @@ function love.load()
   gameManager:startNewGame()
   
   love.keyboard.setKeyRepeat(false)
+  love.mouse.setVisible(false)
 
   local fontSize = 16
   local font = love.graphics.newFont(fontSize)
@@ -61,6 +66,16 @@ function love.load()
   
   --setJoypad()
   joypad = require("tools/joypad"):init()
+  
+  -- shaders
+  initShaders()
+end
+
+function initShaders()
+  --shaderManager = require("shaders/shadermanager"):new()
+  local shader = require("shaders/shockwave"):new()
+  --shaders["shockwave"] = shader
+  shaderManager:add(shader, "shockwave")
 end
 
 
@@ -98,6 +113,8 @@ function love.update(dt)
   end
   gameManager.update(delta)
   --pausedKey()
+  shaderManager:update(dt)
+  
 end
 
 
@@ -105,8 +122,10 @@ function love.draw()
   love.graphics.setCanvas(canvas)
   gameManager:draw()
   love.graphics.setCanvas()
+  --for _,shader
+  shaderManager:set()
   love.graphics.draw(canvas, 0, 0, 0, scalex, scaley)  
-  
+  shaderManager:unset()
   
 
   --[[
@@ -217,6 +236,7 @@ function loadConf()
       fullscreen = true
     end
     mode.fullscreen = fullscreen
+
     love.window.setMode(config.width,config.height,mode)
 
     
@@ -378,6 +398,11 @@ function loadTextures()
   image = love.graphics.newImage(filename)
   image:setFilter("nearest","nearest")
   asm:add(image, "portal", "image")
+  
+  filename = "assets/sprites/redportal.png"
+  image = love.graphics.newImage(filename)
+  image:setFilter("nearest","nearest")
+  asm:add(image, "redportal", "image")
   
   filename = "assets/sprites/rifle anim.png"
   image = love.graphics.newImage(filename)
