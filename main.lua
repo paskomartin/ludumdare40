@@ -59,8 +59,9 @@ function love.load()
   local font = love.graphics.newFont(fontSize)
   love.graphics.setFont(font)
 
-  local w, h = love.window.getMode()
-  canvas = love.graphics.newCanvas(w,h)
+  local w, h, mode = love.window.getMode()
+  canvas = love.graphics.newCanvas(mode.minwidth, mode.minheight)
+  --canvas = love.graphics.newCanvas(w,h)
   --canvas:setFilter('nearest', 'nearest')
   canvas:setFilter('linear', 'linear')
   
@@ -203,10 +204,11 @@ end
 
 function love.quit()
   quit()
+  saveConf()
 end
 
 function quit()
-  saveConf()
+  --saveConf()
   love.event.quit()
 end
 
@@ -242,7 +244,10 @@ function loadConf()
     
     scalex = config.width / mode.minwidth
     scaley = config.height / mode.minheight
-    
+  --  print("CONFIG")
+  --  print("scalex : " .. scalex .. " scaley : " .. scaley);
+
+
     windowWidth = config.width 
     windowHeight = config.height
 --end

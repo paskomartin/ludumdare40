@@ -3,8 +3,10 @@ local Shockwave = {}
 
 function Shockwave:new()
   local shockwave = {}
-  shockwave.maxTime = 3.0
+  shockwave.maxTime = 1.0
   shockwave.elapsedTime = 0
+-- debugonly
+  --shockwave.elapsedTime = shockwave.maxTime
   shockwave.speed = 0.0185
   shockwave.active = false
   shockwave.windowWidth = 0
@@ -47,7 +49,10 @@ function Shockwave:new()
   -- x, y in screen pixels eg. 500, 400
   function shockwave:start(params)
     self.active = true
+
     self.elapsedTime = 0
+--    debugonly
+    --self.elapsedTime = self.maxTime
     local mode =  nil
     self.windowWidth, self.windowHeight, mode = love.window.getMode()
 --    local scalex = self.windowWidth / mode.minwidth
@@ -56,14 +61,19 @@ function Shockwave:new()
 
 --    self.shader:send("center", {params[1] / scalex, params[2] / scaley} )
 --    self.shader:send("center", {params[1] / 800, params[2] / 600} )--{params[1] / shockwave.windowWidth,  params[2] / shockwave.windowHeight } )
-    self.shader:send("center", {params[1] / shockwave.windowWidth,  params[2] / shockwave.windowHeight } )
+    --print("playerx = " .. params[1] .. " playery = " .. params[2])
+    self.shader:send("center", {params[1] / self.windowWidth,  params[2] / self.windowHeight } )
+    --print("centerx = " .. params[1] / self.windowWidth.. " centery = " .. params[2] / self.windowHeight)
     self.shader:send("shockParams", {10.0, 0.8, 0.1} )
-    self.shader:send("time", shockwave.elapsedTime)
+   --self.shader:send("shockParams", {10.0 * scalex, 0.8 * scaley, 0.1} )
+    self.shader:send("time", self.elapsedTime)
     
   end
   
   function shockwave:set()
-    love.graphics.setShader(self.shader)
+    if self.active then
+      love.graphics.setShader(self.shader)
+    end
   end
   
   
@@ -71,14 +81,40 @@ function Shockwave:new()
     love.graphics.setShader()
   end
   
-  
   function shockwave:update(dt)
-    if shockwave.active then
-      shockwave.elapsedTime = shockwave.elapsedTime + shockwave.speed
-      if shockwave.elapsedTime >= shockwave.maxTime then
-        shockwave.active = false
+    if self.active then
+      if self.elapsedTime == self.maxTime then
+              self.active = false
+      else
+        self.elapsedTime = self.elapsedTime + self.speed
+
+        if self.elapsedTime >= self.maxTime then --     
+          self.elapsedTime = self.maxTime
+        end
+        --print(self.elapsedTime)
+        self.shader:send("time", self.elapsedTime)
       end
-      self.shader:send("time", shockwave.elapsedTime)
+    end
+  end
+  
+  -- for debug only 
+  --[[ DEPRICATED ]]--
+  function shockwave:update2(dt)
+    if self.active then
+--      shockwave.elapsedTime = shockwave.elapsedTime + shockwave.speed
+ --     if shockwave.elapsedTime >= shockwave.maxTime then
+      -- debug only!
+      if self.elapsedTime == 0 then
+              self.active = false
+      else
+        self.elapsedTime = self.elapsedTime - self.speed
+
+        if self.elapsedTime < 0 then --     
+          self.elapsedTime = 0
+        end
+        --print(self.elapsedTime)
+        self.shader:send("time", self.elapsedTime)
+      end
     end
   end
   

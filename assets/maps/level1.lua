@@ -187,9 +187,9 @@ return {
           type = "",
           shape = "rectangle",
           x = -128,
-          y = 544,
+          y = 534.333,
           width = 1056,
-          height = 169,
+          height = 178.667,
           rotation = 0,
           visible = true,
           properties = {}

@@ -26,8 +26,8 @@ function Player:new(x, y)
   player.canUseSpecial = true
   player.specialCooldown = 0
 -- debug only
---  player.specialTimes = { min = 50, max = 150 }
-  player.specialTimes = { min = 1350, max = 2500 }--{ min = 1350, max = 5500 }--{ min = 50, max = 150 }
+  player.specialTimes = { min = 50, max = 150 }
+--  player.specialTimes = { min = 1350, max = 2500 }--{ min = 1350, max = 5500 }--{ min = 50, max = 150 }
   player.specialCooldownMax = math.random( player.specialTimes.min, player.specialTimes.max)
   
   local isShoot = false
@@ -439,6 +439,10 @@ function Player:new(x, y)
       keys.special.pressed = false
       
       shaderManager:setActiveShader("shockwave")
+  --    print("PLAYER")
+  --    print("scalex : " .. scalex .. " scaley : " .. scaley);
+  --    print("x: " .. (( self.pos.x + self.size.x / 2) * scalex) .. " y: " .. ( (self.pos.y + self.size.y / 2) * scaley) )
+
       shaderManager:startShader( { (self.pos.x + self.size.x / 2) * scalex, (self.pos.y + self.size.y / 2) * scaley } )
     end
   end
