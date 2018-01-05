@@ -46,9 +46,16 @@ function Shockwave:new()
   
   -- x, y in screen pixels eg. 500, 400
   function shockwave:start(params)
-    shockwave.active = true
-    shockwave.elapsedTime = 0
-    shockwave.windowWidth, shockwave.windowHeight = love.window.getMode()
+    self.active = true
+    self.elapsedTime = 0
+    local mode =  nil
+    self.windowWidth, self.windowHeight, mode = love.window.getMode()
+--    local scalex = self.windowWidth / mode.minwidth
+--    local scaley = self.windowHeight / mode.minheight
+--    print(self.windowWidth .. " " .. self.windowHeight)
+
+--    self.shader:send("center", {params[1] / scalex, params[2] / scaley} )
+--    self.shader:send("center", {params[1] / 800, params[2] / 600} )--{params[1] / shockwave.windowWidth,  params[2] / shockwave.windowHeight } )
     self.shader:send("center", {params[1] / shockwave.windowWidth,  params[2] / shockwave.windowHeight } )
     self.shader:send("shockParams", {10.0, 0.8, 0.1} )
     self.shader:send("time", shockwave.elapsedTime)

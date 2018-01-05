@@ -25,6 +25,8 @@ function Player:new(x, y)
   -- special cooldown
   player.canUseSpecial = true
   player.specialCooldown = 0
+-- debug only
+--  player.specialTimes = { min = 50, max = 150 }
   player.specialTimes = { min = 1350, max = 2500 }--{ min = 1350, max = 5500 }--{ min = 50, max = 150 }
   player.specialCooldownMax = math.random( player.specialTimes.min, player.specialTimes.max)
   
@@ -437,7 +439,7 @@ function Player:new(x, y)
       keys.special.pressed = false
       
       shaderManager:setActiveShader("shockwave")
-      shaderManager:startShader( {self.pos.x + self.size.x / 2, self.pos.y + self.size.y / 2} )
+      shaderManager:startShader( { (self.pos.x + self.size.x / 2) * scalex, (self.pos.y + self.size.y / 2) * scaley } )
     end
   end
 

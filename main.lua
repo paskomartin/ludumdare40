@@ -21,8 +21,8 @@ worldHeigth = 600
 
 joypad = nil
 
-local scalex = 1--1920 / 800
-local scaley = 1--1080 / 600
+scalex = 1--1920 / 800
+scaley = 1--1080 / 600
 local windowWidth = 0
 local windowHeight = 0
 
