@@ -13,6 +13,9 @@ shaderManager = require("shaders/shadermanager"):new()
 --obm = require("tools/objectmanager")
 
 
+local runShader = false
+local advmame2xshader = require("shaders/advmame2x"):new()
+
 
 debugRect = false
 
@@ -70,6 +73,7 @@ function love.load()
   
   -- shaders
   initShaders()
+  
 end
 
 function initShaders()
@@ -77,6 +81,9 @@ function initShaders()
   local shader = require("shaders/shockwave"):new()
   --shaders["shockwave"] = shader
   shaderManager:add(shader, "shockwave")
+  
+  -- mame filter
+  advmame2xshader:send("textureDimensions", {worldWidth, worldHeigth} )
 end
 
 
@@ -120,11 +127,16 @@ end
 
 
 function love.draw()
+ -- love.graphics.clear(0,0,0,255)
   love.graphics.setCanvas(canvas)
   gameManager:draw()
   love.graphics.setCanvas()
   --for _,shader
-  shaderManager:set()
+  if runShader then
+    love.graphics.setShader(advmame2xshader)
+  else
+    shaderManager:set()
+  end
   love.graphics.draw(canvas, 0, 0, 0, scalex, scaley)  
   shaderManager:unset()
   
@@ -159,6 +171,15 @@ end
 
 
 function love.keypressed(key)
+  if key == 'backspace' then
+    gameManager.highscore:deleteOneLetter()
+  end
+  
+  --[[
+  if (key == 'return' or key == keys.action.val) and gameManager.highscore.state == 'input' then --gameManager.highscore.isActive then
+    gameManager.highscore:turnOffInput()
+  end
+  ]]--
   -- temporary
   if key == 'escape' then
     quit()
@@ -187,9 +208,27 @@ function love.keyreleased(key)
     else
       canvas:setFilter("nearest", "nearest", anisotropy)
     end
+  elseif key == 'f4' then
+    runShader = not runShader
+    if runShader then
+      print("advmame2xshader running")
+    end
   end
+  
+  if gameManager.highscore.state ~= 'inactive' then
+    gameManager.highscore:checkKeys(key)
+  end
+  
 end
 --]]
+
+
+function love.textinput(text)
+  gameManager.highscore:inputEntry(text)
+end
+
+
+
 
 function love.resize(w, h)
   local _,_,mode = love.window.getMode()
@@ -224,11 +263,24 @@ function saveConf()
   local result = love.filesystem.write( filename, text)
   text = "config.width = " .. w .. "\nconfig.height = " .. h .. "\nconfig.fullscreen = " .. fullscreen .. "\n"
   result = love.filesystem.append(filename, text)
+  
+  gameManager.highscore:save()
   --print("saved")
 end
 
 function loadConf()
-  local chunk = love.filesystem.load("save.lua")
+  local filename = "save.lua"
+  local checkFile = love.filesystem.exists(filename)
+  if  checkFile then
+    loadSaveFile(filename)
+  else
+    generateDefaultConfig()
+  end
+end
+
+
+function loadSaveFile(filename)
+  local chunk = love.filesystem.load(filename)
   if chunk ~= nil then
     chunk()
     
@@ -238,25 +290,31 @@ function loadConf()
       fullscreen = true
     end
     mode.fullscreen = fullscreen
-
     love.window.setMode(config.width,config.height,mode)
-
     
     scalex = config.width / mode.minwidth
     scaley = config.height / mode.minheight
-  --  print("CONFIG")
-  --  print("scalex : " .. scalex .. " scaley : " .. scaley);
-
-
+  
     windowWidth = config.width 
     windowHeight = config.height
---end
-
+  
+    local x, y, window = love.window.getPosition()
+    local desktopWidth, desktopHeight = love.window.getDesktopDimensions(window)
+    if (x + windowWidth) > desktopWidth or (y + windowHeight) > desktopHeight then
+      love.window.maximize(true)
+    end
     
   end
 end
 
-
+function generateDefaultConfig()
+  local w,h,mode = love.window.getMode()
+    
+  scalex = w / mode.minwidth
+  scaley = h / mode.minheight
+  windowWidth = mode.minwidth
+  windowHeight = mode.minheight
+end
 
 
 

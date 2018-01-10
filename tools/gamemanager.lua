@@ -32,10 +32,12 @@ function GameManager:create()
   gameManager.animData = nil -- it'll table
   gameManager.lastCoinsCounter = 0
   gameManager.isGameOver = false
-  gameManager.state = "menu"  -- menu, game, newgame, gameover, highscore, theend, getready
+  gameManager.state = "menu"  -- menu, game, newgame, gameover, inputscore, highscore, theend, getready
   
   gameManager.endTime = 200
   gameManager.currentEndTime = gameManager.endTime
+  gameManager.highscore = nil
+  
   
   local menuItems = 2 -- start exit
   local menuIterator = 1
@@ -59,9 +61,13 @@ function GameManager:create()
     self.bullets:init()
     self.spawners = obm:create("spawners")
     self.spawners:init()
+    self.highscore = require("tools/highscore"):new()
+    self.highscore:load()
+    --self.highscore:printDebugHighscores()
     self:createAnimations()
     
     self:generateQuads()
+    
   end
   
   function gameManager:startNewGame()
@@ -105,7 +111,7 @@ function GameManager:create()
     end
     
     
-    if player.life <= 0 and (gameManager.state ~= "theend" and gameManager.state ~= "gameover") then
+    if player.life <= 0 and (gameManager.state ~= "theend" and gameManager.state ~= "gameover" and gameManager.state ~= "highscore") then
       gameManager.isGameOver = true
       gameManager.state = "gameover"
       gameManager:resetEndWaitingTime()
@@ -121,13 +127,28 @@ function GameManager:create()
       gameManager.currentEndTime = (gameManager.currentEndTime - 1)
       if gameManager.currentEndTime < 0 then
         if gameManager.state == "theend" then
-          quit()
-        else
-          gameManager.state = "menu"
+          --quit()
+          local result = gameManager:canInsertScoreToTable()
+          gameManager.state = "highscore"
+        elseif gameManager.state == "gameover" then
+          local result = gameManager:canInsertScoreToTable()
+          --gameManager.state = "menu"
+          gameManager.state = "highscore"
         end
       end
       goto skip_update
     end
+    
+    
+    if gameManager.state == "highscore" then
+      if gameManager.highscore.state == "inactive" then
+        gameManager.state = "menu"
+      else
+        gameManager.highscore:update(dt)
+      end
+      goto skip_update
+    end
+    
     
     gameManager:changeEnemiesOnArena()
 
@@ -136,6 +157,18 @@ function GameManager:create()
     
     --self.gameLoop:update(dt)
   end
+  
+  
+  function gameManager:canInsertScoreToTable()
+    local result, position = gameManager.highscore:canPutValue(player.points)
+    if result then
+      gameManager.highscore:turnOnInput()
+      gameManager.highscore:putValue(player.points, position)
+    end
+    
+    return result
+  end
+  
 
   -- [[ DEPRICATED ]] --
   function gameManager:changeEnemiesOnArena2()
@@ -252,6 +285,8 @@ function GameManager:create()
     love.graphics.clear( 0, 0, 0, 255 )
     if gameManager.state == "menu" then
       gameManager:showMenu()
+    elseif gameManager.state == "highscore" then
+      gameManager.highscore:draw()
     elseif gameManager.state == "gameover" then
       gameManager:showGameOver()
     elseif gameManager.state == "theend" then
@@ -272,6 +307,8 @@ function GameManager:create()
     end
   end
 
+  function gameManager:showHighscore()
+  end
 
   function gameManager:showGetReady()
     gameManager.renderer:draw()
@@ -307,8 +344,16 @@ function GameManager:create()
     love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
     love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
     love.graphics.setFont(self.font)
+    
+    love.graphics.setColor(255,255,255)
     local text = "by Martin Pasko"
     love.graphics.print(text, 300, 420)
+    love.graphics.setColor(238, 85,51)
+    text = "Ludum Dare 40 PostJam Edition"
+    love.graphics.print(text, 200, 460)
+    love.graphics.setColor(255,255,255)
+    
+    --"The more you have, the worse it is"
 
 
   end
