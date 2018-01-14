@@ -9,7 +9,7 @@ worldHeight = 600
 function HighScore:new()
   local highscore= {}
   highscore.table = {}
-  highscore.textLimit = 10
+  highscore.textLimit = 15
   highscore.fontSize = 16
   highscore.font = love.graphics.newFont(highscore.fontSize)
   love.graphics.setFont(highscore.font)
@@ -76,7 +76,13 @@ function HighScore:new()
 
   function highscore:checkKeys(key)
     --if ( love.keyboard.isDown('return') or love.keyboard.isDown(keys.action.val) ) then
-    if key == 'return' or key == keys.action.val then
+    --if key == 'return' or key == keys.action.val then
+    if key == keys.action.val and not keys.action.pressed or key == 'return' then
+      keys.action.pressed = true
+    end
+    
+    if keys.action.pressed then
+      keys.action.pressed = false
       if self.state == 'highscores' then
         self.state = 'inactive'
       elseif self.state == 'input' then

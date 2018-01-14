@@ -27,7 +27,7 @@ function Enemy:new(x,y, id)
   enemy.distanceTrigger = 200
   enemy.damage = 5
   enemy.value = 50
-  
+    
   enemy.orientation = 0
   --enemy.function = nil
     
@@ -186,6 +186,7 @@ function Enemy:new(x,y, id)
       if wallCollision(self,dt) then
         strollTime = 0
       end
+      collisionWithEnemy(self)
       
       self.pos.y = self.pos.y + self.vel.y * dt
       self:updateCollisionRect()
@@ -194,6 +195,7 @@ function Enemy:new(x,y, id)
       if wallCollision(self,dt) then
         strollTime = 0
       end
+      collisionWithEnemy(self)
     end
   end
   
@@ -319,6 +321,14 @@ function Enemy:new(x,y, id)
     if result then
       player:takeHit(self.damage)
     end
+  end
+  
+  function enemy:collisionWithEnemy()
+    local result = collisionWithEnemy(self)
+    if result then
+      
+    end
+    
   end
   
   

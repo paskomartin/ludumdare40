@@ -53,15 +53,36 @@ function Spawner:new(x,y)
       if gameManager.enemyCounter < gameManager.maxEnemy then
         
         if self.currentTime >= self.spawnTime then
-        --if (self.currentTime - self.lastTime) >= self.spawnTime then
-          self:spawnEnemy("enemy")
-          self.currentTime = 0
-          self.animation.play = true
-          self.animation.current_frame  = 1
-         -- self.lastTime = self.currentTime
+          if self:canSpawn() then
+            --if (self.currentTime - self.lastTime) >= self.spawnTime then
+            self:spawnEnemy("enemy")
+            self.currentTime = 0
+            self.animation.play = true
+            self.animation.current_frame  = 1
+            -- self.lastTime = self.currentTime
+          else
+            -- give some time for spawn
+            self.currentTime = self.currentTime - 3 * dt
+          end
         end
       end
     end
+  end
+  
+  function spawner:canSpawn()
+    local result = false
+    -- check if enemy stand on spawner?
+    local enemies = gameManager.enemies.objects
+    for i=1, #enemies, 1 do
+      local enemy = enemies[i]
+      result = rect_collision(self, enemy.rect)
+      if result then
+        return not result
+      end
+    end
+    -- check if player stand on spawner
+    result = rect_collision(self, player.rect)
+    return not result
   end
   
   

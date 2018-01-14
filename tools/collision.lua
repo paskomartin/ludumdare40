@@ -90,6 +90,52 @@ function collectibleCollision(obj)
 end
 
 
+
+
+function collisionWithEnemy(obj)
+  local enemies = gameManager.enemies.objects
+  local result = false
+  
+  for i = 1, #enemies do
+    local enemy = enemies[i]
+    if enemy == obj then
+      goto skip_collision
+    end
+    
+    local r2 = { x = enemy.rect.pos.x, y = enemy.rect.pos.y, w = enemy.rect.size.x, h = enemy.rect.size.y }
+    local r1 = { x = obj.rect.pos.x, y = obj.rect.pos.y, w = obj.rect.size.x, h = obj.rect.size.y }
+    local side = collisionSide(r2, r1)
+    -- side is relative to character, that's mean if character collide his right side
+    -- the variable side will be 'right'
+    if side ~= 'none' then
+      if side == 'right' then
+        obj.rect.pos.x = enemy.rect.pos.x - enemy.rect.size.x
+        obj.pos.x = obj.rect.pos.x - obj.offset.x
+        result = true
+      elseif side == 'left' then
+        obj.rect.pos.x = enemy.rect.pos.x + enemy.rect.size.x
+        obj.pos.x = obj.rect.pos.x - obj.offset.x
+        result = true
+      elseif side == 'top' then
+        obj.rect.pos.y = enemy.rect.pos.y + enemy.rect.size.y
+        obj.pos.y = obj.rect.pos.y - obj.offset.y
+        result = true
+      elseif side == 'bottom' then       
+        obj.rect.pos.y = enemy.rect.pos.y - obj.rect.size.y
+        obj.pos.y = obj.rect.pos.y - obj.offset.y
+        result = true
+      end     
+    end
+    
+    ::skip_collision::
+  end
+  return result
+end
+
+
+
+
+
 function collisionWithBullet(obj, id)
   local objects = gameManager.bullets.objects
   

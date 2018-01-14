@@ -106,7 +106,8 @@ function setJoypad()
 end
 
 
-function love.update(dt)
+function 
+love.update(dt)
   local delta = smoothDeltaTime(dt)
   
   if joypad ~= nil then
@@ -191,7 +192,7 @@ function love.keypressed(key)
 
 end
 
-local filter = false
+local filter = true
 local anisotropy = 1
 
 -- --[[
@@ -215,7 +216,7 @@ function love.keyreleased(key)
     end
   end
   
-  if gameManager.highscore.state ~= 'inactive' then
+  if gameManager.highscore.state ~= 'inactive' and gameManager.state == 'highscore' then
     gameManager.highscore:checkKeys(key)
   end
   
@@ -300,7 +301,7 @@ function loadSaveFile(filename)
   
     local x, y, window = love.window.getPosition()
     local desktopWidth, desktopHeight = love.window.getDesktopDimensions(window)
-    if (x + windowWidth) > desktopWidth or (y + windowHeight) > desktopHeight then
+    if ( (x + windowWidth) > desktopWidth or (y + windowHeight) > desktopHeight ) and not fullscreen  then
       love.window.maximize(true)
     end
     

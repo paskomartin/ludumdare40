@@ -32,16 +32,18 @@ function GameManager:create()
   gameManager.animData = nil -- it'll table
   gameManager.lastCoinsCounter = 0
   gameManager.isGameOver = false
-  gameManager.state = "menu"  -- menu, game, newgame, gameover, inputscore, highscore, theend, getready
+  gameManager.state = "menu"  -- menu, game, newgame, gameover, inputscore, highscore, theend, getready, --quit
   
   gameManager.endTime = 200
   gameManager.currentEndTime = gameManager.endTime
   gameManager.highscore = nil
   
   
-  local menuItems = 2 -- start exit
-  local menuIterator = 1
-  local menuSelected = 0;
+  gameManager.menuItems = 3 -- start highscores exit
+  gameManager.menuIterator = 0
+  gameManager.menuSelected = 0
+  
+  
   
   gameManager.getReadyStartTime = 80
   gameManager.currentGetReadyTime = gameManager.getReadyStartTime
@@ -92,6 +94,11 @@ function GameManager:create()
 
   end
   
+  local menuSelectCurrentTime = 0
+  local menuSelectMaxTime = 15
+  local canMenuSelect = false
+  
+  
   
   function gameManager:update(dt)
     if gameManager.state == "newgame" then
@@ -103,6 +110,16 @@ function GameManager:create()
     end
     
     if gameManager.state == "menu" then
+      
+      if menuSelectCurrentTime < menuSelectMaxTime and not canMenuSelect then
+        menuSelectCurrentTime = menuSelectCurrentTime + 1
+        if menuSelectCurrentTime >= menuSelectMaxTime then
+          canMenuSelect = true
+        end
+      end
+      if canMenuSelect and menuSelectCurrentTime > 0 then
+        menuSelectCurrentTime = 0
+      end
       
       gameManager:getKeys()
       joypad:checkJoypad()
@@ -326,23 +343,39 @@ function GameManager:create()
             
   end
   
-   
+  
+  local function drawMenuQuad(quad, x, y)
+    love.graphics.draw(gameManager.menuItemsImage, quad, x,y)
+  end
+  
+  
   function gameManager:showMenu()
-    local titlequad = gameManager.quads[5]
-    love.graphics.draw(gameManager.menuTitleImage , titlequad,100,100)
+    local titlequad = gameManager.quads["title"]  --gameManager.quads[5]
+    love.graphics.draw(gameManager.menuTitleImage , titlequad,50,100) --100 , 100
     
     local quadSelected = nil
-    local quadUnselected = nil
-    if menuIterator == 1 then
-      quadSelected = gameManager.quads[2]
-      quadUnselected = gameManager.quads[4]
-    elseif menuIterator == 2 then
-      quadSelected = gameManager.quads[1]
-      quadUnselected = gameManager.quads[3]
+    local quadUnselected = {} --nil
+    local yBase = 260
+    local xBase = 500
+    local yOffset = 70
+    if gameManager.menuIterator == 0 then
+      drawMenuQuad(gameManager.quads["newgame_active"], xBase, yBase)
+      drawMenuQuad(gameManager.quads["highscores_inactive"], xBase, yBase + yOffset)
+      drawMenuQuad(gameManager.quads["exit_inactive"], xBase, yBase + 2 * yOffset)
+    elseif gameManager.menuIterator == 1 then
+      drawMenuQuad(gameManager.quads["newgame_inactive"], xBase, yBase)
+      drawMenuQuad(gameManager.quads["highscores_active"], xBase, yBase + yOffset)
+      drawMenuQuad(gameManager.quads["exit_inactive"], xBase, yBase + 2 * yOffset)
+    elseif gameManager.menuIterator == 2 then
+      drawMenuQuad(gameManager.quads["newgame_inactive"], xBase, yBase)
+      drawMenuQuad(gameManager.quads["highscores_inactive"], xBase, yBase + yOffset)
+      drawMenuQuad(gameManager.quads["exit_active"], xBase, yBase + 2 * yOffset)
     end
     
-    love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
-    love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
+    --love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
+    --love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
+    
+    
     love.graphics.setFont(self.font)
     
     love.graphics.setColor(255,255,255)
@@ -354,57 +387,74 @@ function GameManager:create()
     love.graphics.setColor(255,255,255)
     
     --"The more you have, the worse it is"
-
-
   end
   
   
   function gameManager:showGameOver()
     
     --gameManager:resetValues()
-    local quad = gameManager.quads[6]
-    love.graphics.draw(gameManager.gameOverTileImage , gameManager.quads[6], 0, 100)
+    local quad =gameManager.quads["gameover"] --gameManager.quads[6]
+    love.graphics.draw(gameManager.gameOverTileImage , quad, 0, 100)
     
   end
   
   function gameManager:showTheEnd()
-    local quad = gameManager.quads[7]
-    love.graphics.draw(gameManager.theEndTileImage , gameManager.quads[6], 0, 100)
+    local quad = gameManager.quads["theend"] --gameManager.quads[7]
+    love.graphics.draw(gameManager.theEndTileImage , quad, 0, 100)
   end
   
   
   -- bug in love.keyboars.setKeyRepeat(false) ????
   function gameManager:selectMenu2()
-    menuSelected = 0
+    gameManager.menuSelected = 0
     if keys.up.pressed then
-      menuIterator = menuIterator - 1
-      if menuIterator < 1 then menuIterator = menuItems end
+      gameManager.menuIterator = gameManager.menuIterator - 1
+      if gameManager.menuIterator < 1 then gameManager.menuIterator = gameManager.menuItems end
     elseif keys.down.pressed then
-      menuIterator = menuIterator + 1
-      if menuIterator > menuItems then menuIterator = 1 end
+      gameManager.menuIterator = gameManager.menuIterator + 1
+      if gameManager.menuIterator > gameManager.menuItems then gameManager.menuIterator = 1 end
     end
     
     if keys.action.pressed then
-      menuSelected = menuIterator
+      gameManager.menuSelected = gameManager.menuIterator
     end    
   end
   
   function gameManager:selectMenu()
-        menuSelected = 0
-    if keys.up.pressed then
-      menuIterator = 1
-    elseif keys.down.pressed then
-      menuIterator = 2
+    gameManager.menuSelected = 0
+    if keys.up.pressed and canMenuSelect then
+      gameManager.menuIterator = gameManager.menuIterator - 1 --1
+      canMenuSelect = false
+      keys.up.pressed = false
+    elseif keys.down.pressed and canMenuSelect then
+      gameManager.menuIterator = gameManager.menuIterator + 1--2
+      canMenuSelect = false
+      keys.down.pressed = false
+    end
+    
+    gameManager.menuIterator = (gameManager.menuIterator % gameManager.menuItems)
+    if gameManager.menuIterator < 0 then
+      gameManager.menuIterator = 0
+      
     end
     
     if keys.action.pressed then
-      menuSelected = menuIterator
+      gameManager.menuSelected = gameManager.menuIterator + 1
+      keys.action.pressed = false
     end 
     
-    if menuSelected == 2 then
+    if gameManager.menuSelected == 3 then
       quit()
-    elseif menuSelected == 1 then
+    elseif gameManager.menuSelected == 2 then
+      gameManager.state = "highscore"
+      gameManager.highscore.state = "highscores"
+      keys.action.pressed = false
+      canMenuSelect = false
+      love.event.wait()
+    elseif gameManager.menuSelected == 1 then
       gameManager.state = "newgame"
+      keys.action.pressed = false
+      canMenuSelect = false
     end
   end
   
@@ -486,8 +536,8 @@ function GameManager:create()
     gameManager.enemyStep = 0
     gameManager.lastCoinsCounter = 0
     gameManager.isGameOver = false
-    menuSelected = 0
-    menuIterator = 1
+    gameManager.menuSelected = 0
+    gameManager.menuIterator = 0
   end
   
   function gameManager:resetContainers()
@@ -507,12 +557,67 @@ function GameManager:create()
   end
  
   function gameManager:generateQuads()
+    local yOffset = 63
+    local menuQuads = {
+        -- items, menu.png -----
+        --- new game
+        ["newgame_active"] = quad(0, 0, 285, 63, 285, 756),
+        ["newgame_inactive"] = quad(0, 1 * yOffset, 285, 63, 285, 756),
+        -- highscores
+        ["highscores_active"] = quad(0, 2 * yOffset, 285, 63, 285, 756),
+        ["highscores_inactive"] = quad(0, 3 * yOffset , 285, 63, 285, 756),
+        -- instructions --
+        ["instructions_active"] = quad(0, 4 * yOffset , 285, 63, 285, 756),
+        ["instructions_inactive"] = quad(0, 5 * yOffset , 285, 63, 285, 756),
+        -- options -- 
+        ["options_active"] = quad(0, 6 * yOffset , 285, 63, 285, 756),
+        ["options_inactive"] = quad(0, 7 * yOffset , 285, 63, 285, 756),
+        -- credits --
+        ["credits_active"] = quad(0, 8 * yOffset , 285, 63, 285, 756),
+        ["credits_inactive"] = quad(0, 9 * yOffset , 285, 63, 285, 756),
+        -- exit --
+        ["exit_active"] = quad(0, 10 * yOffset , 285, 63, 285, 756),
+        ["exit_inactive"] = quad(0, 11 * yOffset , 285, 63, 285, 756),
+        ---------------------------------------------------------------
+        -- title, title.png
+        ["title"] = quad(0, 0, 446, 343, 446, 343),
+        -- gameover, gameover.png
+        ["gameover"] = quad(0, 0, 800, 285, 800, 285),
+        -- the end, theend.png
+        ["theend"] = quad(0, 0, 800, 600, 800, 600),
+          
+      }
+    gameManager.quads = menuQuads;
+
+    
+    -- [[ DEPRICATED ]] --
     local quads = {
-        -- items, menu.png
+        -- items, menu.png -----
+        --- new game
+        quad(0, 0, 285, 63, 285, 756),
+        quad(0, 1 * yOffset, 285, 63, 285, 756),
+        -- highscores
+        quad(0, 2 * yOffset, 285, 63, 285, 756),
+        quad(0, 3 * yOffset , 285, 63, 285, 756),
+        -- instructions --
+        quad(0, 4 * yOffset , 285, 63, 285, 756),
+        quad(0, 5 * yOffset , 285, 63, 285, 756),
+        -- options -- 
+        quad(0, 6 * yOffset , 285, 63, 285, 756),
+        quad(0, 7 * yOffset , 285, 63, 285, 756),
+        -- credits --
+        quad(0, 8 * yOffset , 285, 63, 285, 756),
+        quad(0, 9 * yOffset , 285, 63, 285, 756),
+        -- exit --
+        quad(0, 10 * yOffset , 285, 63, 285, 756),
+        quad(0, 11 * yOffset , 285, 63, 285, 756),
+        --[[-- old menu quads
         quad(0, 0, 256, 54, 256, 256),
         quad(0, 54, 256, 54, 256, 256),
         quad(0, 108, 88, 60, 256, 256),
         quad(88, 108, 88, 60, 256, 256),
+        --]]----
+        -----------------------------------
         -- title, title.png
         quad(0, 0, 446, 343, 446, 343),
         -- gameover, gameover.png
@@ -521,7 +626,9 @@ function GameManager:create()
         quad(0, 0, 800, 600, 800, 600),
           
       }
-    gameManager.quads = quads
+      
+      
+--    gameManager.quads = quads
     gameManager.menuItemsImage = asm:get("menu")
     gameManager.menuTitleImage = asm:get("menutitle")
     gameManager.gameOverTileImage = asm:get("gameover")
