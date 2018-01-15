@@ -180,22 +180,24 @@ function Enemy:new(x,y, id)
       self:move(dt)
       self.pos.x = self.pos.x + self.vel.x * dt
       self:updateCollisionRect()
+          collisionWithEnemy(self)
       local bulletID = "playerBullet"
       collisionWithBullet(self, bulletID)
       self:collisionWithPlayer()
       if wallCollision(self,dt) then
         strollTime = 0
       end
-      collisionWithEnemy(self)
+  
       
       self.pos.y = self.pos.y + self.vel.y * dt
       self:updateCollisionRect()
+      collisionWithEnemy(self)
       collisionWithBullet(self, bulletID)
       self:collisionWithPlayer()
       if wallCollision(self,dt) then
         strollTime = 0
       end
-      collisionWithEnemy(self)
+
     end
   end
   

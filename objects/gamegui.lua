@@ -147,7 +147,7 @@ function GameGui:new()
     love.graphics.draw(img, x - 18, self.y+22,0,1.3,1.3)
     love.graphics.setColor(255,255,255)
     love.graphics.draw(img, x - 20, self.y+24,0,1.3,1.3)
-    self:drawGradient(x, self.y, margin)
+   -- self:drawGradient(x, self.y, margin)
     
     
     -- debug

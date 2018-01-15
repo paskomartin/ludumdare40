@@ -9,7 +9,7 @@ function Joypad:init()
   joypad.available = false
   if #joypads ~= 0 then
     joypad.joy = joypads[1]
-    self.available = true
+    joypad.available = true
   else
   end
   -- in relate to https://love2d.org/wiki/GamepadButton
