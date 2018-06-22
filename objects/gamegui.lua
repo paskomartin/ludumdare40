@@ -151,6 +151,7 @@ function GameGui:new()
     --self:putGradient(x, self.y, margin)
     self:drawGradientCanvas(x, self.y, margin)
     
+    --love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 0, 0)
     
     -- debug
     --love.graphics.print( player.specialCooldown, x + 11, self.y+30+margin)
@@ -205,6 +206,9 @@ function GameGui:new()
     local w = self.gradientWidth * percentage
     love.graphics.draw(self.gradientCanvas, self.gradientQuads[percentage + 1], x + 12, y + 26 + margin)
     --love.graphics.draw(self.gradientCanvas, x + 12, 26 + y + margin) --, 0, 1, 1, w, self.gradientHeight)
+    
+    love.graphics.setColor( {23,178,8} )
+    love.graphics.rectangle('line', x + 11, self.y+15+margin  + 10,150,7)
   end
   
   --- DEPRICATED!
