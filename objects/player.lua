@@ -9,6 +9,8 @@ local floor = math.floor
 local cos = math.cos
 local sin = math.sin
 
+require ("tools/camera")
+
 
 function Player:new(x, y)
   local tile_w = 64
@@ -35,16 +37,11 @@ function Player:new(x, y)
   player.points = 0
   player.coins = 0
   player.isAlive = true
-  player.blink = false
-  player.blinkAnim = false
-  player.blinkStep = 0.15 --0.5
-  player.blinkTime = 20
-  player.currentBlinkTime = 0
-  player.lastBlinkTime = 0
   player.kills = 0
   player.killBonus = 500
   player.gun = nil
   
+  player.blinker = require("tools/blink"):new()
   
   function player:init()
     -- add to loop?
@@ -95,6 +92,8 @@ function Player:new(x, y)
       
       -- init gun -- TEST
       self.gun = require("objects/guns/pistol"):new()
+      
+      self:updateCollisionRect()
   end
   
   function player:reinit()
@@ -120,10 +119,8 @@ function Player:new(x, y)
   
   
   function player:draw()
-    if self.blink then
-      if self.blinkAnim then
-        goto skip_anim
-      end
+    if self.blinker:isBlinking() then
+      goto skip_anim
     end
     
     -- cast shadow
@@ -145,7 +142,7 @@ function Player:new(x, y)
   
   
   function player:tick(dt)
-    player:checkBlink(dt)
+    self.blinker:update(dt)
     
     -- test
     self.gun.cooldown = self.gun.cooldown - 1
@@ -202,6 +199,7 @@ function Player:new(x, y)
     collisionWithBullet(self, "enemyBullet")
     
     self.animation:update(dt)
+    camera:move(self.rect.pos)
   end
 
   function player:checkKeys()
@@ -509,12 +507,10 @@ function Player:new(x, y)
   
   function player:takeHit(damage)
     -- simple take, have no time for rest :/ --
-    if not self.blink and self.isAlive then
-      if player.life > 0 and not self.blink then
+    if not self.blinker:isActive() and self.isAlive then
+      if player.life > 0 and not self.blinker:isActive() then
         player.life = player.life - 1
-        self.blink = true
-        self.blinkAnim = true
-        self.currentBlinkTime = 0
+        self.blinker:start()
       else
         isActive = false
       end
@@ -522,53 +518,6 @@ function Player:new(x, y)
     end
   end
   
-  local blinkCounter = 0
-  function player:checkBlink(dt)
-    if self.blink then
-      if blinkCounter < self.blinkTime then
-      
-        self.currentBlinkTime = self.currentBlinkTime + dt
-        if self.currentBlinkTime >= self.blinkStep then
-          self.currentBlinkTime = 0
-          self.blinkAnim = not self.blinkAnim
-          blinkCounter = blinkCounter + 1
-        end
-      else
-        self.blink = false
-        self.blinkAnim = false
-        blinkCounter = 0
-      end
-    end
-  end
-  
-  -- [[ DEPRICATED! ]] --
-  function player:checkBlink2(dt)
-    if self.blink then
-      self.currentBlinkTime = self.currentBlinkTime + dt
-      if self.currentBlinkTime < self.blinkTime then
-        --[[
-        if self.currentBlinkTime >= self.lastBlinkTime + player.blinkStep then
-          self.blinkAnim = not self.blinkAnim
-          self.currentBlinkTime = floor(self.currentBlinkTime*100) / 100
-          self.lastBlinkTime = self.currentBlinkTime
-        end
-        --]]
-      -- [[
-        if floor(self.currentBlinkTime * 100) >=  self.lastBlinkTime + player.blinkStep * 100 then
-          self.blinkAnim = not self.blinkAnim
-          self.currentBlinkTime = floor(self.currentBlinkTime*100) / 100
-          self.lastBlinkTime = self.currentBlinkTime
-        end
-      --]]
-      else
-        self.blink = false
-        self.blinkAnim = false
-        self.lastBlinkTime = 0
-      end
-    end
-    
-    
-  end
   
   function player:addValToSpecial(val)
     self.specialCooldown = self.specialCooldown - val

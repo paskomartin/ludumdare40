@@ -3,6 +3,7 @@ local paths = "assets/maps/?.lua;assets/sounds/?.wav;assets/sprites/?.png;object
 package.path = paths
 love.filesystem.setRequirePath(paths)
 --]]
+STP = require "tools/StackTracePlus"
 gameManager = require("tools/gamemanager"):create()
 asm = require("tools/assetsmanager")
 tlm = require("tiles/tlm")
@@ -28,6 +29,9 @@ scalex = 1--1920 / 800
 scaley = 1--1080 / 600
 local windowWidth = 0
 local windowHeight = 0
+
+
+
 
 function love.load()
   -- [[--
@@ -132,6 +136,7 @@ function love.draw()
   love.graphics.setCanvas(canvas)
   gameManager:draw()
   love.graphics.setCanvas()
+  
   --for _,shader
   if runShader then
     love.graphics.setShader(advmame2xshader)
@@ -290,8 +295,17 @@ function loadSaveFile(filename)
     if config.fullscreen == 1 then
       fullscreen = true
     end
-    mode.fullscreen = fullscreen
-    love.window.setMode(config.width,config.height,mode)
+    if not fullscreen then
+    --mode.fullscreen = fullscreen
+      love.window.setMode(config.width,config.height,mode)
+    else
+      love.window.setMode(config.width,config.height,mode)
+      local result = love.window.setFullscreen(fullscreen, 'exclusive')--'desktop')--'exclusive'
+      if not result then
+        mode.fullscreen = false
+        love.window.setMode(config.width,config.height,mode)    
+      end
+    end
     
     scalex = config.width / mode.minwidth
     scaley = config.height / mode.minheight

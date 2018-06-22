@@ -1,5 +1,77 @@
 require("tools/helpers")
 
+local Node = {}
+
+function Node:init(x, y, distance, priority)
+  local node = { x = x, y = y, distance = distance, priority = priority}
+  
+  function node:updatePriority(x, y)
+    self.priority = self.distance + self:estimate(x, y) * 10
+  end
+    
+    
+  function node:nextLevel(i)
+    local val = 0
+    if dir == 8 then
+      if i % 2 == 0 then
+        val = 10
+      else
+        val = 14
+      end
+    else
+      val = 10
+    end
+    
+    self.distance = self.distance + val
+  end
+    
+  
+  local xd, yd, d;
+  function node:estimate(x, y)
+    xd = x - self.x
+    yd = y - self.y
+    d = math.sqrt(xd * xd + yd * yd)
+    
+    return d
+  end
+  
+  function node:less(obj)
+    return self.priority > obj.priority
+  end
+  
+  function node:__le(a, b)
+    return a.priority > b.priority
+  end
+  
+  return node
+end
+
+
+function pathFind(xstart, ystart, xfinish, yfinish)
+  
+end
+
+
+
+
+function pathFactory(x, y)
+  local path = {}
+  path.width = tlm.mapwidth
+  path.height = tlm.mapheight
+  path.map = {}
+  path.closedNodes = {}
+  path.openNodes = {}
+  path.directions = {}
+  path.dir = 8  -- possible directions
+  
+  path.dirx = { 1, 1, 0, -1, -1, -1, 0, 1 }
+  path.diry = { 0, 1, 1,  1,  0, -1., -1, -1}
+  
+end
+
+
+
+
 function demonFactory(x, y)
   local id = 'demon'
   local demon = require("objects/enemy"):new(x, y, id)

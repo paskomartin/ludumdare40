@@ -18,12 +18,24 @@ function Medkit:new(x,y)
 
 	function medkit:load()
     self.layer = 2
+    --self.maxLifeTime = 30
 		gameManager.gameLoop:add(self)
 		gameManager.renderer:add(self, self.layer)
 	end	
 
+  
+  function medkit:tick(dt)
+    self:updateLifeTime(dt)
+    self.blink:update(dt)
+    self:isTimeToDestroy()       
+  end
+
+
 	function medkit:draw()
 		if medkit.isAlive then
+      if self.blink:isBlinking() then
+        goto skip_draw
+      end             
       -- shadow
       love.graphics.setColor(0,0,0,128)
       love.graphics.draw(self.image, self.pos.x+1, self.pos.y +1,0,1, 1)
@@ -33,6 +45,7 @@ function Medkit:new(x,y)
       if debugRect then
         self:drawDebugRect()
       end
+      ::skip_draw::
 		end
 	end
 

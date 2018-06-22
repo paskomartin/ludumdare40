@@ -24,6 +24,8 @@ function Gunfactory:new(x,y, gunID)
 		gameManager.gameLoop:add(self)
 		gameManager.renderer:add(self, self.layer)
     
+    --self.maxLifeTime = 45
+    
     if self.id == "shotgun" then
       self.rect.pos.y = self.pos.y + 11
       self.rect.size.y = 9
@@ -44,10 +46,16 @@ function Gunfactory:new(x,y, gunID)
   
   function gunfactory:tick(dt)
     self.animation:update(dt)
+    self:updateLifeTime(dt)
+    self.blink:update(dt)
+    self:isTimeToDestroy()     
   end
 
 	function gunfactory:draw()
 		if gunfactory.isAlive then
+      if self.blink:isBlinking() then
+        goto skip_draw
+      end        
 			--love.graphics.setColor(color)
 			--love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
       -- shadow
@@ -64,6 +72,7 @@ function Gunfactory:new(x,y, gunID)
       if debugRect then
         self:drawDebugRect()
       end
+      ::skip_draw::
 		end
 	end
 

@@ -24,6 +24,8 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
 
 	function valuable:load()
     self.layer = 1
+    --self.maxLifeTime = 20
+    self.blink.blinkStep = 0.2
 		gameManager.gameLoop:add(self)
 		gameManager.renderer:add(self, self.layer)
 	end	
@@ -31,11 +33,17 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
 
   function valuable:tick(dt)
     self.animation:update(dt)
+    self:updateLifeTime(dt)
+    self.blink:update(dt)
+    self:isTimeToDestroy()        
   end
 
 
 	function valuable:draw()
 		if valuable.isAlive then
+      if self.blink:isBlinking() then
+        goto skip_draw
+      end 
       -- main
       if self.animation:isPlaying() then
         self.animation:draw(true) 
@@ -50,6 +58,7 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
       if debugRect then
         self:drawDebugRect()
       end
+      ::skip_draw::
 		end
 	end
 
@@ -58,6 +67,7 @@ function Valuable:new(x,y, frames, id, tileW, tileH, animSpeed, sound )
       self.isAlive = false
       self.remove = true
       obj:addCoin(self.value)
+      obj:addPoints(self.value * 100)
       self:addBonus()
       player:addPoints(self.points)
       if self.sound:isPlaying() then

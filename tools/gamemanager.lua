@@ -7,6 +7,7 @@ require("tools/mapbuilder")
 local gui = require("objects/gamegui")
 local quad = love.graphics.newQuad
 
+require("tools/camera")
 
 
 function GameManager:create()
@@ -50,10 +51,15 @@ function GameManager:create()
   
   
   
+  
   function gameManager:init()
     self.fontSize = 16
     self.font = love.graphics.newFont(self.fontSize)
     love.graphics.setFont(self.font)
+    
+    -- set camera viewport
+    camera:setViewport(800, 544)
+    
 
     self.collectibles = obm:create("collectibles")
     self.collectibles:init()
@@ -88,8 +94,11 @@ function GameManager:create()
     buildMap(maplist[self.level])
     self.gameGui = gui:new()
     self.gameGui:init()
+    self.gameGui:generateGradient()
     
     self.isGameOver = false
+    
+    camera:move(player.rect.pos)
     
 
   end
@@ -165,6 +174,7 @@ function GameManager:create()
       end
       goto skip_update
     end
+    
     
     
     gameManager:changeEnemiesOnArena()
@@ -293,6 +303,8 @@ function GameManager:create()
       buildMap(name)
       gameManager.renderer:add(tlm)
       self.gameGui:init()
+      -- reinit gradients
+      self.gameGui:generateGradient()
       gameManager.state = "getready"
       love.audio.play(asm:get("getreadysound"))
     end
@@ -312,7 +324,8 @@ function GameManager:create()
       self:showGetReady()
         
     elseif gameManager.state == "game" then
-       gameManager.renderer:draw()
+      camera:set()
+      gameManager.renderer:draw()
       if gameManager.paused then
         local img = asm:get("paused")
         local imgW, imgH = img:getDimensions()
@@ -321,6 +334,8 @@ function GameManager:create()
         
         love.graphics.draw(img, x, y)
       end       
+      camera:unset()
+      self.gameGui:draw()
     end
   end
 
@@ -328,6 +343,7 @@ function GameManager:create()
   end
 
   function gameManager:showGetReady()
+    camera:set()
     gameManager.renderer:draw()
     local img = asm:get("getready")
     local imgW, imgH = img:getDimensions()
@@ -340,7 +356,8 @@ function GameManager:create()
       self.currentGetReadyTime = self.getReadyStartTime
       gameManager.state = "game"
     end
-            
+    camera:unset()
+    self.gameGui:draw()
   end
   
   
@@ -375,12 +392,13 @@ function GameManager:create()
     --love.graphics.draw(gameManager.menuItemsImage ,quadSelected , 500, 360)
     --love.graphics.draw(gameManager.menuItemsImage ,quadUnselected , 500, 420)
     
-    
+    --[[
     love.graphics.setFont(self.font)
     
     love.graphics.setColor(255,255,255)
     local text = "by Martin Pasko"
     love.graphics.print(text, 300, 420)
+    ]]--
     love.graphics.setColor(238, 85,51)
     text = "Ludum Dare 40 PostJam Edition"
     love.graphics.print(text, 200, 460)

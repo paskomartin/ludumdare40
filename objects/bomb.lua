@@ -29,6 +29,7 @@ function Bomb:new(x,y)
 
 	function bomb:load()
     self.layer = 2
+    --self.maxLifeTime = 25
 		gameManager.gameLoop:add(self)
 		gameManager.renderer:add(self, self.layer)
 	end	
@@ -36,6 +37,9 @@ function Bomb:new(x,y)
 
   function bomb:tick(dt)
     self.animation:update(dt)
+    self:updateLifeTime(dt)
+    self.blink:update(dt)
+    self:isTimeToDestroy()
     --[[
     if not self.animation.play then
       self.animationCurrentTime = self.animationCurrentTime + dt
@@ -55,7 +59,10 @@ function Bomb:new(x,y)
 
 
 	function bomb:draw()
-		if bomb.isAlive then     
+		if bomb.isAlive then
+      if self.blink:isBlinking() then
+        goto skip_draw
+      end
       -- shadow
       love.graphics.setColor(0,0,0,128)
       love.graphics.draw(self.image, self.pos.x+1, self.pos.y +1,0,1, 1)
@@ -73,6 +80,7 @@ function Bomb:new(x,y)
       if debugRect then
         self:drawDebugRect()
       end
+      ::skip_draw::
 		end
 	end
 

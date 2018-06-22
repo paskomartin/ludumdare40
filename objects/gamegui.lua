@@ -26,7 +26,7 @@ function GameGui:new()
     self.font:setFilter("linear","linear",1)
     love.graphics.setFont(self.font)
     gameManager.gameLoop:add(self)
-    gameManager.renderer:add(self, 4)
+    --gameManager.renderer:add(self, 4)
   end
   
   function gameGui:tick(dt)
@@ -147,7 +147,9 @@ function GameGui:new()
     love.graphics.draw(img, x - 18, self.y+22,0,1.3,1.3)
     love.graphics.setColor(255,255,255)
     love.graphics.draw(img, x - 20, self.y+24,0,1.3,1.3)
-   -- self:drawGradient(x, self.y, margin)
+    --self:drawGradient(x, self.y, margin)
+    --self:putGradient(x, self.y, margin)
+    self:drawGradientCanvas(x, self.y, margin)
     
     
     -- debug
@@ -164,6 +166,101 @@ function GameGui:new()
     love.graphics.setColor(255,255,255)
   end
   
+  
+  function gameGui:generateGradient()
+    local width = 150
+    local step = math.abs(width / player.specialCooldownMax)
+    local height = 5
+    local color = nil
+    
+    self.gradientCanvas = love.graphics.newCanvas(width, height)
+    self.gradientWidth = 150
+    self.gradientHeight = 5
+    local oldCanvas = love.graphics.getCanvas();
+    love.graphics.setCanvas(self.gradientCanvas)
+    
+    for i = player.specialCooldownMax, 0, -1 do
+        color = interpolate3Colors( {23,178,8}, {255,216,25}, {224,0,26},  i, player.specialCooldownMax)
+        love.graphics.setColor(color)
+        love.graphics.rectangle('fill', (width - i * step), 0, step, height)
+        
+    end
+
+    love.graphics.setCanvas(oldCanvas)
+    
+    -- generate quads
+    self.gradientQuads = {}
+    local quadStep = self.gradientWidth / 100
+    for i = 0, 100, 1 do
+      local quad = love.graphics.newQuad(0, 0, quadStep * i, self.gradientHeight, self.gradientWidth, self.gradientHeight)
+      self.gradientQuads[i + 1] = quad
+    end
+  end
+  
+  
+  function gameGui:drawGradientCanvas(x, y, margin)
+    local current = player.specialCooldownMax - player.specialCooldown
+    local max = player.specialCooldownMax
+    local percentage = math.floor( (current / max) * 100) --
+    local w = self.gradientWidth * percentage
+    love.graphics.draw(self.gradientCanvas, self.gradientQuads[percentage + 1], x + 12, y + 26 + margin)
+    --love.graphics.draw(self.gradientCanvas, x + 12, 26 + y + margin) --, 0, 1, 1, w, self.gradientHeight)
+  end
+  
+  --- DEPRICATED!
+  function gameGui:generateGradient2()
+    local maxRectWidth = 150
+    local rectWidthStep = math.abs(maxRectWidth / player.specialCooldownMax)
+    local rectHeight = 5
+    local color = nil
+    
+    -- all gradients at current level
+    self.gradients = {}
+    self.gradients.step = rectWidthStep
+    self.gradients.rectWidth = maxRectWidht
+    self.gradients.rectHeight = rectHeight
+    
+    for i = player.specialCooldownMax, 1, -1 do
+      
+      if i <= player.specialCooldown then
+        i = 0
+      else
+      
+        color = interpolate3Colors( {23,178,8}, {255,216,25}, {224,0,26},  i, player.specialCooldownMax)
+        self.gradients[i] = { }
+        self.gradients[i].color = color
+        self.gradients[i].xStep = (maxRectWidth - i * rectWidthStep) + 12
+        self.gradients[i].yStep = 26
+        -- how to draw it:        
+        -- love.graphics.setColor(self.gradients[i].color)
+        -- love.graphics.rectangle('fill', x + self.gradients[i].xStep, y + self.gradients[i].yStep, self.gradients[i].step, self.gradients[i].rectHeight)
+        
+      end
+    end    
+    
+  end
+    
+    
+  --- DEPRICATED
+  function gameGui:putGradient(x, y, margin)
+   
+    debug.traceback = STP.stacktrace
+    local index = nil
+    for i = player.specialCooldownMax, 1, -1 do
+      
+      if i <= player.specialCooldown then
+        i = 0
+      else
+      
+        if i ~= 0 then
+          love.graphics.setColor(self.gradients[i].color)
+          love.graphics.rectangle('fill', x + self.gradients[i].xStep, y + self.gradients[i].yStep + margin, self.gradients.step, self.gradients.rectHeight)
+        end
+      end
+    end
+  end
+  
+  --- DEPRICATED
   function gameGui:drawGradient(x, y, margin)
     local maxRectWidth = 150
     local rectWidthStep = math.abs(maxRectWidth / player.specialCooldownMax)

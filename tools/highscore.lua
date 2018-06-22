@@ -31,9 +31,13 @@ function HighScore:new()
 
   function highscore:turnOnHighscoreTable()
     self.state = 'highscores'
+    --self.fontSize = 16
+    self.font = love.graphics.newFont(self.fontSize)
+    love.graphics.setFont(self.font)
   end
 
   function highscore:turnOnInput(value, position)
+    love.event.wait()
     love.keyboard.setTextInput(true) 
     love.keyboard.setKeyRepeat(true)
     self.isActive = true
@@ -94,7 +98,7 @@ function HighScore:new()
   
   function highscore:showInput()
     love.graphics.setColor(234,12,45)
-    love.graphics.print("value : " .. self.currentValue, 100, 200)
+    love.graphics.print("Total points : " .. self.currentValue, 100, 200)
     love.graphics.printf(self.currentName, 100, 300, 400)
   end
   
@@ -104,7 +108,7 @@ function HighScore:new()
     local y = self.pos.y --100
     local yOffset = 40
     -- show header
-    x = worldWidth /2 - worldWidth / 8
+    x = worldWidth /2 - worldWidth / 16
     local text = "High Score"
     
     love.graphics.setColor(234,12,45)
@@ -126,14 +130,16 @@ function HighScore:new()
     y = y + yOffset * 2
     ]]
     
-    
-    x = startX - 70
+    love.graphics.setColor(255,255,255)
+    x = startX - 7
     love.graphics.printf("Place", x, y, 400 )
+    x = startX -70
     love.graphics.printf("Name", x + 140, y, 400)
     x = x + 250
     love.graphics.printf("Points", x + 140, y, 400)
     y = y + yOffset
     
+    love.graphics.setColor(234,12,45)
     -- show scores
     for i = 1, #self.table, 1 do
       x = startX --130
@@ -143,6 +149,7 @@ function HighScore:new()
       love.graphics.printf(self.table[i].value, x + 250, y, 400)
       y = y + yOffset
     end
+    love.graphics.setColor(255,255,255)
   end
   
   

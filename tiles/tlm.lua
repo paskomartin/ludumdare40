@@ -112,9 +112,28 @@ function Tlm:loadmap(mapname)
   gameManager.enemyStep = tonumber(map.properties["enemyStep"])
   --gameManager.enemyCounter = 0 --tonumber(map.properties["startEnemy"])
   
+  -- set camera level size
+  self.minViewportW = 800
+  self.minViewportH = 544
+  local levelH = self.mapheight * self.tileheight
+  local levelW = self.mapwidth * self.tilewidth
+  if levelH < self.minViewportH then
+    levelH = self.minViewportH
+  end
+  
+  if levelW < self.minViewportW then
+    levelW = self.minViewportW
+  end
+  camera:setLevelSize(levelW, levelH)
+  
+  
+  
   -- tiles graphics
-  local tilesName = map.tilesets[1].name
-  self.img = love.graphics.newImage("assets/sprites/" .. tilesName .. ".png")
+  --local tilesName = map.tilesets[1].name
+  local tilesName = map.tilesets[1].image:sub(3)
+  
+  --self.img = love.graphics.newImage("assets/sprites/" .. tilesName .. ".png")
+  self.img = love.graphics.newImage("assets" .. tilesName)
   self.img:setFilter("nearest","nearest")
   
   asm:add(self.img, tilesName, "image")
@@ -132,7 +151,10 @@ function Tlm:loadmap(mapname)
         local x = map.layers[layer].objects[1].x-- + map.layers[layer].objects.width / 2
         local y = map.layers[layer].objects[1].y-- + map.layers[layer].objects.height / 2
         player.pos.x = x
-        player.pos.y = y
+        player.pos.y = y        
+        player:updateCollisionRect()
+        camera:move(player.rect.pos)
+        
       elseif map.layers[layer].name == "spawner" then
         local length = #map.layers[layer].objects
         local objects = map.layers[layer].objects
@@ -189,6 +211,7 @@ function Tlm:clear()
   self.img = nil
   
   self.walls = {}
+  -- camera.isLevelInit = false
 end
 
 

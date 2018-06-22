@@ -26,16 +26,23 @@ function FastReload:new(x,y)
 	function fastReload:load()
 		-- add fastReload quad here --
     self.layer = 1
+    --self.maxLifeTime = 25
 		gameManager.gameLoop:add(self)
 		gameManager.renderer:add(self, self.layer)
 	end	
 
   function fastReload:tick(dt)
     self.animation:update(dt)
+    self:updateLifeTime(dt)
+    self.blink:update(dt)
+    self:isTimeToDestroy()    
   end
 
 	function fastReload:draw()
 		if fastReload.isAlive then
+      if self.blink:isBlinking() then
+        goto skip_draw
+      end      
 			--love.graphics.setColor(color)
 			--love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
       -- shadow
@@ -52,6 +59,7 @@ function FastReload:new(x,y)
       if debugRect then
         self:drawDebugRect()
       end
+      ::skip_draw::
 		end
 	end
 

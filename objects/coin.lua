@@ -28,6 +28,8 @@ function Coin:new(x,y)
 
 
 	function coin:load()
+    --self.maxLifeTime = 15
+    --self.blink.blinkTime = 30
 		-- add coin quad here --
     self.layer = 1
 		gameManager.gameLoop:add(self)
@@ -37,11 +39,18 @@ function Coin:new(x,y)
 
   function coin:tick(dt)
     self.animation:update(dt)
+    self:updateLifeTime(dt)
+    self.blink:update(dt)
+    self:isTimeToDestroy()
   end
 
 
+
 	function coin:draw()
-		if coin.isAlive then
+		if self.isAlive then
+      if self.blink:isBlinking() then
+        goto skip_draw
+      end
 			--love.graphics.setColor(color)
 			--love.graphics.circle("fill", self.pos.x, self.pos.y, 8, 8)
       --[[ --
@@ -66,6 +75,7 @@ function Coin:new(x,y)
       if debugRect then
         self:drawDebugRect()
       end
+      ::skip_draw::
 		end
 	end
 
@@ -74,6 +84,7 @@ function Coin:new(x,y)
       self.isAlive = false
       self.remove = true
       obj:addCoin(self.value)
+      obj:addPoints(self.value * 100)
       local sound = asm:get("coinsound")
       if sound:isPlaying() then
         sound:stop()
